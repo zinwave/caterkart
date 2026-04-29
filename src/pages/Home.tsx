@@ -6,8 +6,12 @@ export default function Home() {
   const { occasions } = useCelebration();
   return (
     <div>
-      {/* HERO */}
-      <section className="relative overflow-hidden bg-mesh-warm bg-[length:200%_200%] animate-gradient-shift text-white">
+      {/* HERO — Swiggy MCP-styled (navy → orange → peach gradient) */}
+      <section className="relative overflow-hidden bg-mcp-hero bg-[length:200%_200%] animate-gradient-shift text-white">
+        {/* radial glows */}
+        <div className="absolute -top-32 -right-24 w-[28rem] h-[28rem] rounded-full bg-cater-peach/30 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-32 -left-24 w-[28rem] h-[28rem] rounded-full bg-swiggy-orange/40 blur-3xl pointer-events-none" />
+
         {/* Floating emoji bubbles */}
         <div className="absolute inset-0 pointer-events-none">
           <FloatEmoji emoji="🍕" className="top-6 left-[10%]" delay="0s" />
@@ -18,99 +22,93 @@ export default function Home() {
           <FloatEmoji emoji="🧇" className="top-1/3 right-[28%]" delay="0.9s" />
         </div>
 
-        {/* radial glow */}
-        <div className="absolute -top-32 -right-24 w-96 h-96 rounded-full bg-white/20 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-32 -left-24 w-96 h-96 rounded-full bg-cater-coral/40 blur-3xl pointer-events-none" />
-
-        <div className="relative max-w-3xl mx-auto px-5 py-12 sm:py-16">
-          <div className="inline-flex items-center gap-2 chip bg-white/15 backdrop-blur text-white border border-white/25 mb-4 reveal">
+        <div className="relative max-w-3xl mx-auto px-5 py-14 sm:py-20">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur border border-white/25 mb-5 reveal">
             <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse-soft" />
-            <span className="font-semibold tracking-wide">NEW · Group ordering, reimagined</span>
+            <span className="text-[11px] uppercase tracking-[0.14em] font-bold text-white">
+              Now open · Built on Swiggy MCP
+            </span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl font-black leading-[1.05] tracking-tight reveal" style={{ animationDelay: '50ms' }}>
-            Plan a meal everyone <br className="hidden sm:block" />
-            <span className="inline-block">actually</span>{' '}
+          <h1 className="font-display text-[44px] sm:text-[60px] font-black leading-[1.02] tracking-[-0.02em] reveal" style={{ animationDelay: '50ms' }}>
+            Cook on Swiggy.<br className="hidden sm:block" />
             <span className="relative inline-block">
-              <span className="relative z-10">wants</span>
+              <span className="relative z-10">Eat together.</span>
               <svg className="absolute -bottom-2 left-0 w-full h-3" viewBox="0 0 200 12" preserveAspectRatio="none">
                 <path d="M2 8 Q 50 1 100 6 T 198 5" stroke="white" strokeWidth="3" fill="none" strokeLinecap="round" />
               </svg>
             </span>
-            . 🎉
           </h1>
 
-          <p className="mt-5 text-white/95 max-w-lg leading-relaxed text-[15px] reveal" style={{ animationDelay: '120ms' }}>
-            Order from <b>multiple restaurants in one cart</b>. Synced delivery, one bill,
-            UPI split — and we pre-stock your home with sodas, ice and sides from{' '}
-            <b>Instamart</b>, timed to arrive <b>before</b> the food.
+          <p className="mt-6 text-white/95 max-w-xl leading-relaxed text-[16px] reveal" style={{ animationDelay: '120ms' }}>
+            An AI-orchestrated group-ordering layer for Swiggy Food and Instamart.
+            One cart across multiple restaurants. Synced delivery. One bill, UPI split.
+            And a pre-drop of <b>ice, drinks, plates</b> that lands ~15 minutes <i>before</i> the food.
           </p>
 
-          <div className="mt-7 flex gap-3 flex-wrap reveal" style={{ animationDelay: '200ms' }}>
+          <div className="mt-8 flex gap-3 flex-wrap reveal" style={{ animationDelay: '200ms' }}>
             <Link
               to="/create"
-              className="group inline-flex items-center gap-2 bg-white text-swiggy-orange font-bold px-6 py-3.5 rounded-xl shadow-pop hover:shadow-glow active:scale-[0.97] transition-all"
+              className="group inline-flex items-center gap-2 bg-white text-swiggy-orange font-bold px-6 py-3.5 rounded-xl shadow-floating hover:shadow-glow active:scale-[0.97] transition-all"
             >
-              Plan a celebration
+              Get Started
               <span className="transition-transform group-hover:translate-x-1">→</span>
             </Link>
             <Link
               to="/group"
-              className="inline-flex items-center gap-2 bg-white/15 backdrop-blur text-white font-semibold px-5 py-3.5 rounded-xl border border-white/30 hover:bg-white/25 active:scale-[0.97] transition-all"
+              className="inline-flex items-center gap-2 bg-white/10 backdrop-blur text-white font-semibold px-5 py-3.5 rounded-xl border border-white/25 hover:bg-white/20 active:scale-[0.97] transition-all"
             >
-              Continue last plan
+              See What's Possible
             </Link>
           </div>
 
-          {/* Live activity ticker */}
-          <div className="mt-8 reveal" style={{ animationDelay: '320ms' }}>
-            <div className="inline-flex items-center gap-2.5 bg-black/20 backdrop-blur-sm rounded-full pl-1 pr-3 py-1 border border-white/10">
-              <div className="flex -space-x-1.5">
-                <Avatar bg="bg-pink-400" letter="P" />
-                <Avatar bg="bg-blue-400" letter="R" />
-                <Avatar bg="bg-emerald-400" letter="S" />
-              </div>
-              <span className="text-xs font-medium">
-                <b>2,341</b> celebrations this week
-              </span>
-              <span className="w-1 h-1 rounded-full bg-white/50" />
-              <span className="text-xs">avg <b>4.8★</b></span>
-            </div>
+          {/* Build pillars — MCP-style stat row */}
+          <div className="mt-10 grid grid-cols-3 gap-3 sm:gap-5 reveal" style={{ animationDelay: '320ms' }}>
+            <Pillar value="2" label="MCP servers used" sub="Food · Instamart" />
+            <Pillar value="6+" label="Tools in flight" sub="search, cart, order" />
+            <Pillar value="15min" label="Pre-drop window" sub="before the food" />
           </div>
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
-      <section className="max-w-3xl mx-auto px-4 py-10">
-        <div className="flex items-baseline justify-between mb-4">
+      {/* HOW IT WORKS — MCP-style numbered cards */}
+      <section className="max-w-3xl mx-auto px-4 py-12">
+        <div className="flex items-baseline justify-between mb-6">
           <div>
-            <div className="section-title">How caterkart works</div>
-            <h2 className="mt-1.5 text-xl font-bold">Six clicks. One coordinated dinner.</h2>
+            <div className="section-title">How it works</div>
+            <h2 className="mt-2 text-2xl sm:text-3xl font-black tracking-tight text-ink-primary">
+              Six clicks. One coordinated dinner.
+            </h2>
           </div>
         </div>
-        <div className="grid sm:grid-cols-3 gap-3">
+        <div className="grid sm:grid-cols-3 gap-4">
           {features.map((f, i) => (
             <div
               key={f.title}
-              className="card card-hover p-4 reveal cursor-default"
+              className="card card-hover p-5 reveal cursor-default relative"
               style={{ animationDelay: `${i * 60}ms` }}
             >
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-50 to-rose-50 grid place-items-center text-2xl">
+              <span className="font-mono text-[11px] font-bold text-ink-tertiary tracking-tight">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-orange-50 to-rose-50 grid place-items-center text-2xl mt-2">
                 {f.emoji}
               </div>
-              <div className="font-semibold text-sm mt-3">{f.title}</div>
-              <div className="text-xs text-neutral-600 mt-1 leading-relaxed">{f.body}</div>
+              <div className="font-bold text-[15px] mt-3 text-ink-primary">{f.title}</div>
+              <div className="text-xs text-ink-secondary mt-1 leading-relaxed">{f.body}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* OCCASIONS */}
-      <section className="max-w-3xl mx-auto px-4 pb-12">
-        <div className="flex items-baseline justify-between mb-4">
+      <section className="max-w-3xl mx-auto px-4 pb-14">
+        <div className="flex items-baseline justify-between mb-5">
           <div>
             <div className="section-title">Pick an occasion</div>
-            <h2 className="mt-1.5 text-xl font-bold">What are you celebrating?</h2>
+            <h2 className="mt-2 text-2xl sm:text-3xl font-black tracking-tight text-ink-primary">
+              What will you cook?
+            </h2>
           </div>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -161,10 +159,12 @@ function FloatEmoji({ emoji, className, delay }: { emoji: string; className: str
   );
 }
 
-function Avatar({ bg, letter }: { bg: string; letter: string }) {
+function Pillar({ value, label, sub }: { value: string; label: string; sub: string }) {
   return (
-    <div className={`${bg} w-6 h-6 rounded-full grid place-items-center text-[10px] font-bold text-white ring-2 ring-black/20`}>
-      {letter}
+    <div className="rounded-xl bg-white/10 backdrop-blur border border-white/15 p-3 sm:p-4">
+      <div className="font-display font-black text-2xl sm:text-3xl tracking-tight leading-none">{value}</div>
+      <div className="text-[10px] uppercase tracking-[0.14em] font-bold text-white/80 mt-1.5 leading-tight">{label}</div>
+      <div className="text-[11px] text-white/60 mt-0.5">{sub}</div>
     </div>
   );
 }

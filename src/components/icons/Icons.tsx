@@ -265,14 +265,14 @@ export const IconBrandGooglePlay = (p: IconProps) => (
   </svg>
 );
 
-// Caterkart logo icon
+// Caterkart logo icon — gradient stops mirror the Swiggy MCP hero palette
 export const LogoMark = ({ size = 28, className = '' }: { size?: number; className?: string }) => (
   <svg viewBox="0 0 32 32" width={size} height={size} className={className}>
     <defs>
       <linearGradient id="lk" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#FC8019" />
-        <stop offset="60%" stopColor="#FF5E5B" />
-        <stop offset="100%" stopColor="#FFB071" />
+        <stop offset="0%"   stopColor="#FF5200" />
+        <stop offset="55%"  stopColor="#FF7A45" />
+        <stop offset="100%" stopColor="#FFB088" />
       </linearGradient>
     </defs>
     <rect x="0.5" y="0.5" width="31" height="31" rx="9" fill="url(#lk)" />
