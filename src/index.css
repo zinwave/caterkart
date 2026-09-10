@@ -6,10 +6,12 @@ html, body, #root { height: 100%; }
 body {
   font-family: 'Plus Jakarta Sans', 'Gilroy', ui-sans-serif, system-ui, -apple-system, sans-serif;
   color: #0A2540; /* ink-primary, matches Swiggy MCP */
+  /* Elegant, minimal Swiggy-warm wash — mirrors the landing page.
+     One soft orange bloom up top, easing into the cool surface below. */
   background:
-    radial-gradient(1200px 600px at 90% -10%, rgba(255,176,136,0.18), transparent 60%),
-    radial-gradient(900px 500px at -10% 110%, rgba(255,82,0,0.08), transparent 60%),
-    #FAFAFA;
+    radial-gradient(60rem 40rem at 50% -12%, rgba(255,82,0,0.07), transparent 62%),
+    linear-gradient(180deg, #FFF7F2 0%, #FDFDFE 36%, #F6F9FC 100%);
+  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: 'cv11', 'ss01';
@@ -18,11 +20,13 @@ body {
 * { -webkit-tap-highlight-color: transparent; }
 
 @layer components {
-  .btn-primary {
-    @apply relative inline-flex items-center justify-center gap-2 bg-swiggy-orange text-white font-bold px-5 py-3 rounded-xl shadow-pop active:scale-[0.97] transition-all duration-200 overflow-hidden;
+  /* ── Unified buttons — shared by /create (personal) & /work (corporate).
+     .wbtn/.wbtn-soft/.wbtn-ghost are aliases so no markup had to change. ── */
+  .btn-primary, .wbtn {
+    @apply relative inline-flex items-center justify-center gap-2 bg-swiggy-orange text-white font-bold px-5 py-3 rounded-xl shadow-pop active:scale-[0.97] transition-all duration-200 overflow-hidden disabled:opacity-40 disabled:cursor-not-allowed;
   }
-  .btn-primary:hover { background: #E04800; }
-  .btn-primary::before {
+  .btn-primary:hover, .wbtn:hover { background: #E04800; }
+  .btn-primary::before, .wbtn::before {
     content: '';
     position: absolute; inset: 0;
     background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%);
@@ -30,13 +34,13 @@ body {
     opacity: 0;
     transition: opacity .3s;
   }
-  .btn-primary:hover::before { opacity: 1; animation: shimmer 1.6s linear infinite; }
+  .btn-primary:hover::before, .wbtn:hover::before { opacity: 1; animation: shimmer 1.6s linear infinite; }
 
-  .btn-ghost {
+  .btn-ghost, .wbtn-ghost {
     @apply inline-flex items-center justify-center gap-2 text-ink-secondary font-medium px-3 py-2 rounded-lg hover:bg-surface-tertiary transition;
   }
-  .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 bg-white text-swiggy-orange font-bold px-4 py-2.5 rounded-xl border border-orange-200 shadow-card hover:bg-orange-50 transition;
+  .btn-secondary, .wbtn-soft {
+    @apply inline-flex items-center justify-center gap-2 bg-white text-swiggy-orange font-bold px-4 py-2.5 rounded-xl border border-orange-200 shadow-card hover:bg-orange-50 transition disabled:opacity-40;
   }
 
   .chip {
@@ -48,19 +52,17 @@ body {
   .chip-coral  { @apply bg-rose-50 text-cater-coral; }
   .chip-navy   { @apply bg-blue-50 text-ink-primary; }
 
-  .card {
+  /* ── Unified card — shared by /create & /work. .wcard/.wcard-link alias it. ── */
+  .card, .wcard, .wcard-link {
     @apply bg-white rounded-2xl shadow-card border border-line-subtle transition-all duration-200;
   }
-  .card-hover {
-    @apply hover:shadow-floating hover:-translate-y-0.5;
+  .card-hover, .wcard-link {
+    @apply hover:shadow-floating;
   }
 
   /* Co-brand badge */
   .powered-by {
     @apply inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.12em] font-bold text-ink-tertiary;
-  }
-  .powered-by .pb-mark {
-    @apply inline-grid place-items-center w-4 h-4 rounded-[4px] bg-swiggy-orange text-white text-[9px] font-black;
   }
 
   /* Animated gradient text accent */
@@ -84,11 +86,11 @@ body {
   /* Section reveal helper */
   .reveal { @apply animate-fade-in-up; }
 
-  /* Section header */
-  .section-title {
+  /* ── Unified section header — shared by /create & /work (.wsection aliases). ── */
+  .section-title, .wsection {
     @apply text-sm font-bold uppercase tracking-[0.14em] text-ink-tertiary flex items-center gap-2;
   }
-  .section-title::before {
+  .section-title::before, .wsection::before {
     content: '';
     @apply inline-block w-1 h-4 rounded-full bg-gradient-to-b from-swiggy-orange to-cater-coral;
   }
@@ -116,4 +118,21 @@ body {
   font-size: 22px;
   animation: confetti 2.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   pointer-events: none;
+}
+
+/* ============================================================
+   CaterKart for Work — work-only atoms. The card / button / section
+   design is now SHARED with the personal app above (.wcard, .wcard-link,
+   .wbtn, .wbtn-soft, .wbtn-ghost, .wsection alias the common classes), so
+   /create and /work share one design language — only the header chrome differs.
+   ============================================================ */
+@layer components {
+  /* Navy action button — used only inside the corporate chrome. */
+  .wbtn-dark {
+    @apply relative inline-flex items-center justify-center gap-2 bg-ink-primary text-white font-bold px-5 py-3 rounded-xl shadow-pop transition-colors hover:bg-[#0f3358] disabled:opacity-40;
+  }
+  /* Uppercase micro-label. */
+  .wlabel {
+    @apply text-[11px] uppercase tracking-[0.12em] font-bold text-ink-tertiary;
+  }
 }

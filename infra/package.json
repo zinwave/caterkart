@@ -1,0 +1,31 @@
+{
+  "name": "caterkart-infra",
+  "version": "0.1.0",
+  "private": true,
+  "description": "CaterKart AWS infrastructure (AWS CDK, TypeScript). See docs/decisions/0001-aws-deployment.md.",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "synth": "AWS_PROFILE=${AWS_PROFILE:-zinwave-admin} cdk synth caterkart-web-production caterkart-api-production",
+    "diff": "AWS_PROFILE=${AWS_PROFILE:-zinwave-admin} cdk diff caterkart-web-production caterkart-api-production",
+    "deploy": "AWS_PROFILE=${AWS_PROFILE:-zinwave-admin} cdk deploy caterkart-web-production caterkart-api-production",
+    "destroy": "AWS_PROFILE=${AWS_PROFILE:-zinwave-admin} cdk destroy caterkart-web-production caterkart-api-production",
+    "deploy:web": "AWS_PROFILE=${AWS_PROFILE:-zinwave-admin} cdk deploy caterkart-web-production",
+    "deploy:api": "AWS_PROFILE=${AWS_PROFILE:-zinwave-admin} cdk deploy caterkart-api-production",
+    "list": "AWS_PROFILE=${AWS_PROFILE:-zinwave-admin} cdk list"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "aws-cdk": "^2.170.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.0"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.170.0",
+    "constructs": "^10.4.2",
+    "source-map-support": "^0.5.21"
+  }
+}

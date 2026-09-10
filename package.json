@@ -6,9 +6,18 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "infra:setup": "infra/scripts/setup-aws.sh",
+    "infra:diff": "npm --prefix infra run diff",
+    "infra:deploy": "npm --prefix infra run deploy",
+    "deploy:env": "./scripts/remote.sh env",
+    "deploy:app": "./scripts/remote.sh app",
+    "logs": "./scripts/remote.sh logs",
+    "ssh": "./scripts/remote.sh ssh",
+    "backup": "./scripts/remote.sh backup"
   },
   "dependencies": {
+    "qrcode.react": "^4.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2"

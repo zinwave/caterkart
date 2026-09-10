@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 // =====================================================
-// Caterkart theme — aligned to Swiggy MCP Builders Club
+// CaterKart theme — aligned to Swiggy MCP Builders Club
 // design tokens (extracted from mcp.swiggy.com/builders).
 // Brand orange #FF5200, navy ink #0A2540, Gilroy/Plus Jakarta.
 // =====================================================

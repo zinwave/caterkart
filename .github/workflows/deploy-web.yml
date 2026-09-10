@@ -1,0 +1,112 @@
+# Ship the SPA: build → sync to S3 → invalidate CloudFront → smoke-test.
+#
+# An S3 sync rather than `cdk deploy`, for the same reason the API ships over
+# SSH: publishing content should not carry the permission to rewrite
+# infrastructure. The role this assumes can write the bucket and invalidate the
+# edge, and nothing else.
+#
+# Required repo settings (from the cdk deploy outputs — see infra/README.md):
+#   Variables: AWS_WEB_DEPLOY_ROLE_ARN, SITE_BUCKET, DISTRIBUTION_ID, SITE_URL
+name: deploy web
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'index.html'
+      - 'package.json'
+      - 'vite.config.ts'
+      - 'tailwind.config.js'
+      - '.github/workflows/deploy-web.yml'
+  workflow_dispatch:
+
+permissions:
+  id-token: write # OIDC
+  contents: read
+
+concurrency:
+  group: deploy-web
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: vars.AWS_WEB_DEPLOY_ROLE_ARN != '' && vars.SITE_BUCKET != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      # VITE_ vars are baked in at build time, not read at runtime, so this must
+      # be set here rather than on the server.
+      - name: Build
+        env:
+          VITE_API_BASE: ${{ vars.API_BASE_URL }}
+        run: npm run build
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_WEB_DEPLOY_ROLE_ARN }}
+          aws-region: ap-south-1
+          role-session-name: deploy-web-${{ github.run_id }}
+
+      # Assets FIRST, and immutable: their names are content-hashed, so a name
+      # changes whenever the bytes do. Uploading them before index.html means no
+      # page can ever reference a chunk that is not in the bucket yet — during
+      # the seconds between the two syncs, the old HTML still points at old
+      # assets that are all still present.
+      - name: Upload hashed assets
+        run: |
+          aws s3 sync dist/assets s3://${{ vars.SITE_BUCKET }}/assets \
+            --cache-control 'public,max-age=31536000,immutable' \
+            --no-progress
+
+      # Everything else is fetched by a stable name, so it must revalidate.
+      # s-maxage lets CloudFront hold it briefly; the invalidation below is what
+      # actually makes a deploy visible.
+      - name: Upload everything else
+        run: |
+          aws s3 sync dist s3://${{ vars.SITE_BUCKET }} \
+            --exclude 'assets/*' \
+            --cache-control 'public,max-age=0,s-maxage=300,must-revalidate' \
+            --no-progress
+
+      # --size-only is load-bearing: the default timestamp comparison would see
+      # every file in a fresh CI checkout as newer, re-upload the whole build,
+      # and silently reset the immutable headers set above.
+      - name: Prune what the build no longer produces
+        run: |
+          aws s3 sync dist s3://${{ vars.SITE_BUCKET }} --delete --size-only --no-progress
+
+      - name: Invalidate the edge
+        run: |
+          id=$(aws cloudfront create-invalidation \
+                 --distribution-id ${{ vars.DISTRIBUTION_ID }} \
+                 --paths '/*' --query 'Invalidation.Id' --output text)
+          aws cloudfront wait invalidation-completed \
+            --distribution-id ${{ vars.DISTRIBUTION_ID }} --id "$id"
+
+      # A deep link, not just the root. `/invite/:token` is the guest entry
+      # point and the one path that depends on the CloudFront router function
+      # rewriting to the shell — if that regresses, the root still works and
+      # every shared invite link 404s.
+      - name: Smoke-test
+        if: vars.SITE_URL != ''
+        run: |
+          set -euo pipefail
+          root=$(curl -sS -o /dev/null -w '%{http_code}' "${{ vars.SITE_URL }}/")
+          [ "$root" = "200" ] || { echo "::error::/ returned $root"; exit 1; }
+
+          deep=$(curl -sS -o /dev/null -w '%{http_code}' "${{ vars.SITE_URL }}/invite/smoke-test")
+          [ "$deep" = "200" ] || { echo "::error::/invite/:token returned $deep — the SPA router function is not rewriting deep links, every guest invite link is broken"; exit 1; }
+
+          echo "Site is live and deep links resolve."

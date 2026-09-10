@@ -1,0 +1,13 @@
+node_modules/
+cdk.out/
+.cdk.staging/
+cdk-outputs.json
+
+# Compiled TypeScript output. The two exceptions below are SOURCE files that
+# happen to end in .js/.sh — the CloudFront function and the instance's
+# cloud-init script. Without the negations they are silently never committed,
+# and the stack fails to synth on a fresh checkout.
+*.js
+*.d.ts
+!lib/router-function.js
+!lib/bootstrap.sh

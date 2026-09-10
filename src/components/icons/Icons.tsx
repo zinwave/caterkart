@@ -150,6 +150,23 @@ export const IconSparkles = (p: IconProps) => (
   </S>
 );
 
+/** Coupon / offer tag. */
+export const IconTag = (p: IconProps) => (
+  <S {...p}>
+    <path d="M20.6 13.4 12 22l-9-9V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z" />
+    <circle cx="7.5" cy="7.5" r="1.5" />
+  </S>
+);
+
+export const IconQr = (p: IconProps) => (
+  <S {...p}>
+    <rect x="3" y="3" width="7" height="7" rx="1" />
+    <rect x="14" y="3" width="7" height="7" rx="1" />
+    <rect x="3" y="14" width="7" height="7" rx="1" />
+    <path d="M14 14h3v3M21 14v.01M14 21h3M21 17v4" />
+  </S>
+);
+
 export const IconTruck = (p: IconProps) => (
   <S {...p}>
     <path d="M14 5H2v11h12V5Z" />
@@ -265,7 +282,92 @@ export const IconBrandGooglePlay = (p: IconProps) => (
   </svg>
 );
 
-// Caterkart logo icon — gradient stops mirror the Swiggy MCP hero palette
+// ===== Added UI glyphs (emoji replacements) =====
+export const IconBriefcase = (p: IconProps) => (
+  <S {...p}>
+    <rect x="2" y="7" width="20" height="14" rx="2" />
+    <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M2 13h20" />
+  </S>
+);
+
+export const IconBuilding = (p: IconProps) => (
+  <S {...p}>
+    <rect x="4" y="2" width="16" height="20" rx="1" />
+    <path d="M9 22v-4h6v4M9 6h.01M15 6h.01M9 10h.01M15 10h.01M9 14h.01M15 14h.01" />
+  </S>
+);
+
+export const IconLink = (p: IconProps) => (
+  <S {...p}>
+    <path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1" />
+    <path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" />
+  </S>
+);
+
+export const IconPrinter = (p: IconProps) => (
+  <S {...p}>
+    <path d="M6 9V2h12v7" />
+    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+    <rect x="6" y="14" width="12" height="8" rx="1" />
+  </S>
+);
+
+export const IconLock = (p: IconProps) => (
+  <S {...p}>
+    <rect x="4" y="11" width="16" height="10" rx="2" />
+    <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+  </S>
+);
+
+export const IconAlertTriangle = (p: IconProps) => (
+  <S {...p}>
+    <path d="M12 3 2 20h20L12 3Z" />
+    <path d="M12 9v5M12 17h.01" />
+  </S>
+);
+
+export const IconGift = (p: IconProps) => (
+  <S {...p}>
+    <path d="M19 12v8a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-8" />
+    <rect x="3" y="8" width="18" height="4" rx="1" />
+    <path d="M12 8v14" />
+    <path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8M16.5 8a2.5 2.5 0 0 0 0-5C13 3 12 8 12 8" />
+  </S>
+);
+
+export const IconWallet = (p: IconProps) => (
+  <S {...p}>
+    <rect x="3" y="6" width="18" height="14" rx="2" />
+    <path d="M3 10h18" />
+    <circle cx="16.5" cy="15" r="1.2" fill="currentColor" stroke="none" />
+  </S>
+);
+
+export const IconRefresh = (p: IconProps) => (
+  <S {...p}>
+    <path d="M3 12a9 9 0 0 1 15-6.7L21 8" />
+    <path d="M21 3v5h-5" />
+    <path d="M21 12a9 9 0 0 1-15 6.7L3 16" />
+    <path d="M3 21v-5h5" />
+  </S>
+);
+
+export const IconEye = (p: IconProps) => (
+  <S {...p}>
+    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+    <circle cx="12" cy="12" r="3" />
+  </S>
+);
+
+export const IconUtensils = (p: IconProps) => (
+  <S {...p}>
+    <path d="M4 3v7a2 2 0 0 0 4 0V3" />
+    <path d="M6 12v9" />
+    <path d="M17 3c-1.7 0-3 2-3 4.5S15.3 12 17 12v9" />
+  </S>
+);
+
+// CaterKart logo icon — gradient stops mirror the Swiggy MCP hero palette
 export const LogoMark = ({ size = 28, className = '' }: { size?: number; className?: string }) => (
   <svg viewBox="0 0 32 32" width={size} height={size} className={className}>
     <defs>
@@ -282,4 +384,88 @@ export const LogoMark = ({ size = 28, className = '' }: { size?: number; classNa
       <path d="M7 9h2.6l1.9 8.5a1.7 1.7 0 0 0 1.7 1.3h7.6a1.7 1.7 0 0 0 1.7-1.3l1.4-6.5H10.5" fill="none" />
     </g>
   </svg>
+);
+
+// Swiggy brand mark, used wherever the footer/header credit reads "powered by".
+// It replaces the word "Swiggy" outright, so it carries its own accessible name:
+// with the text gone, a bare <svg> would leave screen readers saying "powered by"
+// and nothing at all.
+export const SwiggyMark = ({
+  size = 16,
+  className = '',
+}: {
+  size?: number;
+  className?: string;
+}) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    className={className}
+    role="img"
+    aria-label="Swiggy"
+  >
+    <title>Swiggy</title>
+    <rect width="24" height="24" rx="6" fill="#FF5200" />
+    <path
+      d="M15.4 7.2a5.2 5.2 0 0 0-6.9 1.1c-1.3 1.7-.7 3.9 1.3 4.7l2.6 1c.7.3.9 1 .5 1.6a2 2 0 0 1-2.7.4l-1.5-1"
+      fill="none"
+      stroke="white"
+      strokeWidth="1.9"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+// ===== Occasion glyphs (event-type icons) =====
+export const IconCake = (p: IconProps) => (
+  <S {...p}>
+    <path d="M4 20v-7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v7" />
+    <path d="M3 20h18" />
+    <path d="M4 15c1.2 1 2.6 1 4 0s2.8-1 4 0 2.8 1 4 0 2.8-1 4 0" />
+    <path d="M12 11V8" />
+    <path d="M12 3.5c1 1 1 2.3 0 3.2-1-.9-1-2.2 0-3.2Z" fill="currentColor" stroke="none" />
+  </S>
+);
+
+export const IconGamepad = (p: IconProps) => (
+  <S {...p}>
+    <path d="M7 8h10a5 5 0 0 1 5 5 4 4 0 0 1-4 4c-1.4 0-2-.5-3-1.5l-.8-.8a1 1 0 0 0-.7-.3h-3a1 1 0 0 0-.7.3l-.8.8C8.9 16.5 8.4 17 7 17a4 4 0 0 1-4-4 5 5 0 0 1 5-5Z" />
+    <path d="M7 11v3M5.5 12.5h3" />
+    <circle cx="16" cy="11.5" r="0.9" fill="currentColor" stroke="none" />
+    <circle cx="18" cy="13.5" r="0.9" fill="currentColor" stroke="none" />
+  </S>
+);
+
+export const IconFilm = (p: IconProps) => (
+  <S {...p}>
+    <rect x="3" y="4" width="18" height="16" rx="2" />
+    <path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4" />
+  </S>
+);
+
+export const IconTrophy = (p: IconProps) => (
+  <S {...p}>
+    <path d="M6 4h12v3a6 6 0 0 1-12 0V4Z" />
+    <path d="M6 6H4a2 2 0 0 0 0 4h2.3M18 6h2a2 2 0 0 1 0 4h-2.3" />
+    <path d="M12 13v4M8.5 21h7M10 21v-1.2a2 2 0 0 1 4 0V21" />
+  </S>
+);
+
+export const IconPlane = (p: IconProps) => (
+  <S {...p}>
+    <path d="M21 3 3 10.6l6.2 2.2L11.4 19 21 3Z" />
+    <path d="M9.2 12.8 21 3" />
+  </S>
+);
+
+export const IconLantern = (p: IconProps) => (
+  <S {...p}>
+    <path d="M12 2v2.5M12 19.5V22" />
+    <path d="M8 6.5h8" />
+    <path d="M8.5 6.5c-1.4 2-1.4 6.5 0 9.5h7c1.4-3 1.4-7.5 0-9.5" />
+    <path d="M7.5 16h9" />
+    <path d="M12 11c.9-.7.9-1.8 0-2.4-.9.6-.9 1.7 0 2.4Z" fill="currentColor" stroke="none" />
+  </S>
 );

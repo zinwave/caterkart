@@ -1,0 +1,102 @@
+# Ship the celebrations backend: rsync → rebuild the compose stack → smoke-test.
+#
+# Two credentials, doing different jobs:
+#   - OIDC (AWS_DEPLOY_ROLE_ARN) only *discovers* the instance address, so the
+#     host is never hardcoded and replacing the instance breaks nothing. The
+#     role is read-only; it cannot change infrastructure.
+#   - SSH_PRIVATE_KEY ships the code. Lightsail has no equivalent of
+#     `lambda update-function-code`, so there is no way around a key here.
+#     It is not an AWS credential, and it grants only what the ubuntu user has.
+#
+# Required repo settings (from the cdk deploy outputs — see infra/README.md):
+#   Variables: AWS_DEPLOY_ROLE_ARN, API_BASE_URL
+#   Secrets:   SSH_PRIVATE_KEY
+name: deploy api
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'server/**'
+      - '.github/workflows/deploy-api.yml'
+  workflow_dispatch:
+
+permissions:
+  id-token: write # OIDC
+  contents: read
+
+concurrency:
+  group: deploy-api
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: vars.AWS_DEPLOY_ROLE_ARN != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ap-south-1
+          role-session-name: deploy-api-${{ github.run_id }}
+
+      - name: Resolve the instance address
+        id: host
+        run: |
+          ip=$(aws lightsail get-static-ip \
+                 --static-ip-name caterkart-api-production-ip \
+                 --query 'staticIp.ipAddress' --output text)
+          [ -n "$ip" ] && [ "$ip" != "None" ] || { echo "::error::no static IP"; exit 1; }
+          echo "ip=$ip" >> "$GITHUB_OUTPUT"
+
+      - name: Load the deploy key
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy
+          chmod 600 ~/.ssh/deploy
+          ssh-keyscan -H "${{ steps.host.outputs.ip }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      # --exclude protects .env.production on the receiving side: rsync --delete
+      # does not remove excluded files, so a deploy never drops the secrets that
+      # `npm run deploy:env` put there.
+      - name: Sync
+        run: |
+          rsync -az --delete \
+            --exclude node_modules --exclude dist --exclude .env --exclude .env.production \
+            -e "ssh -i ~/.ssh/deploy -o StrictHostKeyChecking=no" \
+            server/ ubuntu@${{ steps.host.outputs.ip }}:/opt/caterkart/
+
+      - name: Rebuild and restart
+        run: |
+          ssh -i ~/.ssh/deploy -o StrictHostKeyChecking=no \
+            ubuntu@${{ steps.host.outputs.ip }} \
+            'cd /opt/caterkart && docker compose -f docker-compose.prod.yml --env-file .env.production up -d --build && docker image prune -f'
+
+      # The one assertion worth making on every deploy.
+      #
+      # `main.ts` excludes auth/swiggy/callback from the global `/api` prefix
+      # because the URI registered with Swiggy is the bare path. If that
+      # exclusion ever regresses this returns 404, Swiggy's redirect lands
+      # nowhere, and every user's account linking breaks — silently, since
+      # nothing else in the app touches this route. With no code or state the
+      # handler's catch block redirects, so 302 is the healthy answer.
+      - name: Smoke-test the OAuth callback route
+        if: vars.API_BASE_URL != ''
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 10); do
+            code=$(curl -sS -o /dev/null -w '%{http_code}' \
+                     "${{ vars.API_BASE_URL }}/auth/swiggy/callback" || echo 000)
+            [ "$code" = "000" ] || break
+            sleep 5
+          done
+          if [ "$code" = "404" ]; then
+            echo "::error::/auth/swiggy/callback returned 404 — the route is behind the /api prefix again, Swiggy account linking is broken"
+            exit 1
+          fi
+          [ "$code" = "302" ] || { echo "::error::callback returned $code, expected 302"; exit 1; }
+          echo "OAuth callback route is reachable and routed outside the /api prefix."

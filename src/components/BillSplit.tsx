@@ -1,40 +1,37 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useCelebration } from '../state/CelebrationContext';
+import type { Bill } from '../lib/mcp/types';
+import { IconWallet, IconTag } from './icons/Icons';
 
-type SplitMode = 'equal' | 'by-item';
+/**
+ * Bill summary.
+ *
+ * `bills` are the REAL Swiggy bills — one per restaurant, priced by Swiggy
+ * itself (item total, delivery, taxes, coupon, to-pay). We never invent
+ * delivery/platform/tax numbers.
+ *
+ * Splitting the bill happens LATER, on the Settle up page — not here — so this
+ * only shows what's owed and how it's paid.
+ */
+export default function BillSplit({ bills = [] }: { bills?: Bill[] }) {
+  const { foodTotal, addonTotal, groupSize } = useCelebration();
 
-export default function BillSplit() {
-  const { carts, foodTotal, addonTotal, members, addonSelections, groupSize } =
-    useCelebration();
-  const [mode, setMode] = useState<SplitMode>('equal');
+  const priced = bills.length > 0;
 
-  const deliveryFee = 49;
-  const platformFee = 6;
-  const taxes = Math.round((foodTotal + addonTotal) * 0.05);
-  const grand = foodTotal + addonTotal + deliveryFee + platformFee + taxes;
-
-  // list of members who actually picked something
-  const participatingMembers = useMemo(() => {
-    const ids = new Set(carts.map((l) => l.pickedBy.id));
-    return members.filter((m) => ids.has(m.id));
-  }, [carts, members]);
-
-  const equalSplitN = Math.max(participatingMembers.length, 1);
-  const equalShare = Math.round(grand / equalSplitN);
-
-  const byItem = useMemo(() => {
-    const totals: Record<string, number> = {};
-    carts.forEach((l) => {
-      totals[l.pickedBy.id] = (totals[l.pickedBy.id] || 0) + l.dish.price * l.qty;
-    });
-    // distribute fees equally on top
-    const sharedFees = deliveryFee + platformFee + taxes + addonTotal;
-    const perPerson = sharedFees / Math.max(participatingMembers.length, 1);
-    return participatingMembers.map((m) => ({
-      member: m,
-      amount: Math.round((totals[m.id] || 0) + perPerson),
-    }));
-  }, [carts, participatingMembers, addonTotal, taxes]);
+  const totals = useMemo(() => {
+    if (!priced) {
+      return { itemTotal: foodTotal, delivery: 0, taxes: 0, discount: 0, grand: foodTotal + addonTotal };
+    }
+    const sum = (f: (b: Bill) => number) => bills.reduce((s, b) => s + f(b), 0);
+    return {
+      itemTotal: sum((b) => b.itemTotal),
+      delivery: sum((b) => b.deliveryCharge),
+      taxes: sum((b) => b.taxesAndCharges),
+      discount: sum((b) => b.couponDiscount),
+      // Swiggy's own "to pay", plus the Instamart add-ons (priced separately).
+      grand: sum((b) => b.toPay) + addonTotal,
+    };
+  }, [priced, bills, foodTotal, addonTotal]);
 
   return (
     <div className="card p-4">
@@ -43,57 +40,46 @@ export default function BillSplit() {
         <span className="chip chip-green">{groupSize} people</span>
       </div>
 
-      <dl className="text-sm mt-3 space-y-1.5 text-neutral-700">
-        <Row k="Food (across restaurants)" v={`₹${foodTotal}`} />
+      <dl className="text-sm mt-3 space-y-1.5 text-ink-secondary">
+        <Row k="Food (across restaurants)" v={`₹${totals.itemTotal}`} />
         <Row k="Instamart add-ons" v={`₹${addonTotal}`} faded={addonTotal === 0} />
-        <Row k="Delivery (synced multi-pickup)" v={`₹${deliveryFee}`} />
-        <Row k="Platform fee" v={`₹${platformFee}`} />
-        <Row k="Taxes" v={`₹${taxes}`} />
+        {priced ? (
+          <>
+            <Row
+              k="Delivery"
+              v={totals.delivery === 0 ? 'FREE' : `₹${totals.delivery}`}
+              faded={totals.delivery === 0}
+            />
+            <Row k="Taxes & charges" v={`₹${Math.round(totals.taxes)}`} />
+            {totals.discount > 0 && <Row k="Coupon discount" v={`−₹${totals.discount}`} />}
+          </>
+        ) : (
+          <div className="text-[11px] text-ink-tertiary italic pt-1">
+            Delivery and taxes are set by Swiggy — priced when you review the order.
+          </div>
+        )}
       </dl>
-      <div className="mt-3 pt-3 border-t border-neutral-100 flex items-center justify-between">
-        <div className="font-bold">Total</div>
-        <div className="font-bold text-lg">₹{grand}</div>
+
+      <div className="mt-3 pt-3 border-t border-line-subtle flex items-center justify-between">
+        <div className="font-bold">{priced ? 'Total' : 'Subtotal'}</div>
+        <div className="font-bold text-lg tabular-nums">₹{totals.grand}</div>
       </div>
 
-      <div className="mt-4">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="font-semibold text-sm">Split with group</div>
-          <div className="ml-auto inline-flex bg-neutral-100 rounded-lg p-0.5 text-xs">
-            <button
-              onClick={() => setMode('equal')}
-              className={`px-3 py-1 rounded-md ${mode === 'equal' ? 'bg-white shadow-sm font-semibold' : ''}`}
-            >Equal</button>
-            <button
-              onClick={() => setMode('by-item')}
-              className={`px-3 py-1 rounded-md ${mode === 'by-item' ? 'bg-white shadow-sm font-semibold' : ''}`}
-            >By what they ordered</button>
-          </div>
-        </div>
+      {/* Payment */}
+      <div className="mt-3 pt-3 border-t border-line-subtle flex items-center justify-between text-sm">
+        <span className="text-ink-secondary inline-flex items-center gap-1.5">
+          <IconWallet size={14} className="text-ink-tertiary" /> Payment
+        </span>
+        <span className="font-bold text-ink-primary">Cash on delivery</span>
+      </div>
 
-        <div className="space-y-2">
-          {(mode === 'equal'
-            ? participatingMembers.map((m) => ({ member: m, amount: equalShare }))
-            : byItem
-          ).map(({ member, amount }) => (
-            <div key={member.id} className="flex items-center gap-3 py-1.5">
-              <div className={`${member.color} w-8 h-8 rounded-full grid place-items-center text-white text-sm font-semibold`}>
-                {member.initials}
-              </div>
-              <div className="flex-1">
-                <div className="text-sm font-medium">{member.name}</div>
-                <div className="text-[11px] text-neutral-500">
-                  {member.isHost ? 'Host · pays balance if anyone bails' : 'UPI link will be sent'}
-                </div>
-              </div>
-              <div className="font-semibold tabular-nums">₹{amount}</div>
-              {!member.isHost && (
-                <button className="text-xs px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200">
-                  UPI
-                </button>
-              )}
-            </div>
-          ))}
-        </div>
+      {/* Splitting happens on the Settle up page */}
+      <div className="mt-3 rounded-xl bg-surface-secondary px-3 py-2.5 text-[11px] text-ink-tertiary leading-snug flex items-start gap-2">
+        <IconTag size={13} className="text-swiggy-orange shrink-0 mt-0.5" />
+        <span>
+          Split with everyone on the <b className="text-ink-secondary">Settle up</b> page after the
+          order is placed.
+        </span>
       </div>
     </div>
   );

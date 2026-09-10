@@ -1,34 +1,34 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useCelebration } from '../state/CelebrationContext';
-import { useOrders } from '../state/OrdersContext';
+import { useSwiggy } from '../state/SwiggyContext';
+import { useOrders } from '../hooks/useSwiggyData';
+import { usePersonalAuth, initialsFor } from '../state/PersonalAuthContext';
 import IconButton from './IconButton';
+import { ProfileMenu, type ProfileMenuItem } from './common';
 import {
-  IconBell, IconChevronDown, IconHelp, IconMapPin, IconReceipt, IconSearch, LogoMark,
+  IconBell, IconChevronDown, IconHelp, IconHome, IconMapPin, IconReceipt, IconSearch, IconStore, IconBriefcase, IconCheck, LogoMark,
 } from './icons/Icons';
 
-const LOCATIONS = [
-  'Indiranagar 100ft Rd, Bengaluru',
-  'HSR Layout Sector 6, Bengaluru',
-  'Koramangala 5th Block, Bengaluru',
-  'Whitefield ITPL Main Rd, Bengaluru',
-];
+// Delivery addresses come from the user's real Swiggy account (SwiggyContext),
+// not a hardcoded list — Swiggy owns the address book and requires the addressId.
 
 export default function Header() {
   const loc = useLocation();
   const nav = useNavigate();
-  const { host, address, setAddress } = useCelebration();
-  const { orders } = useOrders();
+  const { host } = useCelebration();
+  const { address, addresses, setAddressId, addressId } = useSwiggy();
+  // Real Swiggy orders currently in flight.
+  const { data: activeOrders } = useOrders(true);
+  const { user, signOut } = usePersonalAuth();
 
   const [locOpen, setLocOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const onHome = loc.pathname === '/';
-  const activeOrdersCount = orders.filter(
-    (o) => o.status !== 'delivered' && o.status !== 'cancelled'
-  ).length;
+  const onCreate = loc.pathname === '/create';
+  const activeOrdersCount = activeOrders.length;
 
   // Auto focus the search input when search opens
   useEffect(() => {
@@ -39,88 +39,28 @@ export default function Header() {
     <header className="sticky top-0 z-30">
       {/* Glass background with bottom hairline */}
       <div className="sticky-blur border-b border-neutral-200/60 shadow-[0_2px_12px_-8px_rgba(0,0,0,0.06)]">
-        <div className="max-w-3xl mx-auto px-4 h-[68px] flex items-center gap-3">
-          {/* Brand */}
-          <Link to="/" className="flex items-center gap-2.5 group shrink-0 active:scale-95 transition">
-            <div className="relative">
-              <LogoMark size={36} className="drop-shadow-[0_4px_10px_rgba(252,128,25,0.35)] transition-transform group-hover:scale-105 group-hover:rotate-[-4deg]" />
-              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-swiggy-green ring-2 ring-white animate-pulse-soft" />
-            </div>
-            <div className="leading-tight hidden sm:block">
-              <div className="font-black text-[17px] tracking-tight bg-gradient-to-r from-neutral-900 to-neutral-700 bg-clip-text text-transparent">
-                cater<span className="text-swiggy-orange">kart</span>
-              </div>
-              <div className="powered-by mt-0.5">
-                powered by <span className="pb-mark">S</span>
-                <span className="text-swiggy-orange tracking-normal normal-case font-bold text-[10px]">Swiggy</span>
-              </div>
-            </div>
+        {/* Row 1 — brand · switch · icons (mirrors the Work header) */}
+        <div className="max-w-5xl mx-auto px-5 h-16 flex items-center gap-3">
+          {/*
+            Brand — deliberately just the mark and the wordmark.
+            The "Personal" tag was redundant (the ModeSwitch beside it already
+            says Personal / Work) and "powered by Swiggy" already lives in the
+            footer, so the header carried the same two claims twice.
+          */}
+          <Link
+            to="/"
+            className="flex items-center gap-2 group shrink-0 active:scale-95 transition"
+          >
+            <LogoMark
+              size={30}
+              className="drop-shadow-[0_4px_10px_rgba(252,128,25,0.35)] transition-transform group-hover:scale-105 group-hover:rotate-[-4deg]"
+            />
+            <span className="font-bold text-[17px] tracking-tight hidden sm:block leading-none">
+              Cater<span className="text-swiggy-orange">Kart</span>
+            </span>
           </Link>
 
-          {/* Vertical divider */}
-          <div className="hidden sm:block w-px h-9 bg-neutral-200 mx-1" />
-
-          {/* Location pill */}
-          {!onHome && (
-            <div className="relative flex-1 sm:flex-none min-w-0">
-              <button
-                onClick={() => setLocOpen((s) => !s)}
-                className="w-full sm:w-auto flex items-center gap-2 px-3 py-1.5 rounded-xl hover:bg-orange-50 transition group active:scale-[0.98]"
-              >
-                <IconMapPin size={18} className="text-swiggy-orange shrink-0" />
-                <div className="text-left min-w-0">
-                  <div className="text-[10px] uppercase tracking-wide font-bold text-neutral-500 leading-none">Deliver to</div>
-                  <div className="text-sm font-bold text-neutral-800 truncate group-hover:text-swiggy-orange leading-tight max-w-[180px]">
-                    {address.split(',')[0]}
-                  </div>
-                </div>
-                <IconChevronDown size={14} className="text-neutral-400 shrink-0" />
-              </button>
-
-              {locOpen && (
-                <>
-                  <div className="fixed inset-0 z-30" onClick={() => setLocOpen(false)} />
-                  <div className="absolute left-0 top-full mt-2 w-80 max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-pop border border-neutral-100 z-40 animate-fade-in-down overflow-hidden">
-                    <div className="px-4 py-3 bg-gradient-to-r from-orange-50 to-rose-50 border-b border-neutral-100">
-                      <div className="text-[10px] uppercase tracking-widest font-black text-swiggy-orange">Delivery address</div>
-                      <div className="text-sm font-bold mt-0.5">Where should we deliver?</div>
-                    </div>
-                    <div className="py-1.5">
-                      {LOCATIONS.map((l) => {
-                        const active = address === l;
-                        return (
-                          <button
-                            key={l}
-                            onClick={() => { setAddress(l); setLocOpen(false); }}
-                            className={`w-full text-left px-4 py-2.5 hover:bg-orange-50 flex items-start gap-2.5 transition ${
-                              active ? 'bg-orange-50/80' : ''
-                            }`}
-                          >
-                            <IconMapPin size={16} className={active ? 'text-swiggy-orange mt-0.5' : 'text-neutral-400 mt-0.5'} />
-                            <div className="flex-1 min-w-0">
-                              <div className={`text-sm leading-tight ${active ? 'text-swiggy-orange font-bold' : 'text-neutral-800'}`}>
-                                {l.split(',')[0]}
-                              </div>
-                              <div className="text-[11px] text-neutral-500 leading-tight mt-0.5">
-                                {l.split(',').slice(1).join(',').trim()}
-                              </div>
-                            </div>
-                            {active && <span className="text-swiggy-orange text-sm font-bold mt-0.5">✓</span>}
-                          </button>
-                        );
-                      })}
-                    </div>
-                    <div className="border-t border-neutral-100 p-2">
-                      <button className="w-full text-left px-3 py-2 text-sm text-swiggy-orange font-bold hover:bg-orange-50 rounded-lg flex items-center gap-2">
-                        <IconMapPin size={16} />
-                        Add a new address
-                      </button>
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          )}
+          {/* Personal / Work switch removed for the demo (personal-only). */}
 
           {/* Right cluster */}
           <div className="ml-auto flex items-center gap-1">
@@ -128,12 +68,6 @@ export default function Header() {
               icon={<IconSearch size={20} />}
               label="Search"
               onClick={() => setSearchOpen(true)}
-            />
-            <IconButton
-              icon={<IconReceipt size={20} />}
-              label="Orders"
-              to="/orders"
-              badge={activeOrdersCount > 0 ? activeOrdersCount : undefined}
             />
             <IconButton
               icon={<IconBell size={20} />}
@@ -146,47 +80,114 @@ export default function Header() {
               className="hidden md:inline-grid"
             />
 
-            {/* Profile chip */}
-            <div className="relative ml-1">
-              <button
-                onClick={() => setProfileOpen((s) => !s)}
-                className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-swiggy-orange via-cater-coral to-amber-500 grid place-items-center text-white font-black ring-2 ring-white shadow-pop hover:shadow-glow active:scale-95 transition-all"
-              >
-                {host.initials}
-                <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-swiggy-green ring-2 ring-white" />
-              </button>
-              {profileOpen && (
-                <>
-                  <div className="fixed inset-0 z-30" onClick={() => setProfileOpen(false)} />
-                  <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-pop border border-neutral-100 z-40 animate-fade-in-down overflow-hidden">
-                    <div className="px-4 py-4 bg-gradient-to-br from-orange-50 via-white to-rose-50 border-b border-neutral-100 flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-swiggy-orange to-cater-coral grid place-items-center text-white font-black shadow-pop">
-                        {host.initials}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="font-bold leading-tight truncate">{host.name}</div>
-                        <div className="text-[11px] text-neutral-500 truncate">aarav@caterkart.in</div>
-                      </div>
-                    </div>
-                    <div className="py-1">
-                      <ProfileItem to="/orders" label="My orders" />
-                      <ProfileItem label="Saved addresses" />
-                      <ProfileItem label="Payment methods" />
-                      <ProfileItem label="Settings" />
-                      <div className="border-t border-neutral-100 my-1" />
-                      <ProfileItem label="Sign out" danger />
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
+            <ProfileMenu
+              initials={user ? initialsFor(user.name) : host.initials}
+              color="bg-gradient-to-br from-swiggy-orange via-cater-coral to-amber-500"
+              name={user?.name ?? host.name}
+              subtitle={user ? `+91 ${user.phone}` : 'Guest'}
+              items={[
+                { key: 'orders', label: 'My orders', to: '/orders' } as ProfileMenuItem,
+                { key: 'addr', label: 'Saved addresses' },
+                { key: 'pay', label: 'Payment methods' },
+                { key: 'settings', label: 'Settings' },
+                {
+                  key: 'work',
+                  label: 'CaterKart for Work',
+                  sublabel: 'Team lunches · one invoice',
+                  to: '/work',
+                  leading: <span className="w-6 h-6 rounded-md bg-ink-primary text-white grid place-items-center shrink-0"><IconBriefcase size={13} /></span>,
+                },
+                { key: 'signout', label: 'Sign out', danger: true, onClick: () => { signOut(); nav('/'); } },
+              ]}
+            />
           </div>
         </div>
+
+        {/* Row 2 — tab strip: only on /create (work has its own tabs in WorkShell) */}
+        {onCreate && (
+        <div className="border-t border-neutral-200/60">
+          <div className="max-w-5xl mx-auto px-5 flex items-center gap-0.5 overflow-x-auto no-scrollbar">
+            {[
+              { to: '/', label: 'Home', Icon: IconHome, end: true, badge: undefined as number | undefined },
+              { to: '/create', label: 'New', Icon: IconStore, end: false, badge: undefined },
+              { to: '/orders', label: 'Orders', Icon: IconReceipt, end: false, badge: activeOrdersCount > 0 ? activeOrdersCount : undefined },
+            ].map((t) => {
+              const active = t.end ? loc.pathname === t.to : loc.pathname.startsWith(t.to);
+              return (
+                <NavLink
+                  key={t.to}
+                  to={t.to}
+                  end={t.end}
+                  className={`relative flex items-center gap-1.5 px-3 py-2.5 text-[13px] whitespace-nowrap transition-colors ${active ? 'text-swiggy-orange font-semibold' : 'text-neutral-500 hover:text-neutral-900 font-medium'}`}
+                >
+                  <t.Icon size={15} />
+                  {t.label}
+                  {t.badge != null && <span className="text-[10px] font-bold bg-swiggy-orange text-white rounded-full px-1.5 py-0.5 leading-none">{t.badge}</span>}
+                  {active && <span className="absolute left-3 right-3 -bottom-px h-[1.5px] rounded-full bg-swiggy-orange" />}
+                </NavLink>
+              );
+            })}
+
+            {!onHome && (
+              <div className="relative ml-auto shrink-0">
+                <button
+                  onClick={() => setLocOpen((s) => !s)}
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg hover:bg-orange-50 transition group max-w-[200px]"
+                >
+                  <IconMapPin size={16} className="text-swiggy-orange shrink-0" />
+                  <span className="text-[12px] font-semibold text-neutral-700 truncate group-hover:text-swiggy-orange">{address?.label ?? 'Pick address'}</span>
+                  <IconChevronDown size={13} className="text-neutral-400 shrink-0" />
+                </button>
+                {locOpen && (
+                  <>
+                    <div className="fixed inset-0 z-30" onClick={() => setLocOpen(false)} />
+                    <div className="absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-pop border border-neutral-100 z-40 animate-fade-in-down overflow-hidden">
+                      <div className="px-4 py-3 bg-gradient-to-r from-orange-50 to-rose-50 border-b border-neutral-100">
+                        <div className="text-[10px] uppercase tracking-widest font-black text-swiggy-orange">Delivery address</div>
+                        <div className="text-sm font-bold mt-0.5">Where should we deliver?</div>
+                      </div>
+                      <div className="py-1.5">
+                        {addresses.length === 0 && (
+                          <div className="px-4 py-3 text-[12px] text-neutral-500">
+                            No saved Swiggy addresses found on your account.
+                          </div>
+                        )}
+                        {addresses.map((a) => {
+                          const active = a.id === addressId;
+                          return (
+                            <button
+                              key={a.id}
+                              onClick={() => { setAddressId(a.id); setLocOpen(false); }}
+                              className={`w-full text-left px-4 py-2.5 hover:bg-orange-50 flex items-start gap-2.5 transition ${active ? 'bg-orange-50/80' : ''}`}
+                            >
+                              <IconMapPin size={16} className={active ? 'text-swiggy-orange mt-0.5' : 'text-neutral-400 mt-0.5'} />
+                              <div className="flex-1 min-w-0">
+                                <div className={`text-sm leading-tight ${active ? 'text-swiggy-orange font-bold' : 'text-neutral-800'}`}>{a.label}</div>
+                                <div className="text-[11px] text-neutral-500 leading-tight mt-0.5 line-clamp-2">{a.display}</div>
+                              </div>
+                              {active && <IconCheck size={15} className="text-swiggy-orange mt-0.5 shrink-0" />}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      <div className="border-t border-neutral-100 p-2">
+                        <div className="px-3 py-2 text-[11px] text-neutral-500 leading-snug">
+                          These are your saved Swiggy addresses. Add new ones in the Swiggy app.
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+        )}
 
         {/* Inline expanding search */}
         {searchOpen && (
           <div className="border-t border-neutral-200/60 bg-white animate-fade-in-down">
-            <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-2">
+            <div className="max-w-5xl mx-auto px-5 py-3 flex items-center gap-2">
               <div className="flex-1 relative">
                 <IconSearch size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400" />
                 <input
@@ -206,7 +207,7 @@ export default function Header() {
                 Cancel
               </button>
             </div>
-            <div className="max-w-3xl mx-auto px-4 pb-3 flex flex-wrap gap-1.5">
+            <div className="max-w-5xl mx-auto px-5 pb-3 flex flex-wrap gap-1.5">
               <span className="text-[11px] text-neutral-500 uppercase tracking-wide font-semibold mr-1">Trending:</span>
               {['Biryani', 'Pizza', 'Cake', 'Beer', 'Ice cream'].map((q) => (
                 <button
@@ -222,12 +223,4 @@ export default function Header() {
       </div>
     </header>
   );
-}
-
-function ProfileItem({ label, to, danger }: { label: string; to?: string; danger?: boolean }) {
-  const cls = `w-full text-left px-4 py-2 text-sm hover:bg-neutral-50 transition ${
-    danger ? 'text-red-600 hover:bg-red-50' : 'text-neutral-700'
-  }`;
-  if (to) return <Link to={to} className={cls}>{label}</Link>;
-  return <button className={cls}>{label}</button>;
 }

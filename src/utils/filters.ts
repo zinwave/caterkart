@@ -1,4 +1,4 @@
-import { Cuisine, Dish, Restaurant } from '../data/mock';
+import type { Dish, Restaurant } from '../lib/mcp/types';
 
 export type SortKey = 'relevance' | 'rating' | 'eta' | 'price-asc' | 'price-desc';
 
@@ -6,7 +6,8 @@ export type RestaurantFilters = {
   q: string;
   vegOnly: boolean;
   bestsellerOnly: boolean;
-  cuisines: Set<Cuisine>;
+  /** Cuisines are free-form strings now — Swiggy has hundreds, not a fixed union. */
+  cuisines: Set<string>;
   sort: SortKey;
 };
 
@@ -28,61 +29,48 @@ export function isFiltersActive(f: RestaurantFilters): number {
   return n;
 }
 
-export function priceForTwo(r: Restaurant): number {
-  if (r.dishes.length === 0) return 0;
-  const avg = r.dishes.reduce((s, d) => s + d.price, 0) / r.dishes.length;
-  return Math.round((avg * 2) / 10) * 10;
-}
-
-export function minDishPrice(r: Restaurant): number {
-  return Math.min(...r.dishes.map((d) => d.price));
-}
-
-export function applyToRestaurants(
-  source: Restaurant[],
-  f: RestaurantFilters
-): Restaurant[] {
+/**
+ * Restaurant-level filtering.
+ *
+ * NOTE: menus are NOT available here. Swiggy returns restaurants and menus from
+ * separate calls, so we cannot filter restaurants by their dishes the way the
+ * old mock did (it embedded `dishes` on every restaurant). Veg/bestseller
+ * therefore filter DISHES inside an open menu, and the search box is handed to
+ * Swiggy's own search rather than being applied client-side.
+ */
+export function applyToRestaurants(source: Restaurant[], f: RestaurantFilters): Restaurant[] {
   let out = source;
 
   if (f.cuisines.size > 0) {
     out = out.filter((r) => r.cuisines.some((c) => f.cuisines.has(c)));
   }
-  if (f.vegOnly) {
-    out = out.filter((r) => r.dishes.some((d) => d.veg));
-  }
-  if (f.bestsellerOnly) {
-    out = out.filter((r) => r.dishes.some((d) => d.bestseller));
-  }
-  if (f.q.trim()) {
-    const q = f.q.trim().toLowerCase();
-    out = out.filter(
-      (r) =>
-        r.name.toLowerCase().includes(q) ||
-        r.cuisines.some((c) => c.toLowerCase().includes(q)) ||
-        r.dishes.some((d) => d.name.toLowerCase().includes(q))
-    );
-  }
 
   switch (f.sort) {
     case 'rating':
-      out = [...out].sort((a, b) => b.rating - a.rating);
+      out = [...out].sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
       break;
     case 'eta':
       out = [...out].sort((a, b) => a.etaMin - b.etaMin);
       break;
     case 'price-asc':
-      out = [...out].sort((a, b) => minDishPrice(a) - minDishPrice(b));
+      out = [...out].sort((a, b) => costOf(a) - costOf(b));
       break;
     case 'price-desc':
-      out = [...out].sort((a, b) => minDishPrice(b) - minDishPrice(a));
+      out = [...out].sort((a, b) => costOf(b) - costOf(a));
       break;
     case 'relevance':
     default:
-      // keep source order
+      // Swiggy already ranked these — keep its order.
       break;
   }
 
   return out;
+}
+
+/** "₹500 for two" → 500, for sorting only. */
+function costOf(r: Restaurant): number {
+  const n = Number((r.costForTwo || '').replace(/[^\d]/g, ''));
+  return Number.isFinite(n) && n > 0 ? n : Number.MAX_SAFE_INTEGER;
 }
 
 export function applyToDishes(dishes: Dish[], f: RestaurantFilters): Dish[] {
@@ -96,6 +84,12 @@ export function applyToDishes(dishes: Dish[], f: RestaurantFilters): Dish[] {
   return out;
 }
 
-export const ALL_CUISINES: Cuisine[] = [
-  'Biryani', 'Pizza', 'Chinese', 'South Indian', 'Burgers', 'Desserts',
-];
+/** Derive the cuisine chips from whatever Swiggy actually returned. */
+export function cuisinesOf(restaurants: Restaurant[]): string[] {
+  const counts = new Map<string, number>();
+  restaurants.forEach((r) => r.cuisines.forEach((c) => counts.set(c, (counts.get(c) ?? 0) + 1)));
+  return [...counts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10)
+    .map(([c]) => c);
+}
