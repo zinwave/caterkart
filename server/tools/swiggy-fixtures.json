@@ -1,0 +1,2502 @@
+{
+  "get_addresses": {
+    "addresses": [
+      {
+        "id": "d77ormq6llostp3ec780",
+        "addressLine": "Dhanush: 10th Floor We Work Rmz Latitude, Amruthnagar, Amruthnagar, Byatarayanapura, Bengaluru, Karnataka, India",
+        "phoneNumber": "****0778",
+        "addressCategory": "Other",
+        "addressTag": "Office"
+      },
+      {
+        "id": "d880u3klahm7f3o8fbm0",
+        "addressLine": "Dhanush: 531, Taj Krishna, Road Number 1, Banjara Hills, Hyderabad, Telangana 500034, India. (Taj Krishna)",
+        "phoneNumber": "****0778",
+        "addressCategory": "Other",
+        "addressTag": "Taj"
+      },
+      {
+        "id": "277471916",
+        "addressLine": "Dhanush: 1st floor, Monteiro Vaddo, Monteiro Vaddo, Anjuna, Goa 403519, India",
+        "phoneNumber": "****0778",
+        "addressCategory": "Other",
+        "addressTag": "Cafe"
+      },
+      {
+        "id": "277394833",
+        "addressLine": "Dhanush: villa 2, Grande Peddem, Grande Peddem, Anjuna, Goa 403519, India",
+        "phoneNumber": "****0778",
+        "addressCategory": "Other",
+        "addressTag": "Stay goa"
+      },
+      {
+        "id": "d60crkk20tntr0htbik0",
+        "addressLine": "Dhanush: ground floor, 100/3, Kothanur, Bengaluru, Karnataka 560077, India. (100/3)",
+        "phoneNumber": "****0778",
+        "addressCategory": "Other",
+        "addressTag": "Pub"
+      },
+      {
+        "id": "307083933",
+        "addressLine": "Dhanush: Goa Airport, Mormugao, Goa 403801, India. (Mormugao)",
+        "phoneNumber": "****0778",
+        "addressCategory": "Other",
+        "addressTag": "Goa airport"
+      },
+      {
+        "id": "cpp87b6p0l3koqfkqn2g",
+        "addressLine": "Sushu: 5th floor, Bagmane Tech Park, Dr APJ Abdul Kalam Rd, C V Raman Nagar, Bengaluru, Karnataka 560093, India. (Bagmane Tech Park)",
+        "phoneNumber": "****9175",
+        "addressCategory": "Friends & Family",
+        "addressTag": "Friends and Family"
+      },
+      {
+        "id": "348659016",
+        "addressLine": "Dhanush: 101 pandav city hotel, Aquem, Aquem, Margao, Goa 403601, India",
+        "phoneNumber": "****0778",
+        "addressCategory": "Other",
+        "addressTag": "Hotel2"
+      },
+      {
+        "id": "307083881",
+        "addressLine": "Dhanush: goa International Airport, Mormugao, Goa 403801, India. (Mormugao)",
+        "phoneNumber": "****0778",
+        "addressCategory": "Other",
+        "addressTag": "Airport"
+      },
+      {
+        "id": "cqbka62u7jp2ubk80vgg",
+        "addressLine": "Sushu: 5th floor, OpenText Corporation, Bagamane Tech Park, Olympia Building, Byrasandra, C V Raman Nagar, Bengaluru, Karnataka, India",
+        "phoneNumber": "****9175",
+        "addressCategory": "Friends & Family",
+        "addressTag": "Friends and Family"
+      }
+    ],
+    "total": 23,
+    "pagination": {
+      "page": 1,
+      "pageSize": 10,
+      "total": 23,
+      "totalPages": 3,
+      "hasMore": true
+    }
+  },
+  "search_restaurants": {
+    "restaurants": [
+      {
+        "id": "239291",
+        "name": "Potful - Claypot Biryanis (Ad)",
+        "cuisines": [
+          "Biryani",
+          "North Indian",
+          "Kebabs",
+          "Mughlai",
+          "Desserts",
+          "Beverages"
+        ],
+        "avgRating": 4.4,
+        "totalRatings": "8.0K+",
+        "costForTwo": "₹500 for two",
+        "areaName": "Yelahanka",
+        "distanceKm": 5.7,
+        "deliveryTimeMinutes": 51,
+        "deliveryTimeRange": "50-60 MINS",
+        "offer": "₹100 OFF ABOVE ₹549",
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2024/6/15/c4d3169f-62e1-4578-b79d-9ad104274311_f1877ef2-1ac6-410a-a702-53f7cdf0cd8b.jpg",
+        "availabilityStatus": "OPEN"
+      },
+      {
+        "id": "120178",
+        "name": "Meghana Foods (Ad)",
+        "cuisines": [
+          "Biryani",
+          "Andhra",
+          "South Indian",
+          "Chinese",
+          "Seafood"
+        ],
+        "avgRating": 4.5,
+        "totalRatings": "98K+",
+        "costForTwo": "₹500 for two",
+        "areaName": "Sahakar Nagar",
+        "distanceKm": 0.4,
+        "deliveryTimeMinutes": 18,
+        "deliveryTimeRange": "15-20 MINS",
+        "offer": "₹75 OFF ABOVE ₹199",
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/12/29/57bebf52-5a58-42e0-af9d-3d872d52de83_2d89d14b-3568-4be1-946d-1d7b0539edae.jpg",
+        "availabilityStatus": "OPEN"
+      },
+      {
+        "id": "1348402",
+        "name": "ZAZA Mughal Biryani (Ad)",
+        "cuisines": [
+          "Biryani",
+          "Awadhi"
+        ],
+        "avgRating": 4.4,
+        "totalRatings": "<3",
+        "costForTwo": "₹250 for two",
+        "areaName": "Hebbala",
+        "distanceKm": 0.3,
+        "deliveryTimeMinutes": 25,
+        "deliveryTimeRange": "20-30 MINS",
+        "offer": "ITEMS AT ₹149",
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2026/6/19/854f776f-fa5d-415d-8bfb-5ef50313b532_6ee4b64f-c13a-4b2c-a9a8-376c8e9d2ca2.jpg",
+        "availabilityStatus": "OPEN"
+      },
+      {
+        "id": "232611",
+        "name": "Paradise Biryani (Ad)",
+        "cuisines": [
+          "Biryani",
+          "Kebabs",
+          "North Indian",
+          "Hyderabadi"
+        ],
+        "avgRating": 4.3,
+        "totalRatings": "15K+",
+        "costForTwo": "₹400 for two",
+        "areaName": "Hebbal",
+        "distanceKm": 1.5,
+        "deliveryTimeMinutes": 18,
+        "deliveryTimeRange": "15-20 MINS",
+        "offer": "70% OFF UPTO ₹130",
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/12/1/4a1f62a3-930f-4af7-8dda-2b282c22e3f1_0442ee12-56ee-4c1e-a387-03f3ec7b061a.jpg_compressed",
+        "availabilityStatus": "OPEN"
+      },
+      {
+        "id": "14022",
+        "name": "Kuttanad Restaurant (Ad)",
+        "cuisines": [
+          "Kerala",
+          "Biryani",
+          "Seafood"
+        ],
+        "avgRating": 4.3,
+        "totalRatings": "50K+",
+        "costForTwo": "₹350 for two",
+        "areaName": "Nagawara",
+        "distanceKm": 4.5,
+        "deliveryTimeMinutes": 32,
+        "deliveryTimeRange": "30-40 MINS",
+        "offer": "10% OFF ABOVE ₹600",
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/7/3/4e9948d8-4b63-4290-b79b-d13e6a8ab64b_bdc20af2-f12e-4bd4-9c36-f51f2f693da1.jpg",
+        "availabilityStatus": "OPEN"
+      },
+      {
+        "id": "23353",
+        "name": "Nandhana Palace (Ad)",
+        "cuisines": [
+          "Biryani",
+          "Andhra",
+          "South Indian",
+          "North Indian"
+        ],
+        "avgRating": 4.4,
+        "totalRatings": "47K+",
+        "costForTwo": "₹500 for two",
+        "areaName": "Sahakar Nagar",
+        "distanceKm": 0.7,
+        "deliveryTimeMinutes": 18,
+        "deliveryTimeRange": "15-20 MINS",
+        "offer": "ITEMS AT ₹49",
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/5/3/cefa0f06-80c8-49b7-8e0c-30e9abba516a_ddbab437-c985-42d1-8f9e-5e1be6d683c5.jpg",
+        "availabilityStatus": "OPEN"
+      },
+      {
+        "id": "550381",
+        "name": "Biryani Factory (Ad)",
+        "cuisines": [
+          "Biryani",
+          "North Indian",
+          "Chinese",
+          "Snacks"
+        ],
+        "avgRating": 3.6,
+        "totalRatings": "226",
+        "costForTwo": "₹200 for two",
+        "areaName": "Sahakar Nagar",
+        "distanceKm": 0.6,
+        "deliveryTimeMinutes": 18,
+        "deliveryTimeRange": "15-20 MINS",
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/7/15/7cb2859e-3796-4c3e-aa81-aa54a4b34b1f_e6d4dcd4-044a-489c-882f-3b98fb5532e0.JPG",
+        "availabilityStatus": "OPEN"
+      },
+      {
+        "id": "335439",
+        "name": "RNR Biryani - Taste of 1953 (Ad)",
+        "cuisines": [
+          "Biryani",
+          "South Indian",
+          "Kebabs"
+        ],
+        "avgRating": 4.3,
+        "totalRatings": "8.5K+",
+        "costForTwo": "₹350 for two",
+        "areaName": "Sahakar Nagar",
+        "distanceKm": 0.7,
+        "deliveryTimeMinutes": 13,
+        "deliveryTimeRange": "10-15 MINS",
+        "offer": "ITEMS AT ₹40",
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/3/10/9fcf4f26-812d-433a-83d5-1da8e50a88e5_689399e3-efc8-4f68-b2dd-c03ac67f5aa1.jpg",
+        "availabilityStatus": "OPEN"
+      },
+      {
+        "id": "677740",
+        "name": "Ambur Star Briyani Since 1890 (Ad)",
+        "cuisines": [
+          "Biryani",
+          "Mughlai",
+          "Arabian",
+          "South Indian",
+          "Chinese",
+          "Tandoor",
+          "Indian"
+        ],
+        "avgRating": 4.4,
+        "totalRatings": "10K+",
+        "costForTwo": "₹600 for two",
+        "areaName": "Sahakar Nagar",
+        "distanceKm": 1.9,
+        "deliveryTimeMinutes": 22,
+        "deliveryTimeRange": "20-25 MINS",
+        "offer": "ITEMS AT ₹39",
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2024/4/13/0f26fc1d-4055-4700-84df-503c9473ea59_049e26a5-47b6-4c7a-85a5-7e4159f254ff.jpg",
+        "availabilityStatus": "OPEN"
+      },
+      {
+        "id": "945766",
+        "name": "Sharief Bhai Biryani (Ad)",
+        "cuisines": [
+          "Biryani",
+          "shawarma",
+          "Kebabs",
+          "Mughlai",
+          "Arabian",
+          "rolls",
+          "Street Food",
+          "Tea",
+          "Desserts",
+          "Beverages"
+        ],
+        "avgRating": 4,
+        "totalRatings": "2.4K+",
+        "costForTwo": "₹300 for two",
+        "areaName": "Sahakar Nagar",
+        "distanceKm": 1.2,
+        "deliveryTimeMinutes": 22,
+        "deliveryTimeRange": "20-25 MINS",
+        "offer": "50% OFF",
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2026/2/16/b81a5589-4f88-4bc7-94e8-250403bb7c92_1990d444-f54d-4b6f-aba3-f9b648d1a0bc.png_compressed",
+        "availabilityStatus": "OPEN"
+      }
+    ],
+    "total": 10,
+    "query": "biryani"
+  },
+  "get_restaurant_menu": {
+    "restaurant": {
+      "id": "120178",
+      "name": "Meghana Foods",
+      "city": "Bangalore",
+      "areaName": "Sahakar Nagar",
+      "cuisines": [
+        "Biryani",
+        "Andhra"
+      ],
+      "avgRating": 4.5,
+      "avgRatingString": "4.5",
+      "totalRatingsString": "98K+ ratings",
+      "costForTwoMessage": "₹500 for two",
+      "isOpen": true,
+      "deliveryTime": 18,
+      "slaString": "15-20 MINS",
+      "address": "106/7, Varmapolis, Bytranyanpura Service Road, Next to DJ Bar, Bangalore ",
+      "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/oycavthjdkphqevhzk7t"
+    },
+    "categories": [
+      {
+        "title": "Recommended",
+        "items": [
+          {
+            "id": "47699876",
+            "name": "Chicken Biryani",
+            "description": "This biryani comes with two pieces of chicken, raita, gravy and is cooked in our freshly prepared sp...",
+            "price": 365,
+            "inStock": 1,
+            "isVeg": false,
+            "isBestseller": true,
+            "rating": "4.3",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/12/29/71a6e565-f984-427b-9ac9-2494fc6921ad_5fceb574-e1fb-4339-81bb-b19701a2d830.jpg",
+            "hasVariants": false,
+            "hasAddons": true
+          },
+          {
+            "id": "47699880",
+            "name": "Chicken Boneless Biryani",
+            "description": "We use long grain basmati rice, and the boneless pieces of chicken are cooked in our own andra spice...",
+            "price": 375,
+            "inStock": 1,
+            "isVeg": false,
+            "isBestseller": true,
+            "rating": "4.5",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/12/29/57bebf52-5a58-42e0-af9d-3d872d52de83_2d89d14b-3568-4be1-946d-1d7b0539edae.jpg",
+            "hasVariants": false,
+            "hasAddons": true
+          },
+          {
+            "id": "47699884",
+            "name": "Meghana Special Boneless Biryani",
+            "description": "The chicken is cooked with an extra coating of an egg along with our in-house andra spice blend. It ...",
+            "price": 383,
+            "inStock": 1,
+            "isVeg": false,
+            "isBestseller": true,
+            "rating": "4.5",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/6/6/a009bdbf-d06c-4342-820c-f9ac37ab58a4_e21acc8c-dc4a-4177-b5e6-f4fc1ee2251e.jpg",
+            "hasVariants": false,
+            "hasAddons": true
+          },
+          {
+            "id": "47699887",
+            "name": "Paneer Biryani",
+            "description": "Fresh pieces of paneer are marinated in a specially prepared spice blend for maximum flavor. It serv...",
+            "price": 380,
+            "inStock": 1,
+            "isVeg": true,
+            "isBestseller": true,
+            "rating": "4.4",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/6/6/a380b487-e336-41fa-966a-2b1490e475c9_49f5550e-15a1-42cc-96f9-46e416891bff.jpg",
+            "hasVariants": false,
+            "hasAddons": true
+          },
+          {
+            "id": "32323091",
+            "name": "Meghana Chicken 555",
+            "description": "Boneless, long strips of chicken are pan-fried with our freshly made andra spice mix, garlic, fresh ...",
+            "price": 375,
+            "inStock": 1,
+            "isVeg": false,
+            "rating": "4.4",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/12/29/41cda7c5-8062-4078-929a-351f008aef52_936fcd75-5fc9-4aa0-b75c-dcb85551a97a.jpg",
+            "hasVariants": false,
+            "hasAddons": true
+          },
+          {
+            "id": "64597167",
+            "name": "Spl Veg Biryani",
+            "description": "Paneer and a variety of fresh vegetables are cooked in our andra spice blend for this biryani. It se...",
+            "price": 340,
+            "inStock": 1,
+            "isVeg": true,
+            "isBestseller": true,
+            "rating": "4.5",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/6/6/4b4b942f-e245-4f88-bbb3-41cc1848f01b_4a315863-1667-40ef-8048-96d3df43217b.jpg",
+            "hasVariants": false,
+            "hasAddons": true
+          },
+          {
+            "id": "47699895",
+            "name": "Mutton Biryani",
+            "description": "4 pieces of mutton are cooked in our in-house andra spice blend to perfection. The gravy and raita w...",
+            "price": 490,
+            "inStock": 1,
+            "isVeg": false,
+            "rating": "4.2",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/6/6/94d232c4-3874-4239-91a1-22db3b5b0514_0fe592cd-961b-4c2a-ae54-adab5689865d.jpg",
+            "hasVariants": false,
+            "hasAddons": true
+          },
+          {
+            "id": "32323129",
+            "name": "Pepper Chicken",
+            "description": "12-15 pieces of boneless chicken are cooked with a lot of black pepper, our in-house spice mix, and ...",
+            "price": 370,
+            "inStock": 1,
+            "isVeg": false,
+            "isBestseller": true,
+            "rating": "4.5",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/rlcjzwkysumyh28nxuaq",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "47699888",
+            "name": "Mushroom Biryani",
+            "description": "The mushrooms are coated in our andra spice mix that we make fresh every day. It is slightly spicy a...",
+            "price": 380,
+            "inStock": 1,
+            "isVeg": true,
+            "isBestseller": true,
+            "rating": "4.4",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/6/6/e3aae0b7-7af6-40be-8d19-7f36b480058b_c6bbc0d4-dfcb-4a06-b973-6b527e5357d9.jpg",
+            "hasVariants": false,
+            "hasAddons": true
+          },
+          {
+            "id": "166304600",
+            "name": "Box Meghana Special Boneless Biryani",
+            "description": "Serves 1 I meghana special biryani is flavourful and aromatic basmati rice layered with an extra egg...",
+            "price": 270,
+            "inStock": 1,
+            "isVeg": false,
+            "isBestseller": true,
+            "rating": "4.6",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/4/4/dfaae59c-1413-48a0-889b-f71d6421a1b6_ed825412-246a-4eb5-90f2-11c69a04909a.jpg",
+            "hasVariants": false,
+            "hasAddons": false
+          }
+        ],
+        "totalItems": 20,
+        "hasMoreItems": true
+      },
+      {
+        "title": "Day Special",
+        "categoryId": "24439733",
+        "items": [
+          {
+            "id": "195431207",
+            "name": "Chicken Ghee Roast",
+            "price": 410,
+            "inStock": 1,
+            "isVeg": false,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2026/2/25/0ab29cba-6c9a-47a3-b196-123a32159940_f6cc1659-f1bf-47c6-ac06-4b0b720b0de9.jpg",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "195431208",
+            "name": "Golden Chicken",
+            "price": 410,
+            "inStock": 1,
+            "isVeg": false,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2026/7/1/2dd171b6-3a57-464a-91f2-684b48cb575c_f16da956-09e8-48f7-aa4e-3b47a9d916bf.jpg",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "195431211",
+            "name": "Kodi Vepudu",
+            "price": 410,
+            "isVeg": false,
+            "rating": "4.0",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2026/2/25/b126b4eb-5cb6-4cef-8846-bad4b5320cc9_f8eb635f-8874-49e2-a959-4bcf1c5159bd.jpg",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "195431213",
+            "name": "Leaf Chicken",
+            "price": 410,
+            "isVeg": false,
+            "rating": "5.0",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2026/7/1/ef4ae922-3ccb-4b0b-890c-3eb2f6be4767_1f683295-cc82-488e-9fdd-8fa9229a28dc.jpg",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "195431212",
+            "name": "Nellore Chicken Semi Gravy",
+            "price": 410,
+            "isVeg": false,
+            "rating": "5.0",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/6/6/d9fb234b-043a-4c8e-a6e8-83d501e99fb1_2cd35243-cafc-4640-8142-686aa0670b4f.jpg",
+            "hasVariants": false,
+            "hasAddons": false
+          }
+        ],
+        "totalItems": 5,
+        "hasMoreItems": false
+      },
+      {
+        "title": "Box Biryani-new Launch Non Veg",
+        "categoryId": "72594901",
+        "items": [
+          {
+            "id": "166304598",
+            "name": "Box Chicken Boneless Biryani",
+            "description": "Serves 1 chicken boneless biryani is flavourful and aromatic basmati rice layered with tender bonele...",
+            "price": 265,
+            "inStock": 1,
+            "isVeg": false,
+            "isBestseller": true,
+            "rating": "4.5",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2026/7/1/0d2b51f0-d0e8-4464-a4e8-dc8a04297856_e862493b-37cf-483e-aeb7-e4cf80384920.jpg",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "166304600",
+            "name": "Box Meghana Special Boneless Biryani",
+            "description": "Serves 1 I meghana special biryani is flavourful and aromatic basmati rice layered with an extra egg...",
+            "price": 270,
+            "inStock": 1,
+            "isVeg": false,
+            "isBestseller": true,
+            "rating": "4.6",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/4/4/dfaae59c-1413-48a0-889b-f71d6421a1b6_ed825412-246a-4eb5-90f2-11c69a04909a.jpg",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "188604286",
+            "name": "Box Chicken Fry Biryani",
+            "price": 270,
+            "inStock": 1,
+            "isVeg": false,
+            "rating": "4.2",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2026/2/5/91d2d508-5735-4592-8673-178ea643f45a_37d67112-425b-4e05-be07-b8ea67288845.jpg",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "188604288",
+            "name": "Box Nati Chicken Biryani",
+            "price": 290,
+            "inStock": 1,
+            "isVeg": false,
+            "rating": "3.3",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2026/2/5/6d36c02d-10bf-4ce6-8175-ecc74cc4140c_e9277fd6-aa80-4bc8-9c67-5c4bde4dcf1a.jpg",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "188604287",
+            "name": "Box Fish Biryani",
+            "price": 290,
+            "inStock": 1,
+            "isVeg": false,
+            "rating": "3.9",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2026/2/5/e5c090a2-92f3-4c9f-a3b3-0db454ad905a_9820b9e5-2143-4106-925f-bba8986d53ef.jpg",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "188604289",
+            "name": "Box Prawns Biryani",
+            "price": 305,
+            "inStock": 1,
+            "isVeg": false,
+            "rating": "4.8",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2026/2/5/7d2e9a95-0be3-4f47-a2cd-5c7e369d663d_a94558f5-14b5-469f-923e-a65842e5d9d0.jpg",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "178362284",
+            "name": "Box Mutton Kheema Biryani",
+            "price": 315,
+            "inStock": 1,
+            "isVeg": false,
+            "rating": "4.5",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2026/7/1/8e568613-a09d-4376-b974-9375f3568ab1_b0ae57be-8c98-4676-a2c5-e7dd0b72e6e8.jpg",
+            "hasVariants": false,
+            "hasAddons": false
+          }
+        ],
+        "totalItems": 7,
+        "hasMoreItems": false
+      },
+      {
+        "title": "Box Biryani-new Launch Veg",
+        "categoryId": "59666921",
+        "items": [
+          {
+            "id": "166304599",
+            "name": "Box Paneer Biryani",
+            "description": "Serves 1 I paneer biryani  is flavourful and aromatic basmati rice layered with panner and with spic...",
+            "price": 270,
+            "inStock": 1,
+            "isVeg": true,
+            "rating": "4.6",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/4/4/ada618dc-2c83-4fda-b6f5-7e49375f86b3_6d12fd05-38fe-4655-847e-81622138814e.jpg",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "166728644",
+            "name": "Box Spl Veg Biryani",
+            "description": "Serves 1i spl veg biryani is flavourful and aromatic basmati rice layered with our andra spice blend...",
+            "price": 235,
+            "inStock": 1,
+            "isVeg": true,
+            "rating": "4.6",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/4/4/ef9ede2f-37ed-45b5-8e1f-9298816563db_b3a8a492-6814-43c4-abe5-e839a2d6d0cc.jpg",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "166304597",
+            "name": "Box Egg Biryani",
+            "description": "Serves 1i egg biryani is flavourful and aromatic basmati rice layered with two hard-boiled eggs cook...",
+            "price": 230,
+            "inStock": 1,
+            "isVeg": false,
+            "rating": "4.2",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/4/4/618c7983-515c-4d1c-9946-846b7c74430e_93b579ea-047b-4559-93e3-0ca47a946ba8.jpg",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "166304596",
+            "name": "Box Aloo Dum Biryani",
+            "description": "Serves 1i aloo dum biryani  is flavourful and aromatic basmati rice layered with chunks of potatoes ...",
+            "price": 225,
+            "inStock": 1,
+            "isVeg": true,
+            "rating": "4.6",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/4/4/82b6f4f6-39ac-43d1-a759-83d479a5b4a2_49db3bce-495b-48d6-aecb-9f6ed3be1979.jpg",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "178364450",
+            "name": "Box Veg Manchurian Biriyani",
+            "price": 270,
+            "inStock": 1,
+            "isVeg": true,
+            "rating": "4.2",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2026/2/5/240bd76a-49d8-447f-bf2a-a5d1812340f7_39165105-d660-4bd8-be8a-a3d5cc4a7288.jpg",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "178364451",
+            "name": "Box Mushroom Biriyani",
+            "price": 270,
+            "inStock": 1,
+            "isVeg": true,
+            "rating": "4.6",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2026/2/5/849fd0cb-fd35-4204-97e9-500a922f4dfe_1b025f3a-611a-44f2-876c-b0adcb7bae08.jpg",
+            "hasVariants": false,
+            "hasAddons": false
+          }
+        ],
+        "totalItems": 6,
+        "hasMoreItems": false
+      },
+      {
+        "title": "Indian Breads",
+        "categoryId": "37847643",
+        "items": [
+          {
+            "id": "66618374",
+            "name": "Butter Tandoori Roti",
+            "description": " [Energy: 354.77 kcal, Protein: 11.18g, Carbohydrates: 63.82g, Fat: 6.23g]",
+            "price": 60,
+            "inStock": 1,
+            "isVeg": true,
+            "rating": "4.4",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/km888m8jtexrr54ukvsf",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "66618440",
+            "name": "Tandoori Roti",
+            "description": " [Energy: 341 kcal, Protein: 12.1g, Carbohydrates: 69.4g, Fat: 1.7g]",
+            "price": 55,
+            "inStock": 1,
+            "isVeg": true,
+            "rating": "4.1",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/yzlluiabjyc9b5xm0u7v",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "66618443",
+            "name": "Naan",
+            "description": " [Energy: 249.96 kcal, Protein: 8.22g, Carbohydrates: 47.99g, Fat: 2.43g]",
+            "price": 60,
+            "inStock": 1,
+            "isVeg": true,
+            "rating": "4.3",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/zhehanswdbtjel9vjn5t",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "66618380",
+            "name": "Garlic Naan",
+            "description": " [Energy: 303.22 kcal, Protein: 10.18g, Carbohydrates: 58.09g, Fat: 2.87g]",
+            "price": 70,
+            "inStock": 1,
+            "isVeg": true,
+            "rating": "4.4",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/ef7dhf6vv8ncnvlbrkux",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "66618378",
+            "name": "Butter Naan",
+            "description": " [Energy: 304.82 kcal, Protein: 8.57g, Carbohydrates: 49.72g, Fat: 7.7g]",
+            "price": 65,
+            "inStock": 1,
+            "isVeg": true,
+            "rating": "4.2",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/vsboj7w5fg5likd24jca",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "66618449",
+            "name": "Kulcha",
+            "description": " [Energy: 222.05 kcal, Protein: 7.74g, Carbohydrates: 38g, Fat: 4g]",
+            "price": 70,
+            "inStock": 1,
+            "isVeg": true,
+            "rating": "4.8",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/dfn6dm1daa224wym6jgv",
+            "hasVariants": false,
+            "hasAddons": false
+          },
+          {
+            "id": "66618381",
+            "name": "Butter Kulcha",
+            "description": " [Energy: 244.35 kcal, Protein: 7.06g, Carbohydrates: 34.47g, Fat: 7.1g]",
+            "price": 75,
+            "inStock": 1,
+            "isVeg": true,
+            "rating": "4.1",
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/gajieufhbxtgyukag2c8",
+            "hasVariants": false,
+            "hasAddons": false
+          }
+        ],
+        "totalItems": 7,
+        "hasMoreItems": false
+      }
+    ],
+    "totalCategories": 20,
+    "page": 1,
+    "pageSize": 5,
+    "hasMore": true
+  },
+  "search_menu": {
+    "items": [
+      {
+        "name": "Meghana Special Boneless Biryani",
+        "price": 383,
+        "menu_item_id": "47699884",
+        "inStock": 1,
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/6/6/a009bdbf-d06c-4342-820c-f9ac37ab58a4_e21acc8c-dc4a-4177-b5e6-f4fc1ee2251e.jpg",
+        "rating": "4.5",
+        "totalRatings": "2.1K+",
+        "hasVariants": false,
+        "hasAddons": true,
+        "addons": [
+          {
+            "groupId": "139029823",
+            "groupName": "Starters (Non Veg)",
+            "choices": [
+              {
+                "id": "148068694",
+                "name": "Chicken Pakoda",
+                "price": 375
+              },
+              {
+                "id": "148068693",
+                "name": "Chicken 65",
+                "price": 375
+              },
+              {
+                "id": "148068689",
+                "name": "Chicken Kabab",
+                "price": 360
+              },
+              {
+                "id": "148068691",
+                "name": "Meghana Chicken 555",
+                "price": 375
+              },
+              {
+                "id": "148068690",
+                "name": "Chicken Lollypop",
+                "price": 370
+              }
+            ],
+            "maxAddons": 5,
+            "maxFreeAddons": -1
+          },
+          {
+            "groupId": "94849393",
+            "groupName": "Extra (Non Veg)",
+            "choices": [
+              {
+                "id": "147489386",
+                "name": "Raita",
+                "price": 20
+              },
+              {
+                "id": "147489387",
+                "name": "Meghana Chicken Spl Pcs",
+                "price": 255
+              },
+              {
+                "id": "147489391",
+                "name": "Chicken Boneless Pcs",
+                "price": 250
+              },
+              {
+                "id": "118710185",
+                "name": "Extra Aloo 4 Pcs",
+                "price": 45
+              },
+              {
+                "id": "147489392",
+                "name": "Gravy",
+                "price": 35
+              },
+              {
+                "id": "118710182",
+                "name": "Masala Pack",
+                "price": 120
+              },
+              {
+                "id": "123685140",
+                "name": "Ulavacharu",
+                "price": 60
+              },
+              {
+                "id": "123685139",
+                "name": "Gongura Pickle",
+                "price": 60
+              }
+            ],
+            "maxAddons": 8,
+            "maxFreeAddons": -1
+          }
+        ]
+      },
+      {
+        "name": "Chicken Biryani",
+        "price": 365,
+        "menu_item_id": "47699876",
+        "inStock": 1,
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/12/29/71a6e565-f984-427b-9ac9-2494fc6921ad_5fceb574-e1fb-4339-81bb-b19701a2d830.jpg",
+        "rating": "4.3",
+        "totalRatings": "6.9K+",
+        "hasVariants": false,
+        "hasAddons": true,
+        "addons": [
+          {
+            "groupId": "139029819",
+            "groupName": "Starters (Non Veg)",
+            "choices": [
+              {
+                "id": "148068694",
+                "name": "Chicken Pakoda",
+                "price": 375
+              },
+              {
+                "id": "148068693",
+                "name": "Chicken 65",
+                "price": 375
+              },
+              {
+                "id": "148068689",
+                "name": "Chicken Kabab",
+                "price": 360
+              },
+              {
+                "id": "148068691",
+                "name": "Meghana Chicken 555",
+                "price": 375
+              },
+              {
+                "id": "148068690",
+                "name": "Chicken Lollypop",
+                "price": 370
+              }
+            ],
+            "maxAddons": 5,
+            "maxFreeAddons": -1
+          },
+          {
+            "groupId": "94849373",
+            "groupName": "Extra (Non Veg)",
+            "choices": [
+              {
+                "id": "147489386",
+                "name": "Raita",
+                "price": 20
+              },
+              {
+                "id": "147489387",
+                "name": "Meghana Chicken Spl Pcs",
+                "price": 255
+              },
+              {
+                "id": "147489391",
+                "name": "Chicken Boneless Pcs",
+                "price": 250
+              },
+              {
+                "id": "118710185",
+                "name": "Extra Aloo 4 Pcs",
+                "price": 45
+              },
+              {
+                "id": "147489392",
+                "name": "Gravy",
+                "price": 35
+              },
+              {
+                "id": "118710182",
+                "name": "Masala Pack",
+                "price": 120
+              },
+              {
+                "id": "123685140",
+                "name": "Ulavacharu",
+                "price": 60
+              },
+              {
+                "id": "123685139",
+                "name": "Gongura Pickle",
+                "price": 60
+              }
+            ],
+            "maxAddons": 8,
+            "maxFreeAddons": -1
+          }
+        ]
+      },
+      {
+        "name": "Box Paneer Biryani",
+        "price": 270,
+        "isVeg": true,
+        "menu_item_id": "166304599",
+        "inStock": 1,
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/4/4/ada618dc-2c83-4fda-b6f5-7e49375f86b3_6d12fd05-38fe-4655-847e-81622138814e.jpg",
+        "rating": "4.6",
+        "totalRatings": "509",
+        "hasVariants": false,
+        "hasAddons": false
+      },
+      {
+        "name": "Spl Veg Biryani",
+        "price": 340,
+        "isVeg": true,
+        "menu_item_id": "64597167",
+        "inStock": 1,
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/6/6/4b4b942f-e245-4f88-bbb3-41cc1848f01b_4a315863-1667-40ef-8048-96d3df43217b.jpg",
+        "rating": "4.5",
+        "totalRatings": "3.1K+",
+        "hasVariants": false,
+        "hasAddons": true,
+        "addons": [
+          {
+            "groupId": "139029811",
+            "groupName": "Starters (Veg)",
+            "choices": [
+              {
+                "id": "148068692",
+                "name": "Golden Baby Corn",
+                "price": 350
+              },
+              {
+                "id": "118710181",
+                "name": "Paneer Kabab",
+                "price": 385
+              },
+              {
+                "id": "140950107",
+                "name": "Mushroom Kabab",
+                "price": 385
+              }
+            ],
+            "maxAddons": 3,
+            "maxFreeAddons": -1
+          },
+          {
+            "groupId": "94848653",
+            "groupName": "Extra",
+            "choices": [
+              {
+                "id": "147489390",
+                "name": "Extra Masala Pack",
+                "price": 130
+              },
+              {
+                "id": "147489388",
+                "name": "Extra Raita",
+                "price": 20
+              },
+              {
+                "id": "118710185",
+                "name": "Extra Aloo 4 Pcs",
+                "price": 45
+              },
+              {
+                "id": "147489389",
+                "name": "Extra Gravy",
+                "price": 35
+              },
+              {
+                "id": "147489393",
+                "name": "Paneer Pcs",
+                "price": 250
+              },
+              {
+                "id": "123685140",
+                "name": "Ulavacharu",
+                "price": 60
+              },
+              {
+                "id": "123685139",
+                "name": "Gongura Pickle",
+                "price": 60
+              }
+            ],
+            "maxAddons": 7,
+            "maxFreeAddons": -1
+          }
+        ]
+      },
+      {
+        "name": "Box Chicken Boneless Biryani",
+        "price": 265,
+        "menu_item_id": "166304598",
+        "inStock": 1,
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2026/7/1/0d2b51f0-d0e8-4464-a4e8-dc8a04297856_e862493b-37cf-483e-aeb7-e4cf80384920.jpg",
+        "rating": "4.5",
+        "totalRatings": "614",
+        "hasVariants": false,
+        "hasAddons": false
+      },
+      {
+        "name": "Mutton Biryani",
+        "price": 490,
+        "menu_item_id": "47699895",
+        "inStock": 1,
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/6/6/94d232c4-3874-4239-91a1-22db3b5b0514_0fe592cd-961b-4c2a-ae54-adab5689865d.jpg",
+        "rating": "4.2",
+        "totalRatings": "3.4K+",
+        "hasVariants": false,
+        "hasAddons": true,
+        "addons": [
+          {
+            "groupId": "139029842",
+            "groupName": "Starters (Non Veg)",
+            "choices": [
+              {
+                "id": "148068694",
+                "name": "Chicken Pakoda",
+                "price": 375
+              },
+              {
+                "id": "148068693",
+                "name": "Chicken 65",
+                "price": 375
+              },
+              {
+                "id": "148068689",
+                "name": "Chicken Kabab",
+                "price": 360
+              },
+              {
+                "id": "148068691",
+                "name": "Meghana Chicken 555",
+                "price": 375
+              },
+              {
+                "id": "148068690",
+                "name": "Chicken Lollypop",
+                "price": 370
+              }
+            ],
+            "maxAddons": 5,
+            "maxFreeAddons": -1
+          },
+          {
+            "groupId": "94848667",
+            "groupName": "Extra (Non Veg)",
+            "choices": [
+              {
+                "id": "147489386",
+                "name": "Raita",
+                "price": 20
+              },
+              {
+                "id": "147489387",
+                "name": "Meghana Chicken Spl Pcs",
+                "price": 255
+              },
+              {
+                "id": "147489391",
+                "name": "Chicken Boneless Pcs",
+                "price": 250
+              },
+              {
+                "id": "118710185",
+                "name": "Extra Aloo 4 Pcs",
+                "price": 45
+              },
+              {
+                "id": "147489392",
+                "name": "Gravy",
+                "price": 35
+              },
+              {
+                "id": "118710182",
+                "name": "Masala Pack",
+                "price": 120
+              },
+              {
+                "id": "123685140",
+                "name": "Ulavacharu",
+                "price": 60
+              },
+              {
+                "id": "123685139",
+                "name": "Gongura Pickle",
+                "price": 60
+              }
+            ],
+            "maxAddons": 8,
+            "maxFreeAddons": -1
+          }
+        ]
+      },
+      {
+        "name": "Box Meghana Special Boneless Biryani",
+        "price": 270,
+        "menu_item_id": "166304600",
+        "inStock": 1,
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/4/4/dfaae59c-1413-48a0-889b-f71d6421a1b6_ed825412-246a-4eb5-90f2-11c69a04909a.jpg",
+        "rating": "4.6",
+        "totalRatings": "496",
+        "hasVariants": false,
+        "hasAddons": false
+      },
+      {
+        "name": "Box Spl Veg Biryani",
+        "price": 235,
+        "isVeg": true,
+        "menu_item_id": "166728644",
+        "inStock": 1,
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/4/4/ef9ede2f-37ed-45b5-8e1f-9298816563db_b3a8a492-6814-43c4-abe5-e839a2d6d0cc.jpg",
+        "rating": "4.6",
+        "totalRatings": "186",
+        "hasVariants": false,
+        "hasAddons": false
+      },
+      {
+        "name": "Aloo Dum Biryani",
+        "price": 330,
+        "isVeg": true,
+        "menu_item_id": "47699868",
+        "inStock": 1,
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/6/6/ccbfe796-84a3-443e-a5ad-90ada20c0052_d52dc3e6-fad4-45c1-9cf7-37b68a6b895b.jpg",
+        "rating": "4.5",
+        "totalRatings": "3.6K+",
+        "hasVariants": false,
+        "hasAddons": true,
+        "addons": [
+          {
+            "groupId": "139029817",
+            "groupName": "Starters (Veg)",
+            "choices": [
+              {
+                "id": "148068692",
+                "name": "Golden Baby Corn",
+                "price": 350
+              },
+              {
+                "id": "118710181",
+                "name": "Paneer Kabab",
+                "price": 385
+              },
+              {
+                "id": "140950107",
+                "name": "Mushroom Kabab",
+                "price": 385
+              }
+            ],
+            "maxAddons": 3,
+            "maxFreeAddons": -1
+          },
+          {
+            "groupId": "94848791",
+            "groupName": "Extra",
+            "choices": [
+              {
+                "id": "147489390",
+                "name": "Extra Masala Pack",
+                "price": 130
+              },
+              {
+                "id": "147489388",
+                "name": "Extra Raita",
+                "price": 20
+              },
+              {
+                "id": "118710185",
+                "name": "Extra Aloo 4 Pcs",
+                "price": 45
+              },
+              {
+                "id": "147489389",
+                "name": "Extra Gravy",
+                "price": 35
+              },
+              {
+                "id": "147489393",
+                "name": "Paneer Pcs",
+                "price": 250
+              },
+              {
+                "id": "123685140",
+                "name": "Ulavacharu",
+                "price": 60
+              },
+              {
+                "id": "123685139",
+                "name": "Gongura Pickle",
+                "price": 60
+              }
+            ],
+            "maxAddons": 7,
+            "maxFreeAddons": -1
+          }
+        ]
+      },
+      {
+        "name": "Egg Biryani",
+        "price": 340,
+        "menu_item_id": "47699874",
+        "inStock": 1,
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/6/6/b38681c8-a9a3-4511-b756-17fa425b9eb4_24feeb33-ff48-4218-ab2c-d654c2319129.jpg",
+        "rating": "4.2",
+        "totalRatings": "1.7K+",
+        "hasVariants": false,
+        "hasAddons": true,
+        "addons": [
+          {
+            "groupId": "139029876",
+            "groupName": "Starters (Non Veg)",
+            "choices": [
+              {
+                "id": "148068694",
+                "name": "Chicken Pakoda",
+                "price": 375
+              },
+              {
+                "id": "148068693",
+                "name": "Chicken 65",
+                "price": 375
+              },
+              {
+                "id": "148068689",
+                "name": "Chicken Kabab",
+                "price": 360
+              },
+              {
+                "id": "148068691",
+                "name": "Meghana Chicken 555",
+                "price": 375
+              },
+              {
+                "id": "148068690",
+                "name": "Chicken Lollypop",
+                "price": 370
+              }
+            ],
+            "maxAddons": 5,
+            "maxFreeAddons": -1
+          },
+          {
+            "groupId": "94848778",
+            "groupName": "Extra (Non Veg)",
+            "choices": [
+              {
+                "id": "147489386",
+                "name": "Raita",
+                "price": 20
+              },
+              {
+                "id": "147489387",
+                "name": "Meghana Chicken Spl Pcs",
+                "price": 255
+              },
+              {
+                "id": "147489391",
+                "name": "Chicken Boneless Pcs",
+                "price": 250
+              },
+              {
+                "id": "118710185",
+                "name": "Extra Aloo 4 Pcs",
+                "price": 45
+              },
+              {
+                "id": "147489392",
+                "name": "Gravy",
+                "price": 35
+              },
+              {
+                "id": "118710182",
+                "name": "Masala Pack",
+                "price": 120
+              },
+              {
+                "id": "123685140",
+                "name": "Ulavacharu",
+                "price": 60
+              },
+              {
+                "id": "123685139",
+                "name": "Gongura Pickle",
+                "price": 60
+              }
+            ],
+            "maxAddons": 8,
+            "maxFreeAddons": -1
+          }
+        ]
+      }
+    ],
+    "total": 10,
+    "query": "biryani"
+  },
+  "get_food_cart": null,
+  "get_food_orders": {
+    "orders": [
+      {
+        "orderId": "238407019680992",
+        "restaurantId": "464416",
+        "restaurantName": "Mehfil",
+        "restaurantAreaName": "Banjara Hills",
+        "orderTotal": "₹491",
+        "orderStatus": "Delivered",
+        "orderDeliveryStatus": "delivered",
+        "orderType": "regular",
+        "orderedItems": "Mutton Biryani Single (1),Chicken Biryani Single (1)",
+        "orderedTime": "May 22, 1:40 PM",
+        "isActiveOrder": false,
+        "actions": [
+          {
+            "type": "PAST_ORDER_CTA_ENUM_REORDER",
+            "priority": 1,
+            "title": "REORDER",
+            "isEnabled": true,
+            "reorderMeta": {
+              "orderItems": [
+                {
+                  "itemId": "81831241",
+                  "name": "Mutton Biryani Single",
+                  "isVeg": "0",
+                  "addons": [
+                    {
+                      "choiceId": 140181087,
+                      "groupId": 247171120,
+                      "name": "1 Boiled Egg",
+                      "price": 18,
+                      "externalChoiceId": "57007476",
+                      "externalGroupId": "1726233",
+                      "addonTaxCharges": {
+                        "gst": "0"
+                      },
+                      "addonTaxExpressions": {
+                        "gstInclusive": "false"
+                      },
+                      "gstDetails": {}
+                    },
+                    {
+                      "choiceId": 135410174,
+                      "groupId": 212209013,
+                      "name": "Chicken 65 Half",
+                      "price": 169,
+                      "externalChoiceId": "48602436",
+                      "externalGroupId": "1476353",
+                      "addonTaxCharges": {
+                        "gst": "0"
+                      },
+                      "addonTaxExpressions": {
+                        "gstInclusive": "false"
+                      },
+                      "gstDetails": {}
+                    }
+                  ],
+                  "quantity": "1",
+                  "total": "377",
+                  "subtotal": "377",
+                  "packingCharges": "0",
+                  "categoryDetails": {
+                    "category": "Biryanis",
+                    "subCategory": "Mutton Biryani"
+                  },
+                  "attributes": {
+                    "portionSize": "0",
+                    "vegClassifier": "VEG_CLASSIFIER_NONVEG"
+                  }
+                },
+                {
+                  "itemId": "81831230",
+                  "name": "Chicken Biryani Single",
+                  "isVeg": "0",
+                  "quantity": "1",
+                  "total": "170",
+                  "subtotal": "170",
+                  "packingCharges": "0",
+                  "categoryDetails": {
+                    "category": "Biryanis",
+                    "subCategory": "Chicken Biryani"
+                  },
+                  "attributes": {
+                    "portionSize": "0",
+                    "vegClassifier": "VEG_CLASSIFIER_NONVEG"
+                  }
+                }
+              ],
+              "restaurantCoverImageId": "RX_THUMBNAIL/IMAGES/VENDOR/2026/3/24/6f5a3fd0-dc15-4ebe-a5b3-f9a26ec8aaaa_464416.jpg"
+            }
+          },
+          {
+            "type": "PAST_ORDER_CTA_ENUM_RATE_ORDER",
+            "priority": 2,
+            "title": "RATE ORDER",
+            "isEnabled": true,
+            "rateDeliveryMeta": {
+              "ratingType": "delivery",
+              "rateAll": true,
+              "ratingTitle": "Not available"
+            }
+          }
+        ]
+      },
+      {
+        "orderId": "234179566198430",
+        "restaurantId": "588875",
+        "restaurantName": "Mani's Dum Biryani",
+        "restaurantAreaName": "Sahakara Nagar",
+        "orderTotal": "₹356",
+        "orderStatus": "Delivered",
+        "orderDeliveryStatus": "delivered",
+        "orderType": "regular",
+        "orderedItems": "Chicken Boneless Biryani Full (Serves 1-2) (1)",
+        "orderedTime": "April 3, 3:22 PM",
+        "isActiveOrder": false,
+        "actions": [
+          {
+            "type": "PAST_ORDER_CTA_ENUM_REORDER",
+            "priority": 1,
+            "title": "REORDER",
+            "isEnabled": true,
+            "reorderMeta": {
+              "orderItems": [
+                {
+                  "itemId": "139422112",
+                  "name": "Chicken Boneless Biryani Full (Serves 1-2)",
+                  "isVeg": "0",
+                  "variants": [
+                    {
+                      "variationId": 134183123,
+                      "groupId": 41898926,
+                      "name": "Basmati Rice",
+                      "externalChoiceId": "SI472",
+                      "externalGroupId": "SI471",
+                      "variantTaxCharges": {
+                        "gst": "0.0"
+                      },
+                      "variantTaxExpressions": {
+                        "gstInclusive": "false"
+                      },
+                      "gstDetails": {},
+                      "attributes": {}
+                    }
+                  ],
+                  "addons": [
+                    {
+                      "choiceId": 117132707,
+                      "groupId": 150166101,
+                      "name": "Extra Raita",
+                      "price": 20,
+                      "externalChoiceId": "63089555047a70928f6fef8__SI91",
+                      "externalGroupId": "661a7c5a2199e5439f76778c",
+                      "addonTaxCharges": {
+                        "gst": "0"
+                      },
+                      "addonTaxExpressions": {
+                        "gstInclusive": "false"
+                      },
+                      "gstDetails": {}
+                    }
+                  ],
+                  "quantity": "1",
+                  "total": "417.95",
+                  "subtotal": "399",
+                  "packingCharges": "18.95",
+                  "categoryDetails": {
+                    "category": "Chicken Boneless Biryani",
+                    "subCategory": "nota"
+                  },
+                  "attributes": {
+                    "portionSize": "0",
+                    "vegClassifier": "VEG_CLASSIFIER_NONVEG"
+                  }
+                }
+              ],
+              "restaurantCoverImageId": "rau1yecmbu6itq3k2ejs"
+            }
+          },
+          {
+            "type": "PAST_ORDER_CTA_ENUM_RATE_ORDER",
+            "priority": 2,
+            "title": "RATE ORDER",
+            "isEnabled": true,
+            "rateDeliveryMeta": {
+              "ratingType": "delivery",
+              "rateAll": true,
+              "ratingTitle": "Not available"
+            }
+          }
+        ]
+      },
+      {
+        "orderId": "217270584607439",
+        "restaurantId": "439624",
+        "restaurantName": "Lubov Patisserie - Cakes, Macarons and Desserts",
+        "restaurantAreaName": "Domlur",
+        "orderTotal": "₹552",
+        "orderStatus": "Delivered",
+        "orderDeliveryStatus": "delivered",
+        "orderType": "regular",
+        "orderedItems": "Mango & Berry Mini Cake (1),Chocolate Tiramisu Mini Cake (1)",
+        "orderedTime": "September 19, 10:26 PM",
+        "isActiveOrder": false,
+        "actions": [
+          {
+            "type": "PAST_ORDER_CTA_ENUM_REORDER",
+            "priority": 1,
+            "title": "REORDER",
+            "isEnabled": true,
+            "reorderMeta": {
+              "orderItems": [
+                {
+                  "itemId": "173383336",
+                  "name": "Mango & Berry Mini Cake",
+                  "isVeg": "1",
+                  "quantity": "1",
+                  "total": "299",
+                  "subtotal": "299",
+                  "packingCharges": "0",
+                  "categoryDetails": {
+                    "category": "Mini Cakes",
+                    "subCategory": "nota"
+                  },
+                  "attributes": {
+                    "portionSize": "0",
+                    "vegClassifier": "VEG_CLASSIFIER_VEG"
+                  }
+                },
+                {
+                  "itemId": "173383333",
+                  "name": "Chocolate Tiramisu Mini Cake",
+                  "isVeg": "1",
+                  "quantity": "1",
+                  "total": "299",
+                  "subtotal": "299",
+                  "packingCharges": "0",
+                  "categoryDetails": {
+                    "category": "Mini Cakes",
+                    "subCategory": "nota"
+                  },
+                  "attributes": {
+                    "portionSize": "0",
+                    "vegClassifier": "VEG_CLASSIFIER_VEG"
+                  }
+                }
+              ],
+              "restaurantCoverImageId": "RX_THUMBNAIL/IMAGES/VENDOR/2025/6/19/955fdeaa-fda0-4654-8d03-95f0fad8fc22_439624.jpg"
+            }
+          },
+          {
+            "type": "PAST_ORDER_CTA_ENUM_RATE_ORDER",
+            "priority": 2,
+            "title": "RATE ORDER",
+            "isEnabled": true,
+            "rateDeliveryMeta": {
+              "ratingType": "delivery",
+              "rateAll": true,
+              "ratingTitle": "Not available"
+            }
+          }
+        ]
+      },
+      {
+        "orderId": "213301374322727",
+        "restaurantId": "120178",
+        "restaurantName": "Meghana Foods",
+        "restaurantAreaName": "Sahakar Nagar",
+        "orderTotal": "₹416",
+        "orderStatus": "Delivered",
+        "orderDeliveryStatus": "delivered",
+        "orderType": "regular",
+        "orderedItems": "Meghana Special Biryani (1)",
+        "orderedTime": "August 4, 11:52 PM",
+        "isActiveOrder": false,
+        "actions": [
+          {
+            "type": "PAST_ORDER_CTA_ENUM_REORDER",
+            "priority": 1,
+            "title": "REORDER",
+            "isEnabled": true,
+            "reorderMeta": {
+              "orderItems": [
+                {
+                  "itemId": "47699884",
+                  "name": "Meghana Special Biryani",
+                  "isVeg": "0",
+                  "quantity": "1",
+                  "total": "385",
+                  "subtotal": "370",
+                  "packingCharges": "15",
+                  "categoryDetails": {
+                    "category": "Non-veg Biriyani",
+                    "subCategory": "nota"
+                  },
+                  "attributes": {
+                    "portionSize": "0",
+                    "vegClassifier": "VEG_CLASSIFIER_NONVEG"
+                  }
+                }
+              ],
+              "restaurantCoverImageId": "oycavthjdkphqevhzk7t"
+            }
+          },
+          {
+            "type": "PAST_ORDER_CTA_ENUM_RATE_ORDER",
+            "priority": 2,
+            "title": "RATE ORDER",
+            "isEnabled": true,
+            "rateDeliveryMeta": {
+              "ratingType": "delivery",
+              "rateAll": true,
+              "ratingTitle": "Not available"
+            }
+          }
+        ]
+      },
+      {
+        "orderId": "196501585119817",
+        "restaurantId": "57271",
+        "restaurantName": "FreshMenu",
+        "restaurantAreaName": "Jakkur",
+        "orderTotal": "₹220",
+        "orderStatus": "Delivered",
+        "orderDeliveryStatus": "delivered",
+        "orderType": "regular",
+        "orderedItems": "Signature Roast Chicken Rice Bowl (1),Masala Omelette (1)",
+        "orderedTime": "January 22, 1:16 PM",
+        "isActiveOrder": false,
+        "actions": [
+          {
+            "type": "PAST_ORDER_CTA_ENUM_REORDER",
+            "priority": 1,
+            "title": "REORDER",
+            "isEnabled": true,
+            "reorderMeta": {
+              "orderItems": [
+                {
+                  "itemId": "109548765",
+                  "name": "Signature Roast Chicken Rice Bowl",
+                  "isVeg": "0",
+                  "quantity": "1",
+                  "total": "318",
+                  "subtotal": "299",
+                  "packingCharges": "19",
+                  "categoryDetails": {
+                    "category": "Bowls",
+                    "subCategory": "nota"
+                  },
+                  "attributes": {
+                    "portionSize": "0",
+                    "vegClassifier": "VEG_CLASSIFIER_NONVEG"
+                  }
+                },
+                {
+                  "itemId": "90799938",
+                  "name": "Masala Omelette",
+                  "isVeg": "0",
+                  "quantity": "1",
+                  "total": "108",
+                  "subtotal": "99",
+                  "packingCharges": "9",
+                  "categoryDetails": {
+                    "category": "Eggs To Order",
+                    "subCategory": "nota"
+                  },
+                  "attributes": {
+                    "portionSize": "0",
+                    "vegClassifier": "VEG_CLASSIFIER_NONVEG"
+                  }
+                }
+              ],
+              "restaurantCoverImageId": "RX_THUMBNAIL/IMAGES/VENDOR/2024/12/26/fe03e408-f14e-4928-b49f-335f1c8bcccd_57271.JPG"
+            }
+          },
+          {
+            "type": "PAST_ORDER_CTA_ENUM_RATE_ORDER",
+            "priority": 2,
+            "title": "RATE ORDER",
+            "isEnabled": true,
+            "rateDeliveryMeta": {
+              "ratingType": "delivery",
+              "rateAll": true,
+              "ratingTitle": "Not available"
+            }
+          }
+        ]
+      }
+    ],
+    "total": 5
+  },
+  "search_products": {
+    "nextOffset": "1",
+    "products": [
+      {
+        "displayName": "Sunfeast Dark Fantasy Swiss Roll",
+        "brand": "Sunfeast Dark Fantasy",
+        "inStock": true,
+        "isAvail": true,
+        "variations": [
+          {
+            "spinId": "0DO2HV6E1E",
+            "skuId": "VZDFIVILA1",
+            "quantityDescription": "21.6 g",
+            "displayName": "Sunfeast Dark Fantasy Swiss Roll",
+            "brandName": "Sunfeast Dark Fantasy",
+            "price": {
+              "mrp": 10,
+              "offerPrice": 9
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2026/2/23/965a0a80-1eba-4aab-8383-a03a01d8f142_698172_1.png"
+          }
+        ],
+        "productId": "0A22DKEU1L",
+        "parentProductId": "HI6ORP7A1K",
+        "isPromoted": false
+      },
+      {
+        "displayName": "Cadbury Chocobakes Choc Layered Cakes",
+        "brand": "Cadbury",
+        "inStock": true,
+        "isAvail": true,
+        "variations": [
+          {
+            "spinId": "RCCTH9NSF0",
+            "skuId": "604Z4CPJGQ",
+            "quantityDescription": "114 g x 4",
+            "displayName": "Cadbury Chocobakes Choc Layered Cakes",
+            "brandName": "Cadbury",
+            "price": {
+              "mrp": 320,
+              "offerPrice": 261
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2025/6/2/1f9f2415-452a-4223-bc41-f17705a92135_4053_1.png"
+          },
+          {
+            "spinId": "QF1NN1RH3Q",
+            "skuId": "L3K14LAMMY",
+            "quantityDescription": "114 g x 2",
+            "displayName": "Cadbury Chocobakes Choc Layered Cakes",
+            "brandName": "Cadbury",
+            "price": {
+              "mrp": 160,
+              "offerPrice": 134
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2025/6/2/1f9f2415-452a-4223-bc41-f17705a92135_4053_1.png"
+          },
+          {
+            "spinId": "JGI2LHUYNW",
+            "skuId": "4MV4RTP62X",
+            "quantityDescription": "114 g",
+            "displayName": "Cadbury Chocobakes Choc Layered Cakes",
+            "brandName": "Cadbury",
+            "price": {
+              "mrp": 80,
+              "offerPrice": 70
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2026/6/23/168e5b5e-4bde-4a9c-836d-aa62f4f3187c_4053_1.png"
+          }
+        ],
+        "productId": "JV6P1APG0I",
+        "parentProductId": "9OXVPNJDRQ",
+        "isPromoted": true
+      },
+      {
+        "displayName": "Cadbury Chocobakes Choc Layered Cake",
+        "brand": "Cadbury",
+        "inStock": true,
+        "isAvail": true,
+        "variations": [
+          {
+            "spinId": "CAAIV3A4MI",
+            "skuId": "3ZD6ICVC48",
+            "quantityDescription": "19 g x 4",
+            "displayName": "Cadbury Chocobakes Choc Layered Cake",
+            "brandName": "Cadbury",
+            "price": {
+              "mrp": 40,
+              "offerPrice": 40
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2025/6/2/5187beb6-70e8-4768-8a56-fcd99b6fa29a_4052_1.png"
+          },
+          {
+            "spinId": "MTOQOPKBHH",
+            "skuId": "PIG8C4S52G",
+            "quantityDescription": "19 g x 2",
+            "displayName": "Cadbury Chocobakes Choc Layered Cake",
+            "brandName": "Cadbury",
+            "price": {
+              "mrp": 20,
+              "offerPrice": 20
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2025/6/2/5187beb6-70e8-4768-8a56-fcd99b6fa29a_4052_1.png"
+          },
+          {
+            "spinId": "K0SGR10PG3",
+            "skuId": "Q7YZ687O35",
+            "quantityDescription": "19 g",
+            "displayName": "Cadbury Chocobakes Choc Layered Cake",
+            "brandName": "Cadbury",
+            "price": {
+              "mrp": 10,
+              "offerPrice": 10
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2026/6/23/f6b2e13c-1c92-4267-8ff8-d48fb04cb214_4052_1.png"
+          }
+        ],
+        "productId": "VOHZNVVWH2",
+        "parentProductId": "WRRM7EFJIL",
+        "isPromoted": false
+      },
+      {
+        "displayName": "Cadbury Chocobakes Choc Layered Cake",
+        "brand": "Cadbury",
+        "inStock": true,
+        "isAvail": true,
+        "variations": [
+          {
+            "spinId": "CNATPN0XRJ",
+            "skuId": "XSQJ7XU76V",
+            "quantityDescription": "228 g",
+            "displayName": "Cadbury Chocobakes Choc Layered Cake",
+            "brandName": "Cadbury",
+            "price": {
+              "mrp": 155,
+              "offerPrice": 123
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2026/6/23/913fa43d-36e2-47f5-9c18-a28071230c9d_95302_1.png"
+          }
+        ],
+        "productId": "DZT7Z2ELZ9",
+        "parentProductId": "IT4MROC9O4",
+        "isPromoted": true
+      },
+      {
+        "displayName": "Iyengar's Bakery Sponge Cake - Eggless (Freshly Baked)",
+        "brand": "Iyengar's Bakery",
+        "inStock": true,
+        "isAvail": true,
+        "variations": [
+          {
+            "spinId": "9DUU01FJ75",
+            "skuId": "Y2V8F4IZZM",
+            "quantityDescription": "150 g",
+            "displayName": "Iyengar's Bakery Sponge Cake - Eggless (Freshly Baked)",
+            "brandName": "Iyengar's Bakery",
+            "price": {
+              "mrp": 105,
+              "offerPrice": 105
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2024/3/28/5beababd-61c6-495d-8d63-c29cc69733cc_packagedcakes_9DUU01FJ75_AL4.png"
+          }
+        ],
+        "productId": "24CZSQHFHO",
+        "parentProductId": "BHI2CYP2IF",
+        "isPromoted": false
+      },
+      {
+        "displayName": "Theobroma Eggless Dense Loaf (No Palm Oil)",
+        "brand": "Theobroma",
+        "inStock": true,
+        "isAvail": true,
+        "variations": [
+          {
+            "spinId": "3M3PRA62SZ",
+            "skuId": "S75UFU81AR",
+            "quantityDescription": "200 g",
+            "displayName": "Theobroma Eggless Dense Loaf (No Palm Oil)",
+            "brandName": "Theobroma",
+            "price": {
+              "mrp": 225,
+              "offerPrice": 169
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/ciw/2025/12/18/54fcc495-06cc-4b5e-8bc5-6265254e39a2_3M3PRA62SZ_MN_17122025.png"
+          }
+        ],
+        "productId": "LPH4XQRNAI",
+        "parentProductId": "69T67OOR9K",
+        "isPromoted": true
+      },
+      {
+        "displayName": "Britannia Gobbles Bar Cake Fruity Fun",
+        "brand": "Britannia",
+        "inStock": true,
+        "isAvail": true,
+        "variations": [
+          {
+            "spinId": "C26060C312",
+            "skuId": "DLWUFCW5LM",
+            "quantityDescription": "110 g x 3",
+            "displayName": "Britannia Gobbles Bar Cake Fruity Fun",
+            "brandName": "Britannia",
+            "price": {
+              "mrp": 90,
+              "offerPrice": 84
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2025/7/2/aaff22ae-35f3-4ca8-b30f-b4c13c802013_19892_1.png"
+          },
+          {
+            "spinId": "O2HV10CPYW",
+            "skuId": "GHMD1UDJG3",
+            "quantityDescription": "110 g x 2",
+            "displayName": "Britannia Gobbles Bar Cake Fruity Fun",
+            "brandName": "Britannia",
+            "price": {
+              "mrp": 60,
+              "offerPrice": 56
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2025/7/2/aaff22ae-35f3-4ca8-b30f-b4c13c802013_19892_1.png"
+          },
+          {
+            "spinId": "NA4T3OZRPZ",
+            "skuId": "WCAZ0N9PLO",
+            "quantityDescription": "110 g",
+            "displayName": "Britannia Gobbles Bar Cake Fruity Fun",
+            "brandName": "Britannia",
+            "price": {
+              "mrp": 30,
+              "offerPrice": 28
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2026/2/14/71c74e53-5996-4914-a75f-0f483af7c58e_19892_1.png"
+          }
+        ],
+        "productId": "SEG2QEQJCQ",
+        "parentProductId": "UG8GG6QCNO",
+        "isPromoted": false
+      },
+      {
+        "displayName": "Awsum Better Bakes Banana Walnuts Cake Eggless",
+        "brand": "Awsum",
+        "inStock": true,
+        "isAvail": true,
+        "variations": [
+          {
+            "spinId": "AI2WOHSXA4",
+            "skuId": "08JKTIIZVH",
+            "quantityDescription": "60 g",
+            "displayName": "Awsum Better Bakes Banana Walnuts Cake Eggless",
+            "brandName": "Awsum",
+            "price": {
+              "mrp": 100,
+              "offerPrice": 55
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/ciw/2025/12/18/2e67ea83-86a8-42a8-91f2-438b7993689f_AI2WOHSXA4_MN_17122025.png"
+          }
+        ],
+        "productId": "ORBEBGZ485",
+        "parentProductId": "NNF18ECZ2U",
+        "isPromoted": true
+      },
+      {
+        "displayName": "Cadbury Brownie",
+        "brand": "Cadbury",
+        "inStock": true,
+        "isAvail": true,
+        "variations": [
+          {
+            "spinId": "HVO39TSPV9",
+            "skuId": "ODUF6THBIO",
+            "quantityDescription": "38 g x 3",
+            "displayName": "Cadbury Brownie",
+            "brandName": "Cadbury",
+            "price": {
+              "mrp": 90,
+              "offerPrice": 88
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2025/12/17/1a827b21-e3fd-43ae-9b9e-abbc7e15d93b_840956_1.png"
+          },
+          {
+            "spinId": "T7WFBMX3PK",
+            "skuId": "W9IW75ARHJ",
+            "quantityDescription": "38 g x 2",
+            "displayName": "Cadbury Brownie",
+            "brandName": "Cadbury",
+            "price": {
+              "mrp": 60,
+              "offerPrice": 59
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2025/12/17/1a827b21-e3fd-43ae-9b9e-abbc7e15d93b_840956_1.png"
+          },
+          {
+            "spinId": "VVQBKYGOGQ",
+            "skuId": "VUTJHI8IGF",
+            "quantityDescription": "38 g",
+            "displayName": "Cadbury Brownie",
+            "brandName": "Cadbury",
+            "price": {
+              "mrp": 30,
+              "offerPrice": 30
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2026/2/14/428127b2-fbf2-421c-8a62-e46c5d542aa3_840956_1.png"
+          }
+        ],
+        "productId": "JY4S03S9W8",
+        "parentProductId": "OEZD2Z41BK",
+        "isPromoted": false
+      },
+      {
+        "displayName": "Awsum Whole Wheat Eggless Brownie",
+        "brand": "Awsum",
+        "inStock": true,
+        "isAvail": true,
+        "variations": [
+          {
+            "spinId": "YLSQX5OSU6",
+            "skuId": "7D7RLXPLOO",
+            "quantityDescription": "60 g x 3",
+            "displayName": "Awsum Whole Wheat Eggless Brownie",
+            "brandName": "Awsum",
+            "price": {
+              "mrp": 300,
+              "offerPrice": 147
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2025/7/9/c44cdf7c-5709-4651-adc9-a914959cf0f9_31940_1.png"
+          },
+          {
+            "spinId": "APJJ10R4NI",
+            "skuId": "VNFKI2I8YR",
+            "quantityDescription": "60 g x 2",
+            "displayName": "Awsum Whole Wheat Eggless Brownie",
+            "brandName": "Awsum",
+            "price": {
+              "mrp": 200,
+              "offerPrice": 98
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2025/7/9/c44cdf7c-5709-4651-adc9-a914959cf0f9_31940_1.png"
+          },
+          {
+            "spinId": "CCAHMG0LO1",
+            "skuId": "CFCD6O7IVQ",
+            "quantityDescription": "60 g",
+            "displayName": "Awsum Whole Wheat Eggless Brownie",
+            "brandName": "Awsum",
+            "price": {
+              "mrp": 100,
+              "offerPrice": 49
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/ciw/2025/12/18/456e308a-d970-4958-99e1-591c9cbc6d95_CCAHMG0LO1_MN_17122025.png"
+          }
+        ],
+        "productId": "USFI2XDXOC",
+        "parentProductId": "F8YI0A24Q3",
+        "isPromoted": true
+      },
+      {
+        "displayName": "Winkies Sliced Chocolate Cake",
+        "brand": "Winkies",
+        "inStock": true,
+        "isAvail": true,
+        "variations": [
+          {
+            "spinId": "H8QWYA8AIS",
+            "skuId": "G1DVN4OLFN",
+            "quantityDescription": "110 g x 2",
+            "displayName": "Winkies Sliced Chocolate Cake",
+            "brandName": "Winkies",
+            "price": {
+              "mrp": 60,
+              "offerPrice": 56
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/m9cwzscsbht3nllyjqmp"
+          },
+          {
+            "spinId": "8GFDYVK1J4",
+            "skuId": "6PCZ5FH09Y",
+            "quantityDescription": "110 g",
+            "displayName": "Winkies Sliced Chocolate Cake",
+            "brandName": "Winkies",
+            "price": {
+              "mrp": 30,
+              "offerPrice": 28
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/ciw/2025/12/18/2bfe1ac4-46ec-4510-90cf-ca2434d14738_8GFDYVK1J4_MN_17122025.png"
+          }
+        ],
+        "productId": "M28CS8S0NB",
+        "parentProductId": "G1W4AV9WKX",
+        "isPromoted": false
+      },
+      {
+        "displayName": "Awsum Orange Pistachio Cake",
+        "brand": "Awsum",
+        "inStock": true,
+        "isAvail": true,
+        "variations": [
+          {
+            "spinId": "JQ6WOTFGVF",
+            "skuId": "5TDAFSZOS2",
+            "quantityDescription": "60 g x 3",
+            "displayName": "Awsum Orange Pistachio Cake",
+            "brandName": "Awsum",
+            "price": {
+              "mrp": 300,
+              "offerPrice": 165
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2025/7/9/290cdba7-6d2e-4f8c-b1c6-57fddaa3c0ba_31943_1.png"
+          },
+          {
+            "spinId": "CK0LUVVWB5",
+            "skuId": "A21L2B2D90",
+            "quantityDescription": "60 g",
+            "displayName": "Awsum Orange Pistachio Cake",
+            "brandName": "Awsum",
+            "price": {
+              "mrp": 100,
+              "offerPrice": 55
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/ciw/2025/12/18/db14fa48-c9cf-4252-bd98-df656ba2525e_CK0LUVVWB5_MN_17122025.png"
+          }
+        ],
+        "productId": "234QBL0K0R",
+        "parentProductId": "HU0ZOQAD8G",
+        "isPromoted": true
+      },
+      {
+        "displayName": "Britannia Treat Croissant Cocoa Creme (Packaging Might Vary)",
+        "brand": "Britannia",
+        "inStock": true,
+        "isAvail": true,
+        "variations": [
+          {
+            "spinId": "JAMGDW8VBK",
+            "skuId": "XLT4J7QL5S",
+            "quantityDescription": "48.5 g x 3",
+            "displayName": "Britannia Treat Croissant Cocoa Creme (Packaging Might Vary)",
+            "brandName": "Britannia",
+            "price": {
+              "mrp": 60,
+              "offerPrice": 51
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2025/6/30/2ae4ece7-51f1-4c6a-bd24-f7038b1d7858_17208_1.png"
+          },
+          {
+            "spinId": "CIZSQBGCVR",
+            "skuId": "ALH0HAV8WG",
+            "quantityDescription": "48.5 g",
+            "displayName": "Britannia Treat Croissant Cocoa Creme (Packaging Might Vary)",
+            "brandName": "Britannia",
+            "price": {
+              "mrp": 20,
+              "offerPrice": 17
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2025/12/23/671bf56b-c4de-4cc2-9bcb-9b83cb71a7d9_17208_1.png"
+          },
+          {
+            "spinId": "A07N7P3BV5",
+            "skuId": "JHSABR7PTM",
+            "quantityDescription": "48.5 g x 2",
+            "displayName": "Britannia Treat Croissant Cocoa Creme (Packaging Might Vary)",
+            "brandName": "Britannia",
+            "price": {
+              "mrp": 40,
+              "offerPrice": 34
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2025/6/30/2ae4ece7-51f1-4c6a-bd24-f7038b1d7858_17208_1.png"
+          },
+          {
+            "spinId": "9QI3P72QDD",
+            "skuId": "8V5T9VAQQ9",
+            "quantityDescription": "48.5 g x 6",
+            "displayName": "Britannia Treat Croissant Cocoa Creme (Packaging Might Vary)",
+            "brandName": "Britannia",
+            "price": {
+              "mrp": 120,
+              "offerPrice": 102
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2025/6/30/2ae4ece7-51f1-4c6a-bd24-f7038b1d7858_17208_1.png"
+          }
+        ],
+        "productId": "UKZ0DOP1NO",
+        "parentProductId": "MXH9UEEFHU",
+        "isPromoted": false
+      },
+      {
+        "displayName": "BAULI MOONFILS CROISSANT CHOCOLATE CRÈME- EGG",
+        "brand": "Bauli",
+        "inStock": true,
+        "isAvail": true,
+        "variations": [
+          {
+            "spinId": "A3RDRK32PY",
+            "skuId": "5UN1BGT41J",
+            "quantityDescription": "45 g x 4",
+            "displayName": "BAULI MOONFILS CROISSANT CHOCOLATE CRÈME- EGG",
+            "brandName": "Bauli",
+            "price": {
+              "mrp": 100,
+              "offerPrice": 84
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2025/8/7/465ed116-1f23-4187-b00f-a3fc9e802827_2862_1.png"
+          },
+          {
+            "spinId": "CYZI4R88A8",
+            "skuId": "8ZRH4N4NX4",
+            "quantityDescription": "45 g x 2",
+            "displayName": "BAULI MOONFILS CROISSANT CHOCOLATE CRÈME- EGG",
+            "brandName": "Bauli",
+            "price": {
+              "mrp": 50,
+              "offerPrice": 40
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2025/8/7/465ed116-1f23-4187-b00f-a3fc9e802827_2862_1.png"
+          },
+          {
+            "spinId": "D4IXAUTX0H",
+            "skuId": "NQ59TGIO6J",
+            "quantityDescription": "45 g",
+            "displayName": "BAULI MOONFILS CROISSANT CHOCOLATE CRÈME- EGG",
+            "brandName": "Bauli",
+            "price": {
+              "mrp": 25,
+              "offerPrice": 21
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/ciw/2025/12/18/157b0239-72cf-41d3-997a-ded2b4fbf496_D4IXAUTX0H_MN_17122025.png"
+          }
+        ],
+        "productId": "XXLFW3JU4I",
+        "parentProductId": "008EB8R1AJ",
+        "isPromoted": true
+      },
+      {
+        "displayName": "Iyengar's Bakery Dilpasand (Freshly Baked)",
+        "brand": "Iyengar's Bakery",
+        "inStock": true,
+        "isAvail": true,
+        "variations": [
+          {
+            "spinId": "7SZQ1I18XK",
+            "skuId": "FT82VJPP00",
+            "quantityDescription": "1 Piece",
+            "displayName": "Iyengar's Bakery Dilpasand (Freshly Baked)",
+            "brandName": "Iyengar's Bakery",
+            "price": {
+              "mrp": 50,
+              "offerPrice": 50
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2024/3/28/cfd09590-4be3-4d31-833b-94c2598f5042_otherbakeryitems_7SZQ1I18XK_AL3.png"
+          }
+        ],
+        "productId": "M367HZUMWO",
+        "parentProductId": "T2LBBFGOJY",
+        "isPromoted": false
+      },
+      {
+        "displayName": "Cadbury Chocobakes Choc Filled Cookies",
+        "brand": "Cadbury",
+        "inStock": true,
+        "isAvail": true,
+        "variations": [
+          {
+            "spinId": "DU8ROFKCYT",
+            "skuId": "FY6GF93IL9",
+            "quantityDescription": "241.5 g",
+            "displayName": "Cadbury Chocobakes Choc Filled Cookies",
+            "brandName": "Cadbury",
+            "price": {
+              "mrp": 160,
+              "offerPrice": 96
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2026/6/23/12d3c423-7cf0-4612-8c8a-1b584b3a7df1_21265_1.png"
+          }
+        ],
+        "productId": "3FM3S6R9O6",
+        "parentProductId": "ZWWQIRWNKF",
+        "isPromoted": true
+      },
+      {
+        "displayName": "BAULI SPYROLL CAKE- EGG",
+        "brand": "Bauli",
+        "inStock": true,
+        "isAvail": true,
+        "variations": [
+          {
+            "spinId": "SHCQNP2PII",
+            "skuId": "HXHWJOK0QF",
+            "quantityDescription": "28 g",
+            "displayName": "BAULI SPYROLL CAKE- EGG",
+            "brandName": "Bauli",
+            "price": {
+              "mrp": 13,
+              "offerPrice": 12
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/ciw/2025/12/18/753f03fe-e5ff-4605-8fb4-1d49f2919a8e_SHCQNP2PII_MN_17122025.png"
+          }
+        ],
+        "productId": "IRHWO4V52K",
+        "parentProductId": "QQVEQ9L92R",
+        "isPromoted": false
+      },
+      {
+        "displayName": "BAULI MOONFILS CROISSANT VANILLA CRÈME- EGG",
+        "brand": "Bauli",
+        "inStock": true,
+        "isAvail": true,
+        "variations": [
+          {
+            "spinId": "MZ6WCACND5",
+            "skuId": "9OQ9F27KCN",
+            "quantityDescription": "45 g x 4",
+            "displayName": "BAULI MOONFILS CROISSANT VANILLA CRÈME- EGG",
+            "brandName": "Bauli",
+            "price": {
+              "mrp": 100,
+              "offerPrice": 58
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2025/9/9/d4298c7a-9893-4453-9bb5-bfe691d8de6e_290_1.png"
+          },
+          {
+            "spinId": "3VZYPLAV24",
+            "skuId": "K2O2O71UJY",
+            "quantityDescription": "45 g x 2",
+            "displayName": "BAULI MOONFILS CROISSANT VANILLA CRÈME- EGG",
+            "brandName": "Bauli",
+            "price": {
+              "mrp": 50,
+              "offerPrice": 30
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/CIW/2025/9/9/d4298c7a-9893-4453-9bb5-bfe691d8de6e_290_1.png"
+          },
+          {
+            "spinId": "51TKIQRTWR",
+            "skuId": "W8HMMHXMU2",
+            "quantityDescription": "45 g",
+            "displayName": "BAULI MOONFILS CROISSANT VANILLA CRÈME- EGG",
+            "brandName": "Bauli",
+            "price": {
+              "mrp": 25,
+              "offerPrice": 16
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/ciw/2025/12/18/36500799-d5df-46e9-93d2-9a1f5021c85d_51TKIQRTWR_MN_17122025.png"
+          }
+        ],
+        "productId": "G47V2QAW9N",
+        "parentProductId": "6DH6UD15OU",
+        "isPromoted": true
+      },
+      {
+        "displayName": "Winkies Sliced Marble Cake",
+        "brand": "Winkies",
+        "inStock": true,
+        "isAvail": true,
+        "variations": [
+          {
+            "spinId": "7QX9VOOUD6",
+            "skuId": "8GWNRUNKUO",
+            "quantityDescription": "110 g x 2",
+            "displayName": "Winkies Sliced Marble Cake",
+            "brandName": "Winkies",
+            "price": {
+              "mrp": 60,
+              "offerPrice": 54
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/tehobn4klf4pnbragbde"
+          },
+          {
+            "spinId": "KR96X7C9BU",
+            "skuId": "AWZMCJD5H6",
+            "quantityDescription": "110 g",
+            "displayName": "Winkies Sliced Marble Cake",
+            "brandName": "Winkies",
+            "price": {
+              "mrp": 30,
+              "offerPrice": 27
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/ciw/2025/12/18/b0833f61-bc86-46ed-81ee-2b38ea45e0f2_KR96X7C9BU_MN_17122025.png"
+          }
+        ],
+        "productId": "SKHVZH2VVW",
+        "parentProductId": "PWGYZ6L6FQ",
+        "isPromoted": false
+      },
+      {
+        "displayName": "Brik Oven Classic Cheese Cake",
+        "brand": "Brik Oven",
+        "inStock": true,
+        "isAvail": true,
+        "variations": [
+          {
+            "spinId": "U05N995BOC",
+            "skuId": "DP7Q7B0SP1",
+            "quantityDescription": "120 g",
+            "displayName": "Brik Oven Classic Cheese Cake",
+            "brandName": "Brik Oven",
+            "price": {
+              "mrp": 149,
+              "offerPrice": 149
+            },
+            "isInStockAndAvailable": true,
+            "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/NI_CATALOG/IMAGES/ciw/2025/12/18/3f757c0f-16c3-4f47-9efd-9ec5047a47eb_U05N995BOC_MN_17122025.png"
+          }
+        ],
+        "productId": "4OLZIZZUZA",
+        "parentProductId": "TOKT1YSG6D",
+        "isPromoted": true
+      }
+    ]
+  }
+}

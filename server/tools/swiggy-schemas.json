@@ -1,0 +1,569 @@
+{
+  "food": [
+    {
+      "name": "get_addresses",
+      "required": [],
+      "input": [
+        "page",
+        "pageSize"
+      ],
+      "output": null
+    },
+    {
+      "name": "search_restaurants",
+      "required": [
+        "addressId",
+        "query"
+      ],
+      "input": [
+        "addressId",
+        "query",
+        "offset"
+      ],
+      "output": null
+    },
+    {
+      "name": "search_menu",
+      "required": [
+        "addressId",
+        "query"
+      ],
+      "input": [
+        "addressId",
+        "query",
+        "restaurantIdOfAddedItem",
+        "vegFilter",
+        "offset"
+      ],
+      "output": null
+    },
+    {
+      "name": "get_restaurant_menu",
+      "required": [
+        "addressId",
+        "restaurantId"
+      ],
+      "input": [
+        "addressId",
+        "restaurantId",
+        "page",
+        "pageSize"
+      ],
+      "output": null
+    },
+    {
+      "name": "get_food_cart",
+      "required": [
+        "addressId"
+      ],
+      "input": [
+        "addressId",
+        "restaurantName"
+      ],
+      "output": null
+    },
+    {
+      "name": "update_food_cart",
+      "required": [
+        "restaurantId",
+        "cartItems",
+        "addressId"
+      ],
+      "input": [
+        "restaurantId",
+        "cartItems",
+        "addressId",
+        "restaurantName",
+        "cutleryOptIn"
+      ],
+      "output": null
+    },
+    {
+      "name": "flush_food_cart",
+      "required": [],
+      "input": [],
+      "output": null
+    },
+    {
+      "name": "place_food_order",
+      "required": [
+        "addressId"
+      ],
+      "input": [
+        "addressId",
+        "paymentMethod",
+        "intentApp",
+        "generateUPIQR",
+        "noteToRestaurant"
+      ],
+      "output": null
+    },
+    {
+      "name": "fetch_food_coupons",
+      "required": [
+        "restaurantId",
+        "addressId"
+      ],
+      "input": [
+        "restaurantId",
+        "addressId",
+        "couponCode"
+      ],
+      "output": null
+    },
+    {
+      "name": "apply_food_coupon",
+      "required": [
+        "couponCode",
+        "addressId"
+      ],
+      "input": [
+        "couponCode",
+        "addressId",
+        "cartId"
+      ],
+      "output": null
+    },
+    {
+      "name": "get_food_orders",
+      "required": [
+        "addressId"
+      ],
+      "input": [
+        "addressId",
+        "activeOnly"
+      ],
+      "output": null
+    },
+    {
+      "name": "get_food_order_details",
+      "required": [
+        "orderId"
+      ],
+      "input": [
+        "orderId"
+      ],
+      "output": null
+    },
+    {
+      "name": "track_food_order",
+      "required": [],
+      "input": [
+        "orderId"
+      ],
+      "output": null
+    },
+    {
+      "name": "get_food_delivery_status",
+      "required": [
+        "orderId"
+      ],
+      "input": [
+        "orderId"
+      ],
+      "output": null
+    },
+    {
+      "name": "report_error",
+      "required": [
+        "tool",
+        "errorMessage"
+      ],
+      "input": [
+        "tool",
+        "domain",
+        "errorMessage",
+        "flowDescription",
+        "toolContext",
+        "userNotes"
+      ],
+      "output": null
+    },
+    {
+      "name": "get_payment_options",
+      "required": [],
+      "input": [
+        "cartAmount",
+        "addressId"
+      ],
+      "output": null
+    },
+    {
+      "name": "check_payment_status",
+      "required": [
+        "paasId"
+      ],
+      "input": [
+        "paasId",
+        "orderId",
+        "addressId",
+        "cartId",
+        "lat",
+        "lng",
+        "finalize"
+      ],
+      "output": null
+    },
+    {
+      "name": "confirm_order",
+      "required": [
+        "orderId"
+      ],
+      "input": [
+        "orderId",
+        "transactionId",
+        "paasId",
+        "addressId",
+        "cartId",
+        "lat",
+        "lng"
+      ],
+      "output": null
+    }
+  ],
+  "instamart": [
+    {
+      "name": "get_addresses",
+      "required": [],
+      "input": [
+        "page",
+        "pageSize"
+      ],
+      "output": null
+    },
+    {
+      "name": "search_products",
+      "required": [
+        "addressId",
+        "query"
+      ],
+      "input": [
+        "addressId",
+        "query",
+        "offset"
+      ],
+      "output": null
+    },
+    {
+      "name": "your_go_to_items",
+      "required": [
+        "addressId"
+      ],
+      "input": [
+        "addressId",
+        "offset"
+      ],
+      "output": null
+    },
+    {
+      "name": "get_cart",
+      "required": [],
+      "input": [],
+      "output": null
+    },
+    {
+      "name": "update_cart",
+      "required": [
+        "selectedAddressId",
+        "items"
+      ],
+      "input": [
+        "selectedAddressId",
+        "items"
+      ],
+      "output": null
+    },
+    {
+      "name": "clear_cart",
+      "required": [],
+      "input": [],
+      "output": null
+    },
+    {
+      "name": "checkout",
+      "required": [
+        "addressId"
+      ],
+      "input": [
+        "addressId",
+        "paymentMethod",
+        "intentApp",
+        "generateUPIQR"
+      ],
+      "output": null
+    },
+    {
+      "name": "get_orders",
+      "required": [],
+      "input": [
+        "count",
+        "orderType",
+        "activeOnly"
+      ],
+      "output": null
+    },
+    {
+      "name": "track_order",
+      "required": [
+        "orderId",
+        "lat",
+        "lng"
+      ],
+      "input": [
+        "orderId",
+        "lat",
+        "lng"
+      ],
+      "output": null
+    },
+    {
+      "name": "get_delivery_status",
+      "required": [
+        "orderId",
+        "addressId"
+      ],
+      "input": [
+        "orderId",
+        "addressId"
+      ],
+      "output": null
+    },
+    {
+      "name": "report_error",
+      "required": [
+        "tool",
+        "errorMessage"
+      ],
+      "input": [
+        "tool",
+        "domain",
+        "errorMessage",
+        "flowDescription",
+        "toolContext",
+        "userNotes"
+      ],
+      "output": null
+    },
+    {
+      "name": "get_payment_options",
+      "required": [],
+      "input": [
+        "cartAmount",
+        "addressId"
+      ],
+      "output": null
+    },
+    {
+      "name": "check_payment_status",
+      "required": [
+        "paasId"
+      ],
+      "input": [
+        "paasId",
+        "orderId",
+        "addressId",
+        "cartId",
+        "lat",
+        "lng",
+        "finalize"
+      ],
+      "output": null
+    },
+    {
+      "name": "confirm_order",
+      "required": [
+        "orderId"
+      ],
+      "input": [
+        "orderId",
+        "transactionId",
+        "paasId",
+        "addressId",
+        "cartId",
+        "lat",
+        "lng"
+      ],
+      "output": null
+    }
+  ],
+  "dineout": [
+    {
+      "name": "get_saved_locations",
+      "required": [],
+      "input": [],
+      "output": null
+    },
+    {
+      "name": "search_restaurants_dineout",
+      "required": [
+        "query"
+      ],
+      "input": [
+        "query",
+        "entityType",
+        "addressId",
+        "latitude",
+        "longitude"
+      ],
+      "output": null
+    },
+    {
+      "name": "get_restaurant_details",
+      "required": [
+        "restaurantId",
+        "latitude",
+        "longitude"
+      ],
+      "input": [
+        "restaurantId",
+        "latitude",
+        "longitude"
+      ],
+      "output": null
+    },
+    {
+      "name": "render_restaurants_dineout",
+      "required": [
+        "restaurantIds",
+        "searches"
+      ],
+      "input": [
+        "restaurantIds",
+        "searches"
+      ],
+      "output": null
+    },
+    {
+      "name": "get_available_slots",
+      "required": [
+        "restaurantId",
+        "date",
+        "latitude",
+        "longitude"
+      ],
+      "input": [
+        "restaurantId",
+        "date",
+        "latitude",
+        "longitude"
+      ],
+      "output": null
+    },
+    {
+      "name": "book_table",
+      "required": [
+        "restaurantId",
+        "slotId",
+        "itemId",
+        "reservationTime",
+        "guestCount",
+        "latitude",
+        "longitude"
+      ],
+      "input": [
+        "restaurantId",
+        "slotId",
+        "itemId",
+        "reservationTime",
+        "guestCount",
+        "latitude",
+        "longitude",
+        "paymentMethod",
+        "cartKey",
+        "intentApp",
+        "generateUPIQR",
+        "tidOverride"
+      ],
+      "output": null
+    },
+    {
+      "name": "create_cart",
+      "required": [
+        "restaurantId",
+        "cartType",
+        "latitude",
+        "longitude"
+      ],
+      "input": [
+        "restaurantId",
+        "cartType",
+        "latitude",
+        "longitude",
+        "slotId",
+        "itemId",
+        "reservationTime",
+        "guestCount",
+        "billAmount",
+        "source"
+      ],
+      "output": null
+    },
+    {
+      "name": "get_booking_status",
+      "required": [
+        "orderId"
+      ],
+      "input": [
+        "orderId"
+      ],
+      "output": null
+    },
+    {
+      "name": "report_error",
+      "required": [
+        "tool",
+        "errorMessage"
+      ],
+      "input": [
+        "tool",
+        "domain",
+        "errorMessage",
+        "flowDescription",
+        "toolContext",
+        "userNotes"
+      ],
+      "output": null
+    },
+    {
+      "name": "get_payment_options",
+      "required": [],
+      "input": [
+        "cartAmount",
+        "addressId"
+      ],
+      "output": null
+    },
+    {
+      "name": "check_payment_status",
+      "required": [
+        "paasId"
+      ],
+      "input": [
+        "paasId",
+        "orderId",
+        "addressId",
+        "cartId",
+        "lat",
+        "lng",
+        "finalize"
+      ],
+      "output": null
+    },
+    {
+      "name": "confirm_order",
+      "required": [
+        "orderId"
+      ],
+      "input": [
+        "orderId",
+        "transactionId",
+        "paasId",
+        "addressId",
+        "cartId",
+        "lat",
+        "lng"
+      ],
+      "output": null
+    }
+  ]
+}

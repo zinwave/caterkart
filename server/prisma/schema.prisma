@@ -1,0 +1,495 @@
+// CaterKart production data model.
+// Mirrors src/types/orchestration.ts but persisted and multi-user.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Identity & Swiggy auth ──────────────────────────────────────────────────
+
+model User {
+  id           String        @id @default(cuid())
+  phone        String?       @unique // app-side identity (the host)
+  displayName  String?
+  email        String?       @unique // work identity — used for corporate SSO / domain match
+  createdAt    DateTime      @default(now())
+  swiggyAuth   SwiggyAuth?
+  celebrations Celebration[]
+  // Corporate: a user may belong to one company (as admin, lead, or member).
+  employment   CompanyMember?
+}
+
+/// One row per user holding their Swiggy MCP OAuth grant.
+/// accessToken is AES-256-GCM encrypted at rest (see CryptoService).
+model SwiggyAuth {
+  id              String   @id @default(cuid())
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String   @unique
+  clientId        String // from Dynamic Client Registration (RFC 7591)
+  accessTokenEnc  String // encrypted; tokens are valid ~5 days, no refresh in v1
+  scope           String
+  expiresAt       DateTime // re-auth required after this (401 => re-auth)
+  swiggyUserHint  String? // masked phone for display
+  updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now())
+}
+
+/// Short-lived state for an in-flight OAuth PKCE handshake.
+model OAuthFlow {
+  id            String   @id @default(cuid())
+  state         String   @unique // CSRF token returned on /authorize
+  codeVerifier  String // PKCE verifier; exchanged for token on callback
+  clientId      String
+  userId        String? // app user this flow will bind to once complete
+  redirectAfter String? // where to bounce the browser when done
+  createdAt     DateTime @default(now())
+  // rows older than ~5 min are swept; auth code itself lives only 120s
+}
+
+// ── Celebration aggregate ───────────────────────────────────────────────────
+
+enum CelebrationStatus {
+  PLANNING
+  PLACING
+  IN_FLIGHT
+  COMPLETED
+  FAILED
+}
+
+/// PERSONAL = the original consumer celebration.
+/// CORPORATE = a team lunch/event billed to a company cost-center, settled by
+/// one consolidated invoice instead of per-guest UPI splits.
+enum OrderType {
+  PERSONAL
+  CORPORATE
+}
+
+model Celebration {
+  id             String            @id @default(cuid())
+  host           User              @relation(fields: [hostId], references: [id], onDelete: Cascade)
+  hostId         String
+  occasion       String
+  addressLabel   String // free text shown in UI
+  swiggyAddressId String? // resolved via get_addresses before any MCP call
+  status         CelebrationStatus @default(PLANNING)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  // ── Corporate binding (null for PERSONAL orders) ──────────────────────────
+  orderType     OrderType    @default(PERSONAL)
+  company       Company?     @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  companyId     String?
+  costCenter    CostCenter?  @relation(fields: [costCenterId], references: [id], onDelete: SetNull)
+  costCenterId  String?
+  perHeadCapRup Int?         // snapshot of the policy cap enforced at order time
+  invoice       ConsolidatedInvoice?
+
+  members    Member[]
+  subOrders  SubOrder[]
+  plan       PlacementPlan?
+  settlement Settlement?
+  invites    Invite[]
+}
+
+enum MemberStatus {
+  INVITED // link sent, not opened
+  JOINED  // opened the link, told us who they are
+  PICKING // choosing dishes
+  READY   // submitted their picks
+}
+
+model Member {
+  id            String       @id @default(cuid())
+  celebration   Celebration  @relation(fields: [celebrationId], references: [id], onDelete: Cascade)
+  celebrationId String
+  name          String
+  phone         String?
+  email         String?
+  /** veg | non-veg | jain | vegan */
+  dietary       String?
+  isKid         Boolean      @default(false)
+  isHost        Boolean      @default(false)
+  status        MemberStatus @default(INVITED)
+  joinedAt      DateTime     @default(now())
+  readyAt       DateTime?
+  picks         MemberPick[]
+  invites       Invite[]
+  shares        SettlementShare[]
+
+  @@index([celebrationId])
+}
+
+/**
+ * What one guest chose. A snapshot, not a live Swiggy lookup: the name and price
+ * they picked at must survive a menu change between picking and placing.
+ */
+model MemberPick {
+  id             String   @id @default(cuid())
+  member         Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId       String
+  restaurantId   String
+  restaurantName String
+  dishId         String
+  dishName       String
+  /** rupees, per unit */
+  price          Int
+  qty            Int      @default(1)
+  veg            Boolean  @default(false)
+  imageUrl       String?
+  // Restaurant metadata carried on the pick so the HOST — who never opened this
+  // restaurant — can still show its ETA, area and rating for guest-added items.
+  restaurantEtaMin   Int?
+  restaurantEtaRange String?
+  restaurantArea     String?
+  restaurantRating   Float?
+  createdAt      DateTime @default(now())
+
+  @@unique([memberId, restaurantId, dishId])
+  @@index([memberId])
+}
+
+// ── Sub-orders (one Swiggy order each) ──────────────────────────────────────
+
+enum SubOrderKind {
+  FOOD
+  INSTAMART
+}
+
+enum SubOrderStatus {
+  DRAFT
+  QUEUED
+  PLACING
+  PLACED
+  PREPARING
+  ON_THE_WAY
+  DELIVERED
+  CANCELLED
+  FAILED // place call 5xx — needs reconciliation via get_*_orders
+}
+
+model SubOrder {
+  id            String         @id @default(cuid())
+  celebration   Celebration    @relation(fields: [celebrationId], references: [id], onDelete: Cascade)
+  celebrationId String
+  kind          SubOrderKind
+  status        SubOrderStatus @default(DRAFT)
+
+  // Food-only
+  restaurantId   String?
+  restaurantName String?
+
+  // Line items (kind-specific shape), validated by DTOs at the edge.
+  lines Json // FoodLine[] | InstamartLine[]
+
+  subtotal    Int // rupees, ex coupons/delivery
+  couponCode  String?
+  couponValue Int?
+  capExceeded Boolean @default(false) // food subtotal > FOOD_ORDER_CAP_RUPEES
+
+  // Placement scheduling
+  placementOffsetMs Int       @default(0) // relative to celebration "go" time
+  scheduledFor      DateTime?
+  placedAt          DateTime?
+
+  // Swiggy-side state
+  swiggyOrderId String?
+  etaMinutes    Int?
+  lastErrorCode String?
+  lastErrorMsg  String?
+  lastErrorAt   DateTime?
+
+  events OrderEvent[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OrderEvent {
+  id         String   @id @default(cuid())
+  subOrder   SubOrder @relation(fields: [subOrderId], references: [id], onDelete: Cascade)
+  subOrderId String
+  status     SubOrderStatus
+  etaMinutes Int?
+  raw        Json? // raw tracking payload from MCP
+  at         DateTime @default(now())
+}
+
+// ── Placement plan ──────────────────────────────────────────────────────────
+
+model PlacementPlan {
+  id                      String          @id @default(cuid())
+  celebration             Celebration     @relation(fields: [celebrationId], references: [id], onDelete: Cascade)
+  celebrationId           String          @unique
+  targetConvergenceMin    Int
+  preDropLeadMin          Int
+  computedAt              DateTime        @default(now())
+  entries                 PlacementEntry[]
+}
+
+model PlacementEntry {
+  id              String        @id @default(cuid())
+  plan            PlacementPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  planId          String
+  subOrderId      String
+  estimatedEtaMin Int
+  fireAt          DateTime
+  fired           Boolean       @default(false)
+}
+
+// ── Settlement (app-side, not Swiggy) ───────────────────────────────────────
+
+enum SettlementMode {
+  EQUAL
+  BY_ITEM
+}
+
+model Settlement {
+  id              String          @id @default(cuid())
+  celebration     Celebration     @relation(fields: [celebrationId], references: [id], onDelete: Cascade)
+  celebrationId   String          @unique
+  mode            SettlementMode  @default(EQUAL)
+  total           Int
+  cashCollectedBy String? // memberId who paid COD at the door
+  shares          SettlementShare[]
+  createdAt       DateTime        @default(now())
+}
+
+model SettlementShare {
+  id            String     @id @default(cuid())
+  settlement    Settlement @relation(fields: [settlementId], references: [id], onDelete: Cascade)
+  settlementId  String
+  member        Member     @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId      String
+  amount        Int
+  contributions Json // [{ subOrderId, amount }]
+  upiLink       String? // upi://pay?... deeplink we generate
+  paid          Boolean    @default(false)
+  paidAt        DateTime?
+}
+
+// ── Group invites ───────────────────────────────────────────────────────────
+
+model Invite {
+  id            String      @id @default(cuid())
+  celebration   Celebration @relation(fields: [celebrationId], references: [id], onDelete: Cascade)
+  celebrationId String
+  token         String      @unique
+  expiresAt     DateTime
+  /** set when the host invited a specific person by email/phone */
+  member        Member?     @relation(fields: [memberId], references: [id], onDelete: SetNull)
+  memberId      String?
+  acceptedBy    String? // member id once joined
+  createdAt     DateTime    @default(now())
+
+  @@index([celebrationId])
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// CORPORATE — CaterKart for Work
+//
+// The B2B layer: an HR/Admin owns a Company, carves it into cost-centers
+// (teams), sets budgets & meal policy, and every team order rolls up into ONE
+// consolidated invoice for painless claims. The actual GST tax invoice is still
+// issued by Swiggy under the company GSTIN (billingLinked); until that
+// partnership lands, we issue a finance-grade consolidated STATEMENT.
+// ════════════════════════════════════════════════════════════════════════════
+
+enum CompanyPlan {
+  PILOT       // free trial, capped seats
+  STANDARD    // per-seat SaaS
+  ENTERPRISE  // custom, SSO, dedicated billing
+}
+
+model Company {
+  id            String        @id @default(cuid())
+  name          String
+  emailDomain   String        @unique // used to auto-attach employees via SSO/domain match
+  gstin         String?       // required before true GST invoices can be issued
+  billingEmail  String?
+  addressLabel  String?       // default delivery/billing address
+  plan          CompanyPlan   @default(PILOT)
+  billingLinked Boolean       @default(false) // true once Swiggy Corporate billing (company GSTIN) is wired
+  walletBalance Int           @default(0)      // prepaid balance in rupees (0 => monthly-billed)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  costCenters  CostCenter[]
+  members      CompanyMember[]
+  celebrations Celebration[]
+  invoices     ConsolidatedInvoice[]
+  groupOrders  GroupOrder[]
+}
+
+enum CompanyRole {
+  ADMIN   // HR / Office admin — manages company, budgets, billing
+  LEAD    // team lead — can place team orders within their cost-center budget
+  MEMBER  // employee — joins orders, picks their meal within the per-head cap
+}
+
+/// A person's membership in a company. One row per (user, company); a user
+/// belongs to at most one company (User.employment is 1:1).
+model CompanyMember {
+  id           String      @id @default(cuid())
+  company      Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  companyId    String
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String      @unique
+  displayName  String
+  workEmail    String
+  role         CompanyRole @default(MEMBER)
+  costCenter   CostCenter? @relation(fields: [costCenterId], references: [id], onDelete: SetNull)
+  costCenterId String?
+  active       Boolean     @default(true)
+  createdAt    DateTime    @default(now())
+
+  organizedOrders GroupOrder[]            @relation("OrderOrganizer")
+  participations  GroupOrderParticipant[]
+
+  @@unique([companyId, workEmail])
+}
+
+enum BudgetPeriod {
+  WEEKLY
+  MONTHLY
+}
+
+/// A cost-center = a team/department. Owns the budget + policy that gates
+/// every corporate order routed through it. This is the sticky, hard-to-copy
+/// control plane finance actually cares about.
+model CostCenter {
+  id             String        @id @default(cuid())
+  company        Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  companyId      String
+  name           String        // e.g. "Engineering", "Sales — West"
+  code           String        // GL / cost-center code shown on invoices, e.g. "ENG-01"
+  leadMemberId   String?       // CompanyMember.id who owns this team's spend
+
+  // ── Budget & meal policy ──────────────────────────────────────────────────
+  budgetPeriod   BudgetPeriod  @default(MONTHLY)
+  budgetRup      Int           @default(0)   // total spend allowed per period
+  perHeadCapRup  Int           @default(300) // max per person per order
+  vegOnly        Boolean       @default(false)
+  allowAlcohol   Boolean       @default(false)
+  requireApprovalAboveRup Int? // orders above this need ADMIN sign-off (null = never)
+
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  members      CompanyMember[]
+  celebrations Celebration[]
+  invoices     ConsolidatedInvoice[]
+  groupOrders  GroupOrder[]
+
+  @@unique([companyId, code])
+}
+
+enum InvoiceStatus {
+  DRAFT       // order in flight, not yet finalised
+  ISSUED      // finalised, ready to claim
+  CLAIMED     // employee submitted for reimbursement
+  RECONCILED  // finance matched & closed
+  VOID
+}
+
+/// One invoice per corporate order — the whole point of the product. Rolls up N
+/// single-restaurant Swiggy sub-orders into a single claimable document, tagged
+/// to a cost-center, with a per-person breakdown for finance.
+model ConsolidatedInvoice {
+  id            String        @id @default(cuid())
+  number        String        @unique // e.g. "CK/2026-27/000142"
+  company       Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  companyId     String
+  costCenter    CostCenter?   @relation(fields: [costCenterId], references: [id], onDelete: SetNull)
+  costCenterId  String?
+  celebration   Celebration   @relation(fields: [celebrationId], references: [id], onDelete: Cascade)
+  celebrationId String        @unique
+
+  status        InvoiceStatus @default(DRAFT)
+
+  // Money (rupees). food+instamart+delivery+fees, then taxes.
+  subtotalRup   Int
+  taxRup        Int
+  totalRup      Int
+
+  // Snapshot fields so the invoice is immutable once ISSUED, even if the
+  // company/cost-center later changes name, GSTIN, or code.
+  companyName   String
+  gstin         String?
+  costCenterName String?
+  costCenterCode String?
+  placedByName  String        // who ran the order
+  headcount     Int
+  periodLabel   String        // e.g. "June 2026"
+
+  // Per-person + per-suborder breakdown for finance reconciliation.
+  lineBreakdown Json          // [{ memberId, name, restaurant, items:[...], amount }]
+
+  gstInvoiceUrl String?       // set once Swiggy issues the true GST invoice
+  issuedAt      DateTime?
+  claimedAt     DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+// ── Collaborative group orders ──────────────────────────────────────────────
+// The corporate twin of the consumer invite flow: an employee (organizer)
+// opens a group order for their cost-centre and shares a join link. Teammates
+// authenticate as org members (work-email / SSO), pick their own meal within
+// the per-head cap, and submit. The organizer (or an ADMIN) then places it —
+// collapsing all picks into one Celebration + ConsolidatedInvoice.
+
+enum GroupOrderStatus {
+  COLLECTING // link is live, teammates are picking
+  PLACED     // organizer finalised → became a Celebration + invoice
+  CANCELLED
+}
+
+enum ParticipantStatus {
+  INVITED   // roster member who hasn't opened the link
+  JOINED    // opened, not yet picking
+  PICKING   // has items in their tray
+  SUBMITTED // locked in their picks
+}
+
+model GroupOrder {
+  id            String           @id @default(cuid())
+  token         String           @unique // shareable join link token
+  company       Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  companyId     String
+  costCenter    CostCenter?      @relation(fields: [costCenterId], references: [id], onDelete: SetNull)
+  costCenterId  String?
+  organizer     CompanyMember    @relation("OrderOrganizer", fields: [organizerId], references: [id], onDelete: Cascade)
+  organizerId   String
+  title         String
+  addressLabel  String
+  date          DateTime         // when the team eats
+  status        GroupOrderStatus @default(COLLECTING)
+  perHeadCapRup Int              // snapshot of the cost-centre cap at open time
+
+  // Once PLACED, the finalised order it collapsed into.
+  placedCelebrationId String?
+  placedInvoiceId     String?
+
+  participants GroupOrderParticipant[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model GroupOrderParticipant {
+  id           String            @id @default(cuid())
+  groupOrder   GroupOrder        @relation(fields: [groupOrderId], references: [id], onDelete: Cascade)
+  groupOrderId String
+  member       CompanyMember     @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId     String
+  status       ParticipantStatus @default(JOINED)
+  lines        Json              @default("[]") // OrderLine[] this person picked
+  joinedAt     DateTime?
+  submittedAt  DateTime?
+
+  @@unique([groupOrderId, memberId])
+}

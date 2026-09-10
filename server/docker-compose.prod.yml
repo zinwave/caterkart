@@ -1,0 +1,77 @@
+# Production stack for the CaterKart celebrations backend.
+#
+# One Nest process serves HTTP *and* runs the BullMQ workers (ENABLE_QUEUES=true),
+# so the SSE Subject in EventsService is shared with the tracking processor that
+# emits into it. Do not split api/worker without adding a Redis pub/sub adapter.
+#
+#   docker compose -f docker-compose.prod.yml --env-file .env.production up -d --build
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: .env.production
+    environment:
+      # Workers must live in this process — see the note at the top of this file.
+      ENABLE_QUEUES: 'true'
+      DATABASE_URL: postgresql://caterkart:${POSTGRES_PASSWORD}@db:5432/caterkart?schema=public
+      REDIS_URL: redis://redis:6379
+      PORT: '4000'
+    # No host port: only Caddy reaches the API.
+    expose:
+      - '4000'
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: caterkart
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: caterkart
+    # Deliberately no `ports:` — Postgres must not be reachable from the public IP.
+    volumes:
+      - caterkart_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U caterkart']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    # Redis holds the delayed placement jobs. Losing it loses scheduled orders,
+    # so persist it and keep it off the public interface.
+    command: redis-server --appendonly yes
+    volumes:
+      - caterkart_redis:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  caterkart_pg:
+  caterkart_redis:
+  caddy_data:
+  caddy_config:

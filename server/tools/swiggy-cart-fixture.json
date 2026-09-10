@@ -1,0 +1,350 @@
+{
+  "update_food_cart": {
+    "cart_id": 1127324519,
+    "result": "success",
+    "restaurant": {
+      "deliverySubtitle": "10-15 mins to Dhanush: 10th Floor We Work Rmz Latitude, Amruthnagar, Amruthnagar, Byatarayanapura, Bengaluru, Karnataka, India"
+    },
+    "items": [
+      {
+        "menu_item_id": 47699876,
+        "name": "Chicken Biryani",
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/12/29/71a6e565-f984-427b-9ac9-2494fc6921ad_5fceb574-e1fb-4339-81bb-b19701a2d830.jpg",
+        "quantity": 1,
+        "is_veg": "2",
+        "subtotal": 365,
+        "total": 380,
+        "final_price": 365,
+        "in_stock": 1,
+        "variants": [],
+        "addons": [],
+        "valid_addons": [
+          {
+            "group_id": 139029819,
+            "group_name": "Starters (Non Veg)",
+            "choices": [
+              {
+                "id": 148068694,
+                "name": "Chicken Pakoda",
+                "price": 37500,
+                "inStock": 1,
+                "isVeg": 0,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 148068693,
+                "name": "Chicken 65",
+                "price": 37500,
+                "inStock": 1,
+                "isVeg": 0,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 148068689,
+                "name": "Chicken Kabab",
+                "price": 36000,
+                "inStock": 1,
+                "isVeg": 0,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 148068691,
+                "name": "Meghana Chicken 555",
+                "price": 37500,
+                "inStock": 1,
+                "isVeg": 0,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 148068690,
+                "name": "Chicken Lollypop",
+                "price": 37000,
+                "inStock": 1,
+                "isVeg": 0,
+                "order": 0,
+                "default": 0
+              }
+            ],
+            "maxAddons": 5,
+            "maxFreeAddons": -1,
+            "minAddons": 0,
+            "order": 100000
+          },
+          {
+            "group_id": 94849373,
+            "group_name": "Extra (Non Veg)",
+            "choices": [
+              {
+                "id": 118710185,
+                "name": "Extra Aloo 4 Pcs",
+                "price": 4500,
+                "inStock": 1,
+                "isVeg": 1,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 147489392,
+                "name": "Gravy",
+                "price": 3500,
+                "inStock": 1,
+                "isVeg": 1,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 118710182,
+                "name": "Masala Pack",
+                "price": 12000,
+                "inStock": 1,
+                "isVeg": 1,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 147489386,
+                "name": "Raita",
+                "price": 2000,
+                "inStock": 1,
+                "isVeg": 1,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 147489387,
+                "name": "Meghana Chicken Spl Pcs",
+                "price": 25500,
+                "inStock": 1,
+                "isVeg": 0,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 147489391,
+                "name": "Chicken Boneless Pcs",
+                "price": 25000,
+                "inStock": 1,
+                "isVeg": 0,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 123685139,
+                "name": "Gongura Pickle",
+                "price": 6000,
+                "inStock": 0,
+                "isVeg": 1,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 123685140,
+                "name": "Ulavacharu",
+                "price": 6000,
+                "inStock": 0,
+                "isVeg": 1,
+                "order": 0,
+                "default": 0
+              }
+            ],
+            "maxAddons": 8,
+            "maxFreeAddons": -1,
+            "minAddons": 0,
+            "order": 99999
+          }
+        ]
+      }
+    ],
+    "item_count": 1,
+    "pricing": {
+      "item_total": 365,
+      "delivery_charge": 0,
+      "delivery_charge_strikeoff": 49,
+      "taxes_and_charges": 51.58,
+      "to_pay": 417
+    },
+    "offers": {
+      "coupon_applied": "ORDERON",
+      "coupon_discount": 0,
+      "free_delivery_applied": true
+    }
+  },
+  "get_food_cart": {
+    "cart_id": 1127324703,
+    "result": "success",
+    "restaurant": {
+      "deliverySubtitle": "10-15 mins to Dhanush: 10th Floor We Work Rmz Latitude, Amruthnagar, Amruthnagar, Byatarayanapura, Bengaluru, Karnataka, India"
+    },
+    "items": [
+      {
+        "menu_item_id": 47699876,
+        "name": "Chicken Biryani",
+        "imageUrl": "https://media-assets.swiggy.com/swiggy/image/upload/FOOD_CATALOG/IMAGES/CMS/2025/12/29/71a6e565-f984-427b-9ac9-2494fc6921ad_5fceb574-e1fb-4339-81bb-b19701a2d830.jpg",
+        "quantity": 1,
+        "is_veg": "2",
+        "subtotal": 365,
+        "total": 380,
+        "final_price": 365,
+        "in_stock": 1,
+        "variants": [],
+        "addons": [],
+        "valid_addons": [
+          {
+            "group_id": 139029819,
+            "group_name": "Starters (Non Veg)",
+            "choices": [
+              {
+                "id": 148068693,
+                "name": "Chicken 65",
+                "price": 37500,
+                "inStock": 1,
+                "isVeg": 0,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 148068689,
+                "name": "Chicken Kabab",
+                "price": 36000,
+                "inStock": 1,
+                "isVeg": 0,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 148068691,
+                "name": "Meghana Chicken 555",
+                "price": 37500,
+                "inStock": 1,
+                "isVeg": 0,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 148068690,
+                "name": "Chicken Lollypop",
+                "price": 37000,
+                "inStock": 1,
+                "isVeg": 0,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 148068694,
+                "name": "Chicken Pakoda",
+                "price": 37500,
+                "inStock": 1,
+                "isVeg": 0,
+                "order": 0,
+                "default": 0
+              }
+            ],
+            "maxAddons": 5,
+            "maxFreeAddons": -1,
+            "minAddons": 0,
+            "order": 100000
+          },
+          {
+            "group_id": 94849373,
+            "group_name": "Extra (Non Veg)",
+            "choices": [
+              {
+                "id": 118710185,
+                "name": "Extra Aloo 4 Pcs",
+                "price": 4500,
+                "inStock": 1,
+                "isVeg": 1,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 147489392,
+                "name": "Gravy",
+                "price": 3500,
+                "inStock": 1,
+                "isVeg": 1,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 118710182,
+                "name": "Masala Pack",
+                "price": 12000,
+                "inStock": 1,
+                "isVeg": 1,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 147489386,
+                "name": "Raita",
+                "price": 2000,
+                "inStock": 1,
+                "isVeg": 1,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 147489387,
+                "name": "Meghana Chicken Spl Pcs",
+                "price": 25500,
+                "inStock": 1,
+                "isVeg": 0,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 147489391,
+                "name": "Chicken Boneless Pcs",
+                "price": 25000,
+                "inStock": 1,
+                "isVeg": 0,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 123685139,
+                "name": "Gongura Pickle",
+                "price": 6000,
+                "inStock": 0,
+                "isVeg": 1,
+                "order": 0,
+                "default": 0
+              },
+              {
+                "id": 123685140,
+                "name": "Ulavacharu",
+                "price": 6000,
+                "inStock": 0,
+                "isVeg": 1,
+                "order": 0,
+                "default": 0
+              }
+            ],
+            "maxAddons": 8,
+            "maxFreeAddons": -1,
+            "minAddons": 0,
+            "order": 99999
+          }
+        ]
+      }
+    ],
+    "item_count": 1,
+    "pricing": {
+      "item_total": 365,
+      "delivery_charge": 0,
+      "delivery_charge_strikeoff": 49,
+      "taxes_and_charges": 51.58,
+      "to_pay": 417
+    },
+    "offers": {
+      "coupon_applied": "ORDERON",
+      "coupon_discount": 0,
+      "free_delivery_applied": true
+    }
+  }
+}

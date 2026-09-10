@@ -1,0 +1,28 @@
+# TLS termination for the CaterKart celebrations API.
+# Caddy provisions and renews the Let's Encrypt cert automatically — the Swiggy
+# OAuth redirect URI must be HTTPS on a stable hostname, which is what this is for.
+
+api.caterkart.in {
+	encode gzip
+
+	# Server-Sent Events: GET /api/celebrations/:id/stream is a long-lived stream
+	# (EventsController @Sse). flush_interval -1 disables response buffering so
+	# tracking updates reach the browser as they are emitted rather than in chunks.
+	@sse path_regexp ^/api/celebrations/[^/]+/stream$
+	handle @sse {
+		reverse_proxy api:4000 {
+			flush_interval -1
+		}
+	}
+
+	handle {
+		reverse_proxy api:4000
+	}
+
+	log {
+		output file /data/access.log {
+			roll_size 10mb
+			roll_keep 5
+		}
+	}
+}

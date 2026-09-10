@@ -1,0 +1,10 @@
+node_modules
+dist
+.env
+*.log
+
+# Swiggy OAuth tokens from tools/swiggy.mjs — never commit
+.swiggy-tokens.json
+
+# production secrets
+.env.production

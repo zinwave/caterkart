@@ -1,0 +1,29 @@
+# Local infra for the CaterKart backend: Postgres + Redis.
+# `docker compose up -d` then `npm run prisma:migrate && npm run start:dev`.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: caterkart
+      POSTGRES_PASSWORD: caterkart
+      POSTGRES_DB: caterkart
+    ports:
+      - '5432:5432'
+    volumes:
+      - caterkart_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U caterkart']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+    volumes:
+      - caterkart_redis:/data
+
+volumes:
+  caterkart_pg:
+  caterkart_redis:
