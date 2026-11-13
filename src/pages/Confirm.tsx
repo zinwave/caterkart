@@ -16,6 +16,7 @@ import {
   IconStore, IconCart, IconSparkles, IconCheck, IconClock, IconMapPin, IconCalendar,
   IconTruck, IconBolt, IconUsers, IconTag, IconGift, IconArrowRight, IconWallet,
 } from '../components/icons/Icons';
+import { BEFORE_CONFIRM, SHOW_INSTAMART_STEP } from '../config/features';
 
 /**
  * Swiggy's OWN restriction, quoted from the place_food_order tool description:
@@ -360,10 +361,10 @@ export default function Confirm() {
       <div className="bg-gradient-to-br from-swiggy-orange via-cater-coral to-rose-500 text-white">
         <div className="max-w-5xl mx-auto px-5 pt-8 pb-16">
           <Link
-            to="/addons"
+            to={BEFORE_CONFIRM}
             className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-white/80 hover:text-white transition"
           >
-            ← Back to add-ons
+            {SHOW_INSTAMART_STEP ? '← Back to add-ons' : '← Back to cart'}
           </Link>
 
           <div className="mt-4 flex flex-wrap items-start justify-between gap-4">

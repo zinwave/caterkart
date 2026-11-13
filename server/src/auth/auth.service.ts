@@ -1,13 +1,71 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { CryptoService } from '../common/crypto.service';
 import { NeedsReauthError } from '../mcp/mcp.errors';
+import { maskString } from '../common/redact';
 
 interface ServerMetadata {
   authorization_endpoint: string;
   token_endpoint: string;
   registration_endpoint?: string;
+}
+
+/** Swiggy's /auth/token response, for both the code and refresh grants. */
+interface TokenResponse {
+  access_token: string;
+  refresh_token?: string;
+  expires_in?: number;
+  scope?: string;
+}
+
+/**
+ * Renew this long before the access token actually expires.
+ *
+ * A call that passes the freshness check still has to survive a full MCP
+ * round-trip, and placements are non-idempotent — expiring mid-placement is
+ * exactly the failure we cannot safely retry.
+ */
+const RENEW_BEFORE_MS = 5 * 60_000;
+
+/**
+ * Floor between renewal attempts for one user while their token is still valid.
+ *
+ * Swiggy hands back the current token until it genuinely expires, so retrying
+ * inside the renewal window buys nothing — this stops that from becoming a
+ * request per tool call for the last five minutes of every grant.
+ */
+const REFRESH_COOLDOWN_MS = 60_000;
+
+/**
+ * Stand-in until we learn the user's real name. The OAuth grant carries no
+ * profile and the MCP exposes no tool that reports one, so this survives until
+ * they save an address and tell us who they are.
+ */
+export const PLACEHOLDER_NAME = 'Swiggy user';
+
+/**
+ * How long a started sign-in may sit unfinished.
+ *
+ * An OAuthFlow row holds the PKCE verifier and the CSRF state for one handshake.
+ * Swiggy's own authorization code lives about two minutes, so ten is generous
+ * for a user who tabs away mid-login — and far short of forever, which is what
+ * it used to be: rows were created on every sign-in attempt and only deleted on
+ * success, so abandoned ones accumulated unbounded and stayed replayable.
+ */
+const OAUTH_FLOW_TTL_MS = 10 * 60_000;
+
+/**
+ * Whether a stored grant can still reach Swiggy.
+ *
+ * A held refresh token counts as connected even once the access token has
+ * lapsed: the next call renews it silently. Reporting that as disconnected
+ * would push the user through phone + OTP for a grant that still works.
+ */
+function isUsable(auth: { expiresAt: Date; refreshTokenEnc: string | null } | null | undefined): boolean {
+  if (!auth) return false;
+  return auth.expiresAt.getTime() > Date.now() || !!auth.refreshTokenEnc;
 }
 
 /**
@@ -18,15 +76,22 @@ interface ServerMetadata {
  *   1. begin()    → register a client (DCR), build /auth/authorize URL with a
  *                   PKCE challenge + state, persist the verifier.
  *   2. <browser>  → user does phone + OTP on Swiggy, redirected back with code.
- *   3. complete() → POST /auth/token (code + verifier) → access token (~5 days,
- *                   no refresh), encrypt + store.
+ *   3. complete() → POST /auth/token (code + verifier) → access token (~5 days)
+ *                   AND a refresh token, encrypt + store both.
  *
- * On a 401 anywhere, callers get NeedsReauthError and must restart at step 1.
+ * Swiggy now issues refresh tokens (verified live 2026-09-13), so an expired
+ * access token is renewed silently instead of forcing the user back through
+ * phone + OTP every 5 days. NeedsReauthError is now the narrow case: no grant
+ * at all, a grant predating refresh tokens, or a refresh Swiggy rejected.
  */
 @Injectable()
 export class AuthService {
   private readonly log = new Logger(AuthService.name);
   private metadata?: ServerMetadata;
+  /** userId → in-flight refresh, so concurrent tool calls share one renewal. */
+  private readonly refreshing = new Map<string, Promise<string>>();
+  /** userId → last successful renewal, for the cooldown above. */
+  private readonly lastRefresh = new Map<string, number>();
 
   constructor(
     private readonly config: ConfigService,
@@ -72,6 +137,15 @@ export class AuthService {
     const flow = await this.prisma.oAuthFlow.findUnique({ where: { state } });
     if (!flow) throw new NeedsReauthError('unknown');
 
+    // Single-use AND time-bound. Deleting first means a replay of the same
+    // state — a stolen callback URL resent later — finds nothing, rather than
+    // racing a second exchange against the same verifier.
+    await this.prisma.oAuthFlow.delete({ where: { id: flow.id } }).catch(() => undefined);
+    if (Date.now() - flow.createdAt.getTime() > OAUTH_FLOW_TTL_MS) {
+      this.log.warn(`rejecting expired OAuth flow (age ${Date.now() - flow.createdAt.getTime()}ms)`);
+      throw new NeedsReauthError(flow.userId ?? 'unknown');
+    }
+
     const meta = await this.getMetadata();
     const redirectUri = this.config.get<string>('mcp.oauth.redirectUri')!;
     const body = new URLSearchParams({
@@ -88,10 +162,13 @@ export class AuthService {
       body,
     });
     if (!res.ok) {
-      this.log.error(`token exchange failed: ${res.status} ${await res.text()}`);
+      // Scrubbed: an OAuth error body routinely echoes the parameters it was
+      // sent, so a verbatim log of a failed exchange can write the live
+      // authorization code and PKCE verifier to disk.
+      this.log.error(`token exchange failed: ${res.status} ${maskString(await res.text())}`);
       throw new NeedsReauthError(flow.userId ?? 'unknown');
     }
-    const token = (await res.json()) as { access_token: string; expires_in?: number; scope?: string };
+    const token = (await res.json()) as TokenResponse;
 
     const userId = flow.userId ?? (await this.ensureAnonUser());
     await this.storeToken(
@@ -101,18 +178,98 @@ export class AuthService {
       token.expires_in ?? 5 * 86400,
       undefined,
       flow.clientId,
+      token.refresh_token,
     );
-    await this.prisma.oAuthFlow.delete({ where: { id: flow.id } }).catch(() => undefined);
     return { userId, redirectAfter: flow.redirectAfter ?? undefined };
   }
 
-  /** Decrypted access token, or NeedsReauthError if missing/expired. */
+  /**
+   * Decrypted access token, renewing it first if it is close to expiry.
+   *
+   * NeedsReauthError now means the grant is genuinely unrecoverable: there is
+   * no grant, or it predates refresh tokens, or Swiggy rejected the refresh.
+   */
   async getValidAccessToken(userId: string): Promise<string> {
     const auth = await this.prisma.swiggyAuth.findUnique({ where: { userId } });
     if (!auth) throw new NeedsReauthError(userId);
-    // Doc: proactively re-auth when <= 60s remain (no refresh token in v1).
-    if (auth.expiresAt.getTime() <= Date.now() + 60_000) throw new NeedsReauthError(userId);
-    return this.crypto.decrypt(auth.accessTokenEnc);
+
+    const msLeft = auth.expiresAt.getTime() - Date.now();
+    if (msLeft > RENEW_BEFORE_MS) return this.crypto.decrypt(auth.accessTokenEnc);
+
+    const expired = msLeft <= 0;
+    if (!auth.refreshTokenEnc) {
+      // Grants predating refresh tokens: still usable until they actually lapse.
+      if (!expired) return this.crypto.decrypt(auth.accessTokenEnc);
+      throw new NeedsReauthError(userId);
+    }
+
+    // Verified live 2026-09-13: while the current token is still valid, Swiggy
+    // answers a refresh with that SAME token and its REMAINING lifetime — an
+    // early renewal does not push expiry out. So a token inside the renewal
+    // window but not yet expired would re-hit the token endpoint on every
+    // single call. Renew once, then coast on the result until it truly lapses.
+    const since = Date.now() - (this.lastRefresh.get(userId) ?? 0);
+    if (!expired && since < REFRESH_COOLDOWN_MS) return this.crypto.decrypt(auth.accessTokenEnc);
+
+    return this.refreshAccessToken(userId, auth.refreshTokenEnc, auth.clientId);
+  }
+
+  /**
+   * Renew an access token, collapsing concurrent callers onto one request.
+   *
+   * Without the in-flight map a checkout — which fans out across cart, coupons,
+   * payment options and orders — would fire several refreshes at once. Swiggy
+   * may rotate the refresh token, in which case the slowest response would
+   * overwrite the newest one with a value Swiggy has already retired.
+   */
+  private refreshAccessToken(userId: string, refreshTokenEnc: string, clientId: string): Promise<string> {
+    const inFlight = this.refreshing.get(userId);
+    if (inFlight) return inFlight;
+
+    const p = this.doRefresh(userId, refreshTokenEnc, clientId).finally(() => {
+      this.refreshing.delete(userId);
+    });
+    this.refreshing.set(userId, p);
+    return p;
+  }
+
+  private async doRefresh(userId: string, refreshTokenEnc: string, clientId: string): Promise<string> {
+    const meta = await this.getMetadata();
+    const body = new URLSearchParams({
+      grant_type: 'refresh_token',
+      refresh_token: this.crypto.decrypt(refreshTokenEnc),
+      client_id: clientId,
+    });
+
+    const res = await fetch(meta.token_endpoint, {
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      body,
+    });
+    if (!res.ok) {
+      // The refresh token is spent or revoked. Clear it so every later call
+      // fails fast into re-auth instead of retrying a grant Swiggy has refused.
+      this.log.warn(`refresh failed for ${userId}: ${res.status} ${maskString(await res.text())}`);
+      await this.prisma.swiggyAuth
+        .updateMany({ where: { userId }, data: { refreshTokenEnc: null } })
+        .catch(() => undefined);
+      throw new NeedsReauthError(userId);
+    }
+
+    // Swiggy's refresh response carries no `scope` (verified live), so the
+    // configured default stands in rather than blanking the stored value.
+    const token = (await res.json()) as TokenResponse;
+    await this.storeToken(
+      userId,
+      token.access_token,
+      token.scope ?? this.config.get('mcp.oauth.scope', 'mcp:tools'),
+      token.expires_in ?? 5 * 86400,
+      undefined,
+      clientId,
+      token.refresh_token,
+    );
+    this.lastRefresh.set(userId, Date.now());
+    return token.access_token;
   }
 
   /** The signed-in user plus the state of their Swiggy grant. */
@@ -124,11 +281,11 @@ export class AuthService {
     if (!user) throw new NeedsReauthError(userId);
 
     const auth = user.swiggyAuth;
-    const live = !!auth && auth.expiresAt.getTime() > Date.now();
+    const live = isUsable(auth);
     return {
       user: {
         id: user.id,
-        name: user.displayName ?? 'Swiggy user',
+        name: user.displayName ?? PLACEHOLDER_NAME,
         phone: auth?.swiggyUserHint ?? null,
       },
       swiggy: { connected: live, expiresAt: live ? auth!.expiresAt : undefined },
@@ -137,12 +294,33 @@ export class AuthService {
 
   async isConnected(userId: string): Promise<{ connected: boolean; expiresAt?: Date }> {
     const auth = await this.prisma.swiggyAuth.findUnique({ where: { userId } });
-    if (!auth || auth.expiresAt.getTime() <= Date.now()) return { connected: false };
-    return { connected: true, expiresAt: auth.expiresAt };
+    if (!isUsable(auth)) return { connected: false };
+    return { connected: true, expiresAt: auth!.expiresAt };
   }
 
   async disconnect(userId: string): Promise<void> {
     await this.prisma.swiggyAuth.deleteMany({ where: { userId } });
+  }
+
+  /**
+   * Sweep handshakes nobody came back to finish.
+   *
+   * Hourly rather than on-write: the table is tiny, and a sweep on the sign-in
+   * path would put a delete on the latency-sensitive side of a login. The TTL
+   * check in `complete()` is what makes an un-swept row harmless; this is
+   * housekeeping, not a security control.
+   */
+  @Cron(CronExpression.EVERY_HOUR)
+  async sweepExpiredFlows(): Promise<void> {
+    try {
+      const { count } = await this.prisma.oAuthFlow.deleteMany({
+        where: { createdAt: { lt: new Date(Date.now() - OAUTH_FLOW_TTL_MS) } },
+      });
+      if (count) this.log.log(`swept ${count} abandoned OAuth flow(s)`);
+    } catch (err) {
+      // A sweep that cannot run is not worth failing anything over.
+      this.log.warn(`OAuth flow sweep failed: ${(err as Error).message}`);
+    }
   }
 
   // ── internals ─────────────────────────────────────────────────────────────
@@ -179,43 +357,124 @@ export class AuthService {
     expiresInSec: number,
     hint: string | undefined,
     clientId: string,
+    refreshToken?: string,
   ): Promise<void> {
     // SwiggyAuth.userId is a FK to User.id. `complete()` creates the row for a
     // first-time sign-in, but an existing session re-authorising an expired
     // grant may name a user that was pruned — upsert rather than 500 on the FK.
     await this.prisma.user.upsert({
       where: { id: userId },
-      create: { id: userId, displayName: 'Swiggy user' },
+      create: { id: userId, displayName: PLACEHOLDER_NAME },
       update: {},
     });
 
     const enc = this.crypto.encrypt(accessToken);
     const expiresAt = new Date(Date.now() + expiresInSec * 1000);
+    // `undefined` is how Prisma is told "leave this column alone". A refresh
+    // response that omits refresh_token means Swiggy did not rotate it, so the
+    // stored one is still the live one — writing null there would strand the
+    // user on a full re-auth at the next expiry. Same for an omitted hint.
+    const refreshEnc = refreshToken ? this.crypto.encrypt(refreshToken) : undefined;
     await this.prisma.swiggyAuth.upsert({
       where: { userId },
-      create: { userId, clientId, accessTokenEnc: enc, scope, expiresAt, swiggyUserHint: hint },
-      update: { clientId, accessTokenEnc: enc, scope, expiresAt, swiggyUserHint: hint },
+      create: {
+        userId,
+        clientId,
+        accessTokenEnc: enc,
+        refreshTokenEnc: refreshEnc ?? null,
+        scope,
+        expiresAt,
+        swiggyUserHint: hint,
+      },
+      update: {
+        clientId,
+        accessTokenEnc: enc,
+        refreshTokenEnc: refreshEnc,
+        scope,
+        expiresAt,
+        swiggyUserHint: hint,
+      },
     });
   }
 
+  /**
+   * Discover Swiggy's OAuth endpoints — and refuse any that are not Swiggy's.
+   *
+   * The discovery document is fetched from the MCP server and tells us where to
+   * send the authorization code, the PKCE verifier and, later, the refresh
+   * token. Trusting it unconditionally means the MCP server picks the host that
+   * receives those credentials: a compromised or DNS-hijacked mcp.swiggy.com
+   * could return `token_endpoint: https://attacker.example/t` and we would POST
+   * a live grant to it. This is the failure described in the MCP SDK's own
+   * advisory (GHSA — "OAuth client could send credentials to an authorization
+   * server chosen by the MCP server").
+   *
+   * So every discovered URL must be https and share the configured MCP origin.
+   * Anything else falls back to the documented defaults, which are derived from
+   * that same configured origin and therefore cannot be redirected at all.
+   */
   private async getMetadata(): Promise<ServerMetadata> {
     if (this.metadata) return this.metadata;
+
     const base = this.config.get<string>('mcp.baseUrl', 'https://mcp.swiggy.com');
-    try {
-      const res = await fetch(`${base}/.well-known/oauth-authorization-server`);
-      if (res.ok) {
-        this.metadata = (await res.json()) as ServerMetadata;
-        return this.metadata;
-      }
-    } catch (e) {
-      this.log.warn(`metadata discovery failed, using documented defaults: ${e}`);
-    }
-    this.metadata = {
+    const defaults: ServerMetadata = {
       authorization_endpoint: `${base}/auth/authorize`,
       token_endpoint: `${base}/auth/token`,
       registration_endpoint: `${base}/auth/register`,
     };
+
+    try {
+      const res = await fetch(`${base}/.well-known/oauth-authorization-server`);
+      if (res.ok) {
+        const discovered = (await res.json()) as Partial<ServerMetadata>;
+        this.metadata = this.vetMetadata(discovered, base, defaults);
+        return this.metadata;
+      }
+    } catch (e) {
+      this.log.warn(`metadata discovery failed, using documented defaults: ${maskString(String(e))}`);
+    }
+
+    this.metadata = defaults;
     return this.metadata;
+  }
+
+  /** Keep only discovered endpoints that live on the configured MCP origin. */
+  private vetMetadata(
+    discovered: Partial<ServerMetadata>,
+    base: string,
+    defaults: ServerMetadata,
+  ): ServerMetadata {
+    const expected = new URL(base).origin;
+
+    const sameOrigin = (candidate: string | undefined, fallback: string, field: string): string => {
+      if (!candidate) return fallback;
+      try {
+        const url = new URL(candidate);
+        // Origin, not hostname: https vs http and a different port are both
+        // different places to send a credential.
+        if (url.protocol === 'https:' && url.origin === expected) return candidate;
+        this.log.error(
+          `OAuth discovery proposed an off-origin ${field} (${url.origin}); expected ${expected}. Ignoring it.`,
+        );
+      } catch {
+        this.log.error(`OAuth discovery returned an unparseable ${field}. Ignoring it.`);
+      }
+      return fallback;
+    };
+
+    return {
+      authorization_endpoint: sameOrigin(
+        discovered.authorization_endpoint,
+        defaults.authorization_endpoint,
+        'authorization_endpoint',
+      ),
+      token_endpoint: sameOrigin(discovered.token_endpoint, defaults.token_endpoint, 'token_endpoint'),
+      registration_endpoint: sameOrigin(
+        discovered.registration_endpoint,
+        defaults.registration_endpoint!,
+        'registration_endpoint',
+      ),
+    };
   }
 
   /** Dynamic Client Registration (RFC 7591). */
@@ -234,13 +493,15 @@ export class AuthService {
         scope: this.config.get('mcp.oauth.scope', 'mcp:tools'),
       }),
     });
-    if (!res.ok) throw new Error(`DCR failed: ${res.status} ${await res.text()}`);
+    // The message reaches the error filter, and from there a log line — scrub
+    // it for the same reason as the token-exchange body above.
+    if (!res.ok) throw new Error(`DCR failed: ${res.status} ${maskString(await res.text())}`);
     const reg = (await res.json()) as { client_id: string };
     return reg.client_id;
   }
 
   private async ensureAnonUser(): Promise<string> {
-    const u = await this.prisma.user.create({ data: { displayName: 'Swiggy user' } });
+    const u = await this.prisma.user.create({ data: { displayName: PLACEHOLDER_NAME } });
     return u.id;
   }
 }

@@ -5,6 +5,7 @@
 // use solid fill in currentColor for recognizability.
 // =====================================================
 import { SVGProps } from 'react';
+import swiggyLogo from '../../assets/swiggy-logo.png';
 
 type IconProps = SVGProps<SVGSVGElement> & { size?: number };
 
@@ -386,36 +387,35 @@ export const LogoMark = ({ size = 28, className = '' }: { size?: number; classNa
   </svg>
 );
 
-// Swiggy brand mark, used wherever the footer/header credit reads "powered by".
-// It replaces the word "Swiggy" outright, so it carries its own accessible name:
-// with the text gone, a bare <svg> would leave screen readers saying "powered by"
-// and nothing at all.
+// Swiggy's own mark, used wherever a credit reads "powered by". It replaces
+// the word "Swiggy" outright, so it carries its own accessible name: with the
+// text gone, a bare image would leave screen readers saying "powered by" and
+// nothing at all.
+//
+// The logo is a tall pin, so `size` sets the HEIGHT and the width follows the
+// aspect ratio — matching it to the line height rather than squashing it into
+// a square box.
 export const SwiggyMark = ({
   size = 16,
   className = '',
+  alt = 'Swiggy',
 }: {
   size?: number;
   className?: string;
+  /** Pass "" where the word "Swiggy" is already in the surrounding copy —
+   *  otherwise "powered by <mark>" is announced as "powered by Swiggy Swiggy". */
+  alt?: string;
 }) => (
-  <svg
-    viewBox="0 0 24 24"
-    width={size}
+  <img
+    src={swiggyLogo}
+    alt={alt}
+    aria-hidden={alt === '' ? true : undefined}
     height={size}
+    style={{ height: size, width: 'auto' }}
     className={className}
-    role="img"
-    aria-label="Swiggy"
-  >
-    <title>Swiggy</title>
-    <rect width="24" height="24" rx="6" fill="#FF5200" />
-    <path
-      d="M15.4 7.2a5.2 5.2 0 0 0-6.9 1.1c-1.3 1.7-.7 3.9 1.3 4.7l2.6 1c.7.3.9 1 .5 1.6a2 2 0 0 1-2.7.4l-1.5-1"
-      fill="none"
-      stroke="white"
-      strokeWidth="1.9"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
+    loading="lazy"
+    decoding="async"
+  />
 );
 
 // ===== Occasion glyphs (event-type icons) =====

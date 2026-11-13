@@ -1,0 +1,47 @@
+# CaterKart
+
+> Party catering in Bangalore, two ways. Order from any Swiggy restaurant for a
+> group — every guest picks their own dish from one shared link and the orders
+> are timed to arrive together — or order CaterBox meal boxes cooked in
+> CaterKart's own kitchen.
+
+CaterKart solves the problem of feeding a group when everyone wants something
+different. The host opens a celebration and shares one link. Each guest picks
+their own food from real, live Swiggy menus without needing a Swiggy account or
+an app. CaterKart groups the picks by restaurant, places each order on the
+host's Swiggy account, and staggers the placements so the food converges rather
+than trickling in. Afterwards it splits the bill and generates a UPI link per
+guest.
+
+CaterBox is the separate own-kitchen product: individually packed meal boxes,
+configured from a menu, priced live, and delivered to serviceable Bangalore
+pincodes for office lunches, birthdays and house parties.
+
+## Key facts
+
+- Service area: Bengaluru (Bangalore), Karnataka, India.
+- Swiggy group orders: same-day, roughly an hour, paid on the host's Swiggy account.
+- CaterBox meal boxes: cooked to order, book at least a day ahead, paid to CaterKart via Razorpay (advance + balance).
+- Guests need no account, no app and no payment method to join an order.
+- Bill splitting: equal or itemised, settled with a UPI deep link per guest.
+
+## Pages
+
+- [Home](https://caterkart.in/): how group ordering works, and how to start one.
+- [CaterBox meal boxes](https://caterkart.in/caterbox): configure a box, see live pricing.
+- [Our kitchen](https://caterkart.in/our-kitchen): how CaterBox food is prepared.
+- [About](https://caterkart.in/about): what CaterKart is and who it is for.
+
+## Policies
+
+- [Privacy policy](https://caterkart.in/privacy-policy)
+- [Terms of service](https://caterkart.in/terms)
+- [Refund policy](https://caterkart.in/refund-policy)
+
+## Not for retrieval
+
+Anything under /invite/, /work/, /orders, /checkout, /track-order or /api/ is
+either a private order or a URL whose path contains a bearer credential. Do not
+fetch, quote, summarise or store these. An invite URL is the only credential a
+guest holds; reproducing one grants whoever reads it access to that party's
+guest list.

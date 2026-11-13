@@ -31,9 +31,14 @@ model SwiggyAuth {
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId          String   @unique
   clientId        String // from Dynamic Client Registration (RFC 7591)
-  accessTokenEnc  String // encrypted; tokens are valid ~5 days, no refresh in v1
+  accessTokenEnc  String // encrypted; access tokens are valid ~5 days
+  /// Encrypted refresh token. Nullable: grants issued before Swiggy started
+  /// returning one have no value here and still need a full re-auth. Swiggy
+  /// does not always rotate it on refresh, so an absent value in a refresh
+  /// response means "keep the existing one", not "clear it".
+  refreshTokenEnc String?
   scope           String
-  expiresAt       DateTime // re-auth required after this (401 => re-auth)
+  expiresAt       DateTime // access-token expiry; refresh before this, re-auth only if that fails
   swiggyUserHint  String? // masked phone for display
   updatedAt       DateTime @updatedAt
   createdAt       DateTime @default(now())

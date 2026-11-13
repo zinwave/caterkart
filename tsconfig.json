@@ -11,6 +11,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    /* The migrated CaterBox tree is plain JSX from the original app. */
+    "allowJs": true,
+    "checkJs": false,
     "strict": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,

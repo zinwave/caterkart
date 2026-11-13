@@ -6,6 +6,7 @@ import {
   createHmac,
   randomBytes,
   createDecipheriv,
+  timingSafeEqual,
 } from 'node:crypto';
 
 /**
@@ -58,11 +59,42 @@ export class CryptoService implements OnModuleInit {
     return b64u(randomBytes(16));
   }
 
-  /** HMAC-signed opaque token used for group invites. */
+  /**
+   * HMAC-signed opaque token used for group invites.
+   *
+   * The signature is the full SHA-256 digest. It used to be truncated to 16
+   * base64url characters — 96 bits — which is a forgery budget, not a security
+   * margin: the payload is attacker-chosen, so a tag short enough to search for
+   * offline is a tag that can eventually be produced for a payload of their
+   * choosing. There is no size pressure here that justified the trim.
+   */
   signInvite(payload: string): string {
     const secret = this.config.get<string>('secrets.appJwtSecret') ?? 'dev';
-    const sig = b64u(createHmac('sha256', secret).update(payload).digest()).slice(0, 16);
+    const sig = b64u(createHmac('sha256', secret).update(payload).digest());
     return `${b64u(Buffer.from(payload))}.${sig}`;
+  }
+
+  /**
+   * Verify a token produced by `signInvite`, returning its payload or null.
+   *
+   * Compared with `timingSafeEqual` rather than `===`: a byte-at-a-time string
+   * comparison leaks, through its own duration, how much of a candidate
+   * signature was correct, which turns forgery into a guided search.
+   */
+  verifyInvite(token: string): string | null {
+    const dot = token.lastIndexOf('.');
+    if (dot <= 0) return null;
+
+    const body = token.slice(0, dot);
+    const secret = this.config.get<string>('secrets.appJwtSecret') ?? 'dev';
+    const expected = Buffer.from(
+      b64u(createHmac('sha256', secret).update(Buffer.from(body, 'base64url').toString('utf8')).digest()),
+    );
+    const actual = Buffer.from(token.slice(dot + 1));
+
+    // Length first: timingSafeEqual throws on a mismatch.
+    if (expected.length !== actual.length || !timingSafeEqual(expected, actual)) return null;
+    return Buffer.from(body, 'base64url').toString('utf8');
   }
 }
 

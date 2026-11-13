@@ -1,7 +1,10 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { McpClientService } from '../mcp/mcp-client.service';
+import { PrismaService } from '../prisma/prisma.service';
+import { PLACEHOLDER_NAME } from '../auth/auth.service';
 import { PlacementFailedError, ToolError } from '../mcp/mcp.errors';
+import { redactToString } from '../common/redact';
 import {
   mapAddress,
   mapCart,
@@ -20,6 +23,7 @@ import type {
   AddressId,
   Cart,
   Coupon,
+  CreateAddressInput,
   Dish,
   Menu,
   OrderId,
@@ -45,9 +49,12 @@ import type {
  * Typed wrappers over the Swiggy Food MCP server.
  *
  * Two rules learned from the live API:
- *   1. `addressId` is REQUIRED on almost every tool — Swiggy derives the
- *      delivery coordinates from it. Calls without it fail with
- *      "addressId is required", so we assert it up front rather than let the
+ *   1. `addressId` is how Swiggy derives the delivery coordinates. As of
+ *      2026-09-13 the discovery tools also accept a latitude/longitude pair
+ *      instead (Swiggy's "guest flow", for accounts with nothing saved), but
+ *      cart, coupons, placement and orders remain address-gated. This service
+ *      always has an authenticated user with a chosen address, so it passes
+ *      addressId throughout and asserts it up front rather than letting the
  *      MCP round-trip fail.
  *   2. Tools return an entity-keyed envelope ({ restaurants: [...] }), never a
  *      bare array. Everything is normalized through ./mappers.
@@ -66,6 +73,7 @@ export class FoodService {
   constructor(
     private readonly mcp: McpClientService,
     private readonly config: ConfigService,
+    private readonly prisma: PrismaService,
   ) {
     this.capRupees = this.config.get<number>('orchestration.foodOrderCapRupees', 1000);
   }
@@ -79,7 +87,65 @@ export class FoodService {
     const res = await this.mcp.callTool<RawAddresses>('food', userId, 'get_addresses', {
       pageSize: 50,
     });
-    return (res?.addresses ?? []).map(mapAddress);
+    const raw = res?.addresses ?? [];
+    void this.backfillUserHint(userId, raw);
+    return raw.map(mapAddress);
+  }
+
+  /**
+   * Record the account's masked phone the first time we see it.
+   *
+   * The OAuth grant tells us nothing about who the user is — no phone, no name,
+   * no profile tool on the MCP — so the display hint stayed null and the header
+   * rendered "+91 null". Addresses carry it (`phoneNumber: "****0778"`, already
+   * masked by Swiggy and identical across every address on the account), and
+   * this call has just fetched them, so the backfill is free.
+   *
+   * Deliberately fire-and-forget: a failed write here must never break address
+   * loading, which is on the critical path for the whole food flow.
+   */
+  private async backfillUserHint(userId: string, addresses: RawAddresses['addresses']): Promise<void> {
+    const hint = addresses.find((a) => a.phoneNumber)?.phoneNumber;
+    if (!hint) return;
+    try {
+      await this.prisma.swiggyAuth.updateMany({
+        where: { userId, swiggyUserHint: null },
+        data: { swiggyUserHint: hint },
+      });
+    } catch (err) {
+      this.log.warn(`could not store the phone hint for ${userId}: ${(err as Error).message}`);
+    }
+  }
+
+  /**
+   * Create a delivery address, then return the refreshed list.
+   *
+   * NOT idempotent: a blind retry is how you end up with the same address saved
+   * twice. Returning the fresh list doubles as reconciliation — if the write
+   * landed but the response was lost, the caller still sees the truth.
+   */
+  async createAddress(userId: string, input: CreateAddressInput): Promise<Address[]> {
+    await this.mcp.callTool('food', userId, 'create_address', { ...input }, { idempotent: false });
+    // Swiggy documents `userName` as the account holder, and nothing else in
+    // the MCP reports it — so this is the one authoritative chance to replace
+    // the "Swiggy user" placeholder. Only ever fills a blank: a later address
+    // saved for someone else must not rename the account.
+    if (input.userName.trim()) {
+      await this.prisma.user
+        .updateMany({
+          where: { id: userId, OR: [{ displayName: null }, { displayName: PLACEHOLDER_NAME }] },
+          data: { displayName: input.userName.trim() },
+        })
+        .catch(() => undefined);
+    }
+    return this.getAddresses(userId);
+  }
+
+  /** Permanent, per Swiggy. The UI must confirm before calling this. */
+  async deleteAddress(userId: string, addressId: AddressId): Promise<Address[]> {
+    this.assertAddress(addressId, 'delete_address');
+    await this.mcp.callTool('food', userId, 'delete_address', { addressId }, { idempotent: false });
+    return this.getAddresses(userId);
   }
 
   async searchRestaurants(userId: string, addressId: AddressId, query: string): Promise<Restaurant[]> {
@@ -118,7 +184,7 @@ export class FoodService {
     const results = await Promise.all(
       BROWSE_QUERIES.map((q) =>
         this.searchRestaurants(userId, addressId, q).catch((err) => {
-          this.log.warn(`browse query "${q}" failed: ${err}`);
+          this.log.warn(`browse query "${q}" failed: ${(err as Error).message}`);
           return [] as Restaurant[];
         }),
       ),
@@ -290,9 +356,10 @@ export class FoodService {
     const result = mapPlaceResult(raw);
     if (!result) {
       // Unknown shape → log it so the payment mappers can be pinned to reality.
-      this.log.warn(
-        `place_food_order returned an unrecognized shape: ${JSON.stringify(raw).slice(0, 800)}`,
-      );
+      // Redacted: an order response carries the customer's name, phone, full
+      // delivery address and coordinates, and the debugging value here is the
+      // SHAPE of the payload, not whose order it was.
+      this.log.warn(`place_food_order returned an unrecognized shape: ${redactToString(raw, 800)}`);
       throw new ToolError(
         'place_food_order',
         'The order response was unrecognized — check the Swiggy app before retrying.',

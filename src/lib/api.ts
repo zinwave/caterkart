@@ -11,6 +11,7 @@ import type {
   Cart,
   CartItemInput,
   Coupon,
+  CreateAddressInput,
   Dish,
   Menu,
   OrderId,
@@ -118,6 +119,15 @@ export const api = {
 
     // ── Discover ──
     addresses: () => req<Address[]>(`/swiggy/addresses`),
+    /**
+     * Saves a REAL address on the user's Swiggy account. Both of these return
+     * the refreshed list, so there's no need to re-fetch after calling them.
+     */
+    createAddress: (input: CreateAddressInput) =>
+      req<Address[]>(`/swiggy/addresses`, { method: 'POST', body: JSON.stringify(input) }),
+    /** ⚠️ Permanent on Swiggy's side. Confirm with the user first. */
+    deleteAddress: (addressId: string) =>
+      req<Address[]>(`/swiggy/addresses/${encodeURIComponent(addressId)}`, { method: 'DELETE' }),
     restaurants: (addressId: string, query = '', openOnly = true) =>
       req<Restaurant[]>(
         `/swiggy/restaurants?${qs({ addressId, query, openOnly: String(openOnly) })}`,
@@ -252,7 +262,16 @@ export const api = {
       req<InviteLink>(`/celebrations/${id}/invites`, { method: 'POST', body: '{}' }),
 
     place: (id: string) => req(`/celebrations/${id}/place`, { method: 'POST', body: '{}' }),
-    stream: (id: string) => new EventSource(`${API_BASE}/api/celebrations/${id}/stream`),
+    /**
+     * Live order + settlement updates.
+     *
+     * `withCredentials` is what sends the session cookie: the stream is
+     * host-only on the server, and EventSource omits credentials on a
+     * cross-origin request unless asked — so without this the connection is
+     * anonymous and is refused.
+     */
+    stream: (id: string) =>
+      new EventSource(`${API_BASE}/api/celebrations/${id}/stream`, { withCredentials: true }),
   },
 
   // ── Invites (guest side — the token IS the credential; no login) ──────────

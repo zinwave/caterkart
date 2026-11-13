@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { LogoMark, IconBrandX, IconBrandLinkedIn, IconBrandInstagram, IconArrowRight, IconGift, IconBriefcase, SwiggyMark } from './icons/Icons';
+import { SHOW_WORK } from '../config/features';
 
 /**
  * Minimal, elegant footer — same design language as the landing (white surface,
  * hairline dividers, Swiggy-orange accents, the two-offering framing).
  */
+
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
@@ -33,15 +35,17 @@ export default function Footer() {
               <Link to="/create" className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-lg bg-orange-50 text-swiggy-orange hover:bg-orange-100 transition">
                 <IconGift size={13} /> Personal <IconArrowRight size={13} />
               </Link>
-              <Link to="/work" className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-lg bg-surface-secondary text-ink-primary hover:bg-surface-tertiary transition">
-                <IconBriefcase size={13} /> For Work <IconArrowRight size={13} />
-              </Link>
+              {SHOW_WORK && (
+                <Link to="/work" className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-lg bg-surface-secondary text-ink-primary hover:bg-surface-tertiary transition">
+                  <IconBriefcase size={13} /> For Work <IconArrowRight size={13} />
+                </Link>
+              )}
             </div>
           </div>
 
           <FooterCol title="Product">
             <FooterLink to="/create">Personal</FooterLink>
-            <FooterLink to="/work">For Work</FooterLink>
+            {SHOW_WORK && <FooterLink to="/work">For Work</FooterLink>}
             <FooterLink to="/orders">My orders</FooterLink>
           </FooterCol>
 
@@ -55,8 +59,19 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-10 pt-6 border-t border-line-subtle flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-[12px] text-ink-tertiary">
-            © {year} CaterKart · Made in Bengaluru
+          <div className="text-[12px] leading-relaxed text-ink-tertiary text-center sm:text-left">
+            <div>
+              © {year} CaterKart · a product of{' '}
+              <span className="font-semibold text-ink-secondary">Zinwave Innovation Pvt Ltd</span>
+            </div>
+            <div className="mt-1 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 sm:justify-start">
+              <span>Made in Bengaluru</span>
+              <span aria-hidden="true" className="text-line-default">·</span>
+              <span className="inline-flex items-center gap-1.5">
+                Powered by <SwiggyMark size={13} className="align-middle" /> MCP
+                <span className="text-ink-disabled">through Swiggy Builders Club</span>
+              </span>
+            </div>
           </div>
           <div className="flex items-center gap-1.5">
             <Social label="X (Twitter)"><IconBrandX size={15} /></Social>

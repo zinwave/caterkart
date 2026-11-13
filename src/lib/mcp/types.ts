@@ -52,6 +52,33 @@ export type Address = {
   display: string;
 };
 
+/** The categories Swiggy's create_address accepts; anything else is rejected. */
+export const ADDRESS_CATEGORIES = ['HOME', 'WORK', 'OFFICE', 'FRIENDS_AND_FAMILY', 'OTHER'] as const;
+export type AddressCategory = (typeof ADDRESS_CATEGORIES)[number];
+
+/**
+ * What it takes to save a delivery address on the user's real Swiggy account.
+ *
+ * `addressLine2` must be sent even when empty — Swiggy wants the key present.
+ * Coordinates are optional; Swiggy geocodes `fullAddress` when they're absent.
+ */
+export type CreateAddressInput = {
+  fullAddress: string;
+  addressLine: string;
+  addressLine2: string;
+  city: string;
+  postalCode: string;
+  addressCategory: AddressCategory;
+  userName: string;
+  userPhone: string;
+  locality?: string;
+  addressTag?: string;
+  latitude?: number;
+  longitude?: number;
+  receiverName?: string;
+  receiverPhone?: string;
+};
+
 export type Restaurant = {
   id: RestaurantId;
   name: string;

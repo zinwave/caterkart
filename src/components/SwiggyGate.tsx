@@ -1,12 +1,18 @@
 import { ReactNode } from 'react';
 import { useSwiggy } from '../state/SwiggyContext';
 import AddressPicker from './AddressPicker';
+import AddAddressForm from './AddAddressForm';
 import { IconBolt, IconMapPin } from './icons/Icons';
 
 /**
  * Blocks the food flow until we have (a) a Swiggy grant and (b) a delivery
  * address. Both are hard requirements of the Swiggy MCP, not UX preferences:
  * every tool call needs a bearer token, and nearly every one needs an addressId.
+ *
+ * The zero-address case is real, not defensive: Swiggy's login now creates an
+ * account for a first-time visitor, and a brand-new account has no saved
+ * addresses at all. Before `create_address` existed on the MCP that was a dead
+ * end — the only fix was to go install the Swiggy app.
  */
 export default function SwiggyGate({ children }: { children: ReactNode }) {
   const { connected, addressId, connect, error, addresses, loadingAddresses, refresh } = useSwiggy();
@@ -31,11 +37,12 @@ export default function SwiggyGate({ children }: { children: ReactNode }) {
             <IconBolt size={26} />
           </div>
           <h2 className="mt-4 text-xl font-black tracking-tight text-ink-primary">
-            Connect your Swiggy account
+            Continue with Swiggy
           </h2>
           <p className="mt-2 text-sm text-ink-secondary leading-relaxed">
-            CaterKart orders through Swiggy on your behalf. You'll sign in with your phone and OTP —
-            we never see your password, and the session stays on our server, never in this browser.
+            CaterKart orders through Swiggy on your behalf. Sign in with your phone and OTP — and if
+            you don't have a Swiggy account yet, the same step creates one. We never see your
+            password, and the session stays on our server, never in this browser.
           </p>
           {error && (
             <p className="mt-3 text-xs font-semibold text-swiggy-red bg-red-50 rounded-lg px-3 py-2">
@@ -43,10 +50,10 @@ export default function SwiggyGate({ children }: { children: ReactNode }) {
             </p>
           )}
           <button onClick={() => void connect()} className="btn-primary w-full mt-5">
-            Connect Swiggy
+            Continue with Swiggy
           </button>
           <p className="mt-3 text-[11px] text-ink-tertiary">
-            Sessions last about 5 days, then you'll reconnect.
+            We'll keep you signed in — you'll only do this again if you disconnect.
           </p>
         </div>
       </div>
@@ -77,7 +84,30 @@ export default function SwiggyGate({ children }: { children: ReactNode }) {
     );
   }
 
-  // Connected, but no address chosen yet — Swiggy can't search without one.
+  // Connected with NOTHING saved — the shape of a first-ever sign-in. Without
+  // this branch the component falls through to `children` with a null
+  // addressId, and every downstream Swiggy call fails on a missing address.
+  if (!loadingAddresses && addresses.length === 0) {
+    return (
+      <div className="max-w-md mx-auto px-5 py-16">
+        <div className="card p-6">
+          <div className="w-14 h-14 rounded-2xl bg-orange-50 text-swiggy-orange grid place-items-center mx-auto">
+            <IconMapPin size={26} />
+          </div>
+          <h2 className="mt-4 text-xl font-black tracking-tight text-ink-primary text-center">
+            Where should we deliver?
+          </h2>
+          <p className="mt-2 mb-5 text-sm text-ink-secondary leading-relaxed text-center">
+            Your Swiggy account doesn't have a saved address yet. Add one here and we'll save it to
+            your account — no need to open the Swiggy app.
+          </p>
+          <AddAddressForm />
+        </div>
+      </div>
+    );
+  }
+
+  // Connected with addresses, but none chosen yet — Swiggy can't search without one.
   if (!addressId && !loadingAddresses && addresses.length > 0) {
     return (
       <div className="max-w-md mx-auto px-5 py-16">

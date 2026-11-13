@@ -7,7 +7,7 @@ import {
   useState,
   ReactNode,
 } from 'react';
-import { api, ApiError } from '../lib/api';
+import { api, ApiError , friendlyError } from '../lib/api';
 
 // =====================================================
 // Personal auth — Swiggy is the identity provider.
@@ -69,7 +69,7 @@ export function PersonalAuthProvider({ children }: { children: ReactNode }) {
         setSwiggyConnected(false);
         setError(null);
       } else {
-        setError(err instanceof Error ? err.message : 'Could not reach CaterKart');
+        setError(friendlyError(err));
       }
     } finally {
       setLoading(false);
@@ -88,7 +88,7 @@ export function PersonalAuthProvider({ children }: { children: ReactNode }) {
       // and this is the top-level request that makes the browser store it.
       window.location.assign(authorizeUrl);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not start Swiggy sign-in');
+      setError(friendlyError(err));
       throw err;
     }
   }, []);

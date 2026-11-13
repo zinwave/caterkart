@@ -9,8 +9,16 @@
  *             Swiggy's quirks (paise-vs-rupees, "₹491" strings, is_veg: "2")
  *             never leak into React.
  *
+ * Tool SHAPES were re-captured 2026-09-13 (server/tools/swiggy-schemas.json);
+ * the response fixtures below are still the 2026-07-13 ones.
+ *
  * Quirks worth knowing, all real:
- *   - Nearly every food/instamart tool REQUIRES addressId.
+ *   - addressId is no longer required on the discovery tools: search_restaurants,
+ *     search_menu, get_restaurant_menu and update_food_cart now take EITHER an
+ *     addressId or a latitude/longitude pair. Swiggy calls the coordinate form
+ *     the "guest flow" — it is what lets an account with no saved address
+ *     browse. This app always has a grant, so it keeps passing addressId.
+ *   - The address-gated remainder (cart, place, orders, coupons) still requires it.
  *   - Payloads arrive in `structuredContent`, keyed by entity ({restaurants:[…]}).
  *   - search_restaurants → availabilityStatus is "OPEN" (not "AVAILABLE").
  *   - get_restaurant_menu → item id is `id`; search_menu → it is `menu_item_id`.
@@ -92,6 +100,38 @@ export interface RawAddresses {
   addresses: RawAddress[];
   total?: number;
   pagination?: unknown;
+}
+
+/** The categories create_address accepts. Swiggy rejects anything else. */
+export const ADDRESS_CATEGORIES = ['HOME', 'WORK', 'OFFICE', 'FRIENDS_AND_FAMILY', 'OTHER'] as const;
+export type AddressCategory = (typeof ADDRESS_CATEGORIES)[number];
+
+/**
+ * What create_address takes (added by Swiggy some time after 2026-07-13).
+ *
+ * This is what makes a brand-new account usable: before it, an address could
+ * only be created in the Swiggy app, so a fresh signup had nothing for
+ * get_addresses to return and every address-gated tool was unreachable.
+ *
+ * `addressLine2` is in Swiggy's `required` list but accepts "" — it wants the
+ * key present, not a value. `latitude`/`longitude` are optional and Swiggy
+ * geocodes `fullAddress` when they are omitted.
+ */
+export interface CreateAddressInput {
+  fullAddress: string;
+  addressLine: string;
+  addressLine2: string;
+  city: string;
+  postalCode: string;
+  addressCategory: AddressCategory;
+  userName: string;
+  userPhone: string;
+  locality?: string;
+  addressTag?: string;
+  latitude?: number;
+  longitude?: number;
+  receiverName?: string;
+  receiverPhone?: string;
 }
 
 export interface RawRestaurant {

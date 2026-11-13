@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { randomBytes } from 'node:crypto';
 import { PrismaService } from '../prisma/prisma.service';
 import { EventsService } from '../events/events.service';
+import { CelebrationAccessService } from '../celebrations/celebration-access.service';
 import { FoodService } from '../swiggy/food.service';
 import { InstamartService } from '../swiggy/instamart.service';
 import type { MemberStatus } from '@prisma/client';
@@ -41,6 +42,7 @@ export class InvitesService {
     private readonly events: EventsService,
     private readonly food: FoodService,
     private readonly instamart: InstamartService,
+    private readonly access: CelebrationAccessService,
   ) {}
 
   // ── Host side ─────────────────────────────────────────────────────────────
@@ -49,11 +51,23 @@ export class InvitesService {
    * Mint an invite link. If `memberId` is given, the link is addressed to that
    * specific person (invited by email/phone); otherwise it's a shareable link
    * anyone can open.
+   *
+   * Host-only, and that matters more here than anywhere else in the flow: this
+   * token is a bearer credential that reads Swiggy through the HOST's grant.
+   * While minting was unauthenticated, anyone holding a celebration id could
+   * issue themselves one and browse menus — and see the full guest list — on
+   * somebody else's account.
    */
-  async create(celebrationId: string, memberId?: string) {
-    const c = await this.prisma.celebration.findUnique({ where: { id: celebrationId } });
-    if (!c) throw new NotFoundException('celebration not found');
+  async create(celebrationId: string, userId: string, memberId?: string) {
+    await this.access.assertHost(celebrationId, userId);
 
+    // The addressed member must belong to this celebration: otherwise a valid
+    // id of the host's own, paired with a member id from another party, would
+    // mint a link that writes picks into someone else's order.
+    if (memberId) await this.assertMember(celebrationId, memberId);
+
+    // 18 bytes = 144 bits of entropy. The token is the ONLY credential a guest
+    // holds, so it has to be unguessable at internet scale, not merely unique.
     const token = randomBytes(18).toString('base64url');
     const invite = await this.prisma.invite.create({
       data: {

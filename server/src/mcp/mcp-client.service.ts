@@ -192,7 +192,13 @@ export class McpClientService implements OnModuleDestroy {
         return text as unknown as T;
       }
     }
-    return res as unknown as T;
+
+    // Neither envelope was present. Returning `res` here handed the raw MCP
+    // response — protocol metadata and all — to a caller that will serialise it
+    // straight to the browser. An empty result is the honest answer; the
+    // mappers already treat one as "nothing came back".
+    this.log.warn('MCP tool returned neither structuredContent nor text content');
+    return undefined as unknown as T;
   }
 
   private serverUrl(server: ServerKey): string {
@@ -207,7 +213,19 @@ function sleep(ms: number): Promise<void> {
   return new Promise((r) => setTimeout(r, ms));
 }
 
+/**
+ * Does this error mean the GRANT is bad, as opposed to the request?
+ *
+ * Matched against the first line only, and against anchored phrases. The old
+ * version tested the whole message for /401|expired|.../, and an MCP error can
+ * carry a serialised response body — a restaurant called "401 Diner", or a menu
+ * item described as "expired stock", was enough to make a working session look
+ * revoked and push the user through a pointless re-authorisation.
+ */
 function isUnauthorized(err: unknown): boolean {
-  const s = String((err as { message?: string })?.message ?? err);
-  return /401|unauthor|invalid_token|expired/i.test(s);
+  const first = String((err as { message?: string })?.message ?? err).split('\n')[0].slice(0, 200);
+  return (
+    /\b(401|403)\b/.test(first) ||
+    /\b(unauthorized|unauthorised|forbidden|invalid_token|invalid_grant|token[ _-]?expired)\b/i.test(first)
+  );
 }

@@ -1,5 +1,7 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import Seo from './components/Seo';
 import Header from './components/Header';
+import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import Create from './pages/Create';
@@ -28,6 +30,7 @@ import SwiggyGate from './components/SwiggyGate';
 import { CorporateProvider, useCorporate } from './state/CorporateContext';
 import { PersonalAuthProvider, usePersonalAuth } from './state/PersonalAuthContext';
 import { WorkAuthProvider, useWorkAuth } from './state/WorkAuthContext';
+import { caterkartRoutes } from './caterkart/CaterkartRoutes';
 
 /** Personal routes require a phone+OTP session; otherwise → /login. */
 function RequirePersonal({ children }: { children: React.ReactNode }) {
@@ -86,22 +89,37 @@ function Work({ children }: { children: React.ReactNode }) {
 
 function ChromeShell({ children }: { children: React.ReactNode }) {
   const loc = useLocation();
-  // Hide the consumer header on routes that render their own chrome:
-  //  • /            — the landing page owns its own minimal nav
-  //  • /login       — personal sign-in owns its chrome
-  //  • /invite/*    — guest-skinned UI
-  //  • /work/*      — corporate console (WorkShell) + work login
-  const hideHeader =
-    loc.pathname === '/' ||
-    loc.pathname === '/login' ||
-    loc.pathname.startsWith('/invite/') ||
-    loc.pathname.startsWith('/work');
+
+  // One header and one footer for the whole app — including the CaterBox
+  // pages carried over from the CaterKart app, which used to bring their own
+  // and so stacked a second header under this one.
+  //
+  // Two surfaces still supply their own chrome, because neither is the
+  // consumer app:
+  //  • /work/*    — the corporate console has WorkShell, its own nav and tabs
+  //  • /invite/*  — a guest opens this with no account, so the profile menu
+  //                 and address picker in the app header are useless to them
+  const ownChrome =
+    loc.pathname.startsWith('/work') || loc.pathname.startsWith('/invite/');
+
+  if (ownChrome) return <main>{children}</main>;
+
   return (
     <>
-      {!hideHeader && <Header />}
+      <Header />
       <main>{children}</main>
+      <Footer />
     </>
   );
+}
+
+/**
+ * Applies the default title, description and robots directive for whatever
+ * route is currently rendered. Lives inside the Router so it can read the
+ * location; see src/components/Seo.tsx for how `noindex` is decided.
+ */
+function RouteSeo() {
+  return <Seo />;
 }
 
 export default function App() {
@@ -114,6 +132,16 @@ export default function App() {
           <CorporateProvider>
             <WorkAuthProvider>
               <ScrollToTop />
+              {/*
+                Baseline meta for EVERY route, applied once here rather than
+                page by page. It derives `noindex` from the path, so a new
+                private route — and in particular anything under /invite/,
+                where the URL itself is the guest's credential — is excluded
+                from search by default instead of by somebody remembering to
+                add a prop. Pages that want richer tags render their own <Seo>,
+                which Helmet applies on top of this one.
+              */}
+              <RouteSeo />
               <ChromeShell>
                 <Routes>
                   <Route path="/" element={<Home />} />
@@ -142,6 +170,11 @@ export default function App() {
                   <Route path="/work/settings" element={<Work><BudgetSettings /></Work>} />
                   <Route path="/work/org" element={<Work><OrganizationSettings /></Work>} />
                   <Route path="/work/ops" element={<Work><OperatorConsole /></Work>} />
+
+                  {/* ── CaterBox (own kitchen) — deliberately outside `Food`,
+                       so ordering from our own kitchen never asks for a
+                       Swiggy login. See caterkart/CaterkartRoutes.tsx. ── */}
+                  {caterkartRoutes}
 
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>

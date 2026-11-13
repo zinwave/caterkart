@@ -18,6 +18,7 @@ import {
   IconMapPin, IconRefresh, IconCheck,
   SwiggyMark,
 } from '../components/icons/Icons';
+import { AFTER_CART, SHOW_INSTAMART_STEP } from '../config/features';
 
 const SWIGGY_ORDER_CAP = 1000;
 
@@ -367,10 +368,10 @@ export default function GroupCart() {
           </div>
           <Link to="/create" className="btn-ghost text-sm">← Guests</Link>
           <Link
-            to="/addons"
+            to={AFTER_CART}
             className={`btn-primary ${carts.length === 0 ? 'opacity-50 saturate-50 pointer-events-none' : ''}`}
           >
-            Instamart sides <IconArrowRight size={18} />
+            {SHOW_INSTAMART_STEP ? 'Instamart sides' : 'Review order'} <IconArrowRight size={18} />
           </Link>
         </div>
       </div>

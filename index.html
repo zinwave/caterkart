@@ -1,21 +1,234 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>CaterKart · powered by Swiggy</title>
+
+    <!--
+      This app is client-rendered, so everything below has to stand on its own.
+      Googlebot executes JavaScript and will see the per-route tags that
+      react-helmet-async writes; most AI crawlers do NOT, and neither do link
+      previews in WhatsApp, Slack or iMessage. What those read is this file,
+      exactly as served — which is why the full description, social card and
+      structured data are static here rather than only in the React tree.
+      Keep in sync with src/lib/seo.ts.
+    -->
+    <title>CaterKart — Party Catering &amp; Meal Boxes in Bangalore</title>
+    <meta
+      name="description"
+      content="CaterKart plans the whole party: order from any Swiggy restaurant for a group, let every guest pick their own dish from one shared link, and have it all arrive together. Plus CaterBox meal boxes from our own kitchen, for birthdays, house parties and office lunches in Bangalore."
+    />
+    <!-- The apex. CloudFront 301s www → here, so the canonical must not say www. -->
+    <link rel="canonical" href="https://caterkart.in/" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="theme-color" content="#ec430d" />
+
+    <!--
+      Keeps the full URL out of the Referer header on cross-origin requests.
+      It matters on /invite/<token>: that token is the guest's only credential,
+      and the page loads fonts from a third party.
+    -->
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+    <!-- Open Graph — what a shared link renders as -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="CaterKart" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:title" content="CaterKart — Party Catering &amp; Meal Boxes in Bangalore" />
+    <meta
+      property="og:description"
+      content="One link, every guest picks their own dish, and it all arrives together. Group ordering from any Swiggy restaurant, plus CaterBox meal boxes from our own kitchen."
+    />
+    <meta property="og:url" content="https://caterkart.in/" />
+    <meta property="og:image" content="https://caterkart.in/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="CaterKart — party catering and meal boxes in Bangalore" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CaterKart — Party Catering &amp; Meal Boxes in Bangalore" />
+    <meta
+      name="twitter:description"
+      content="One link, every guest picks their own dish, and it all arrives together. Group ordering from any Swiggy restaurant, plus CaterBox meal boxes from our own kitchen."
+    />
+    <meta name="twitter:image" content="https://caterkart.in/og-image.png" />
+
     <!-- Display + body: Plus Jakarta Sans (closest free match to GilroyforSwiggy used by Swiggy MCP) -->
     <!-- Mono: JetBrains Mono (matches Swiggy MCP) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fredoka:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
     />
+
+    <!--
+      Structured data, static so a non-JS crawler still gets it.
+
+      This is the highest-leverage markup on the page for AI search: it states
+      what the business is, where it operates and what it offers in a typed
+      form, so an assistant does not have to infer any of it from prose. The
+      FAQ block is phrased as the questions people actually ask out loud, which
+      is what a retrieval step matches against.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://caterkart.in/#organization",
+            "name": "CaterKart",
+            "url": "https://caterkart.in",
+            "logo": { "@type": "ImageObject", "url": "https://caterkart.in/favicon.svg" },
+            "email": "hello@caterkart.in",
+            "areaServed": { "@type": "City", "name": "Bengaluru" },
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Bengaluru",
+              "addressRegion": "KA",
+              "addressCountry": "IN"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://caterkart.in/#website",
+            "name": "CaterKart",
+            "url": "https://caterkart.in",
+            "publisher": { "@id": "https://caterkart.in/#organization" },
+            "inLanguage": "en-IN"
+          },
+          {
+            "@type": "FoodEstablishment",
+            "@id": "https://caterkart.in/#business",
+            "name": "CaterKart",
+            "url": "https://caterkart.in",
+            "servesCuisine": ["North Indian", "South Indian", "Chinese", "Continental"],
+            "priceRange": "₹₹",
+            "areaServed": { "@type": "City", "name": "Bengaluru" },
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Bengaluru",
+              "addressRegion": "KA",
+              "addressCountry": "IN"
+            },
+            "makesOffer": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Group ordering for parties",
+                  "description": "Order from any Swiggy restaurant for a group. Every guest picks their own dish from one shared link, and the orders are timed to arrive together."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "CaterBox meal boxes",
+                  "description": "Individually packed meal boxes cooked in our own kitchen, for office lunches, birthdays and house parties in Bangalore."
+                }
+              }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://caterkart.in/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "How do I order food for a party where everyone wants something different?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Open a CaterKart celebration, share one link with your guests, and each person picks their own dish from real Swiggy menus. CaterKart groups the picks by restaurant and times each order so everything arrives together, instead of one guest ordering for everyone or five separate deliveries turning up an hour apart."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Do my guests need a Swiggy account or an app to join?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Guests open the link you share, enter their name, and pick their food in the browser. Only the host signs in with Swiggy. Guests never see your account and cannot place an order themselves."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What is a CaterBox meal box?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "CaterBox is CaterKart's own kitchen: individually packed meal boxes built from a menu you choose, delivered for office lunches, birthdays and house parties across Bangalore. You configure the box, see live pricing, and pay an advance online."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Which areas does CaterKart deliver to?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "CaterKart serves Bengaluru. Swiggy group orders are available wherever Swiggy delivers in the city; CaterBox meal boxes are delivered to serviceable pincodes, which you can check at checkout."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How does payment work?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Swiggy group orders are paid through Swiggy itself, on the host's account, and CaterKart can split the bill afterwards with a UPI link for each guest. CaterBox orders are paid directly to CaterKart through Razorpay, usually as an advance with the balance on delivery."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How far ahead should I order?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Swiggy group orders are same-day and arrive in about an hour. CaterBox meal boxes are cooked to order, so place those at least a day ahead for small groups and earlier for large events."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
   <body class="bg-neutral-50">
     <div id="root"></div>
+    <!--
+      Real content for anything that does not run JavaScript — AI crawlers,
+      text browsers, and a user whose bundle failed to load. Without it they see
+      an empty <div>, which for a crawler is an empty page.
+    -->
+    <noscript>
+      <main style="max-width: 44rem; margin: 0 auto; padding: 2.5rem 1.25rem; font-family: system-ui, sans-serif; line-height: 1.6">
+        <h1>CaterKart — party catering and meal boxes in Bangalore</h1>
+        <p>
+          CaterKart solves the problem of feeding a group when everyone wants something
+          different. Share one link, let each guest pick their own dish from real Swiggy
+          menus, and CaterKart times every order so the food arrives together.
+        </p>
+        <h2>Two ways to order</h2>
+        <ul>
+          <li>
+            <strong>Group ordering</strong> — order from any Swiggy restaurant for a
+            party. Guests need no account and no app; only the host signs in.
+            Same-day, about an hour, with the bill split by UPI afterwards.
+          </li>
+          <li>
+            <strong>CaterBox meal boxes</strong> — individually packed boxes cooked in
+            our own kitchen for office lunches, birthdays and house parties. Configure
+            the menu, see live pricing, pay an advance online.
+          </li>
+        </ul>
+        <h2>Service area</h2>
+        <p>Bengaluru (Bangalore), Karnataka, India.</p>
+        <p>
+          CaterKart needs JavaScript to run. Please enable it, or write to
+          <a href="mailto:hello@caterkart.in">hello@caterkart.in</a>.
+        </p>
+      </main>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

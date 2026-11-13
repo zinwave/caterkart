@@ -4,11 +4,12 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   ReactNode,
 } from 'react';
 import { api, ApiError } from '../lib/api';
-import type { Address } from '../lib/mcp/types';
+import type { Address, CreateAddressInput } from '../lib/mcp/types';
 
 /**
  * Owns the Swiggy connection and the selected delivery address.
@@ -18,7 +19,9 @@ import type { Address } from '../lib/mcp/types';
  * coordinates from it. So nothing in the app can fetch food until an address is
  * chosen. Everything downstream reads `addressId` from here.
  *
- * The grant lives ~5 days with no refresh token, so a 401 means "reconnect",
+ * The access token lives ~5 days but the server now holds a refresh token and
+ * renews it silently, so `connected` stays true across an expiry. A 401 that
+ * still reaches here means the refresh itself failed — genuinely "reconnect",
  * not "retry".
  */
 
@@ -35,6 +38,8 @@ type Ctx = {
   addressId: string | null;
   address: Address | null;
   setAddressId: (id: string) => void;
+  /** Saves a real address on the Swiggy account, then selects it. */
+  createAddress: (input: CreateAddressInput) => Promise<void>;
 
   loadingAddresses: boolean;
   error: string | null;
@@ -52,6 +57,13 @@ export function SwiggyProvider({ children }: { children: ReactNode }) {
   );
   const [loadingAddresses, setLoadingAddresses] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Mirrors `addresses` so createAddress can diff against the pre-create list
+  // without taking it as a dependency and re-identifying on every refresh.
+  const addressesRef = useRef<Address[]>([]);
+  useEffect(() => {
+    addressesRef.current = addresses;
+  }, [addresses]);
 
   const setAddressId = useCallback((id: string) => {
     setAddressIdState(id);
@@ -136,6 +148,29 @@ export function SwiggyProvider({ children }: { children: ReactNode }) {
     setAddresses([]);
   }, []);
 
+  /**
+   * Save a new address on the user's Swiggy account and select it.
+   *
+   * Selecting it is the point: the only caller that matters is a brand-new
+   * account with an empty list, and leaving `addressId` null would drop them
+   * straight back into the gate they just cleared. The server returns the
+   * refreshed list, so there is no second round-trip.
+   */
+  const createAddress = useCallback(async (input: CreateAddressInput) => {
+    const list = await api.swiggy.createAddress(input);
+    setAddresses(list);
+    setError(null);
+    // Swiggy assigns the id, and the response is not ordered by recency, so the
+    // new address is identified by elimination against what we already had.
+    setAddressIdState((cur) => {
+      const known = new Set(addressesRef.current.map((a) => a.id));
+      const created = list.find((a) => !known.has(a.id));
+      const next = created?.id ?? (cur && list.some((a) => a.id === cur) ? cur : (list[0]?.id ?? null));
+      if (next) localStorage.setItem(ADDRESS_KEY, next);
+      return next;
+    });
+  }, []);
+
   const address = useMemo(
     () => addresses.find((a) => a.id === addressId) ?? null,
     [addresses, addressId],
@@ -150,6 +185,7 @@ export function SwiggyProvider({ children }: { children: ReactNode }) {
     addressId,
     address,
     setAddressId,
+    createAddress,
     loadingAddresses,
     error,
     refresh,

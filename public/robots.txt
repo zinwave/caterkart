@@ -1,0 +1,107 @@
+# CaterKart — https://caterkart.in
+#
+# Two policies in one file. Search crawlers are welcome on the public pages and
+# kept off everything transactional. AI crawlers are split by what they do:
+# the ones that answer questions with a citation are allowed, and the ones that
+# only harvest training data are not.
+
+# ── Search engines ──────────────────────────────────────────────────────────
+User-agent: *
+Allow: /$
+Allow: /caterbox
+Allow: /our-kitchen
+Allow: /about
+Allow: /privacy-policy
+Allow: /terms
+Allow: /refund-policy
+
+# Bearer-token URLs. An indexed invite link IS a leaked credential: the token
+# in the path is the only thing authorising a guest to read the party's guest
+# list and browse menus on the host's Swiggy account. This is a security
+# control, not a crawl preference.
+Disallow: /invite/
+Disallow: /work/join/
+
+# Private and transactional. Nothing here is useful to a searcher, and some of
+# it is somebody's order.
+Disallow: /login
+Disallow: /create
+Disallow: /group
+Disallow: /addons
+Disallow: /confirm
+Disallow: /event
+Disallow: /settle
+Disallow: /orders
+Disallow: /checkout
+Disallow: /create-menu
+Disallow: /track-order
+Disallow: /admin
+Disallow: /vendor
+Disallow: /work
+Disallow: /api/
+
+# ── AI assistants that cite their sources ───────────────────────────────────
+# These fetch a page to answer a user's question and link back, which is how
+# people now find a caterer. Same public surface as a search engine.
+User-agent: OAI-SearchBot
+Allow: /$
+Allow: /caterbox
+Allow: /our-kitchen
+Allow: /about
+Disallow: /invite/
+Disallow: /work/
+Disallow: /api/
+
+User-agent: ChatGPT-User
+Allow: /$
+Allow: /caterbox
+Allow: /our-kitchen
+Allow: /about
+Disallow: /invite/
+Disallow: /work/
+Disallow: /api/
+
+User-agent: PerplexityBot
+Allow: /$
+Allow: /caterbox
+Allow: /our-kitchen
+Allow: /about
+Disallow: /invite/
+Disallow: /work/
+Disallow: /api/
+
+User-agent: Claude-User
+Allow: /$
+Allow: /caterbox
+Allow: /our-kitchen
+Allow: /about
+Disallow: /invite/
+Disallow: /work/
+Disallow: /api/
+
+# ── Training-data crawlers ──────────────────────────────────────────────────
+# Declined. These do not send anyone here; they copy the catalogue, the prices
+# and the customer-facing copy into a model. Flip any of these to Allow if the
+# trade becomes worth it.
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+Sitemap: https://caterkart.in/sitemap.xml

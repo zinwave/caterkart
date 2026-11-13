@@ -62,6 +62,7 @@ export default {
           'Roboto',
           'sans-serif',
         ],
+        fredoka: ['"Fredoka"', '"Poppins"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         display: [
           '"Plus Jakarta Sans"',
           '"Gilroy"',

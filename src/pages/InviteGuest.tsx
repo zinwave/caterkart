@@ -100,7 +100,46 @@ type StoredGuest = {
   picks: GuestPick[];
 };
 
-const storageKey = (token: string) => `caterkart_guest_${token}`;
+const STORAGE_PREFIX = 'caterkart_guest_';
+const storageKey = (token: string) => `${STORAGE_PREFIX}${token}`;
+
+/**
+ * An invite is good for 7 days; keep the local copy a little longer and then
+ * drop it.
+ *
+ * Each entry holds a guest's name, dietary requirement and full pick list,
+ * keyed by an invite token. Nothing was ever removing them, so a phone that had
+ * joined a few parties accumulated other people's event details indefinitely —
+ * on a device the guest may share, for invites that stopped working months ago.
+ * The data has a purpose for exactly as long as the invite does.
+ */
+const GUEST_STORAGE_TTL_MS = 30 * 86_400_000;
+
+/**
+ * Drop local guest records for invites that are long dead.
+ *
+ * Runs once when the invite page mounts, which is the only place these entries
+ * are ever created — so the cleanup lives where the data does, rather than in
+ * app startup where it would be one more thing to keep in sync.
+ */
+function pruneExpiredGuestStorage(): void {
+  try {
+    const cutoff = Date.now() - GUEST_STORAGE_TTL_MS;
+    for (const key of Object.keys(localStorage)) {
+      if (!key.startsWith(STORAGE_PREFIX)) continue;
+      try {
+        const saved = JSON.parse(localStorage.getItem(key) ?? '{}') as { savedAt?: number };
+        // No timestamp means it predates this field; treat it as expired rather
+        // than keeping it forever on a technicality.
+        if (!saved.savedAt || saved.savedAt < cutoff) localStorage.removeItem(key);
+      } catch {
+        localStorage.removeItem(key); // unparseable — nothing of value to keep
+      }
+    }
+  } catch {
+    /* storage unavailable (private mode) — nothing stored, nothing to prune */
+  }
+}
 
 function loadStored(token: string): StoredGuest | null {
   try {
@@ -122,7 +161,8 @@ function loadStored(token: string): StoredGuest | null {
 
 function saveStored(token: string, g: StoredGuest) {
   try {
-    localStorage.setItem(storageKey(token), JSON.stringify(g));
+    // `savedAt` is what makes the entry prunable — see pruneExpiredGuestStorage.
+    localStorage.setItem(storageKey(token), JSON.stringify({ ...g, savedAt: Date.now() }));
   } catch {
     /* private mode / quota — the backend still has their picks */
   }
@@ -151,6 +191,9 @@ function useDebounced<T>(value: T, ms: number): T {
 // =====================================================
 export default function InviteGuest() {
   const { token = '' } = useParams();
+
+  // Clear out other people's parties before doing anything else.
+  useEffect(() => { pruneExpiredGuestStorage(); }, []);
 
   const [preview, setPreview] = useState<InvitePreview | null>(null);
   const [loading, setLoading] = useState(true);

@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/commo
 import { CurrentUser } from '../auth/current-user.decorator';
 import { FoodService } from './food.service';
 import { InstamartService } from './instamart.service';
+import { CreateAddressDto } from './dto';
 import type { PaymentMethod, RawCartItemInput, UpiApp } from '../mcp/mcp.types';
 
 /**
@@ -21,6 +22,24 @@ export class SwiggyController {
   @Get('addresses')
   addresses(@CurrentUser() userId: string) {
     return this.food.getAddresses(userId);
+  }
+
+  /**
+   * Save a delivery address on the user's real Swiggy account.
+   *
+   * This is what unblocks a brand-new account: signup leaves them with zero
+   * saved addresses, and everything downstream is address-gated. Both routes
+   * return the refreshed list so the client never has to re-fetch.
+   */
+  @Post('addresses')
+  createAddress(@CurrentUser() userId: string, @Body() body: CreateAddressDto) {
+    return this.food.createAddress(userId, body);
+  }
+
+  /** Permanent on Swiggy's side — the UI confirms before calling this. */
+  @Delete('addresses/:addressId')
+  deleteAddress(@CurrentUser() userId: string, @Param('addressId') addressId: string) {
+    return this.food.deleteAddress(userId, addressId);
   }
 
   @Get('restaurants')

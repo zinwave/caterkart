@@ -34,6 +34,15 @@ services:
     # No host port: only Caddy reaches the API.
     expose:
       - '4000'
+    # Defined in the image (see Dockerfile). Declared here too so `depends_on`
+    # conditions elsewhere — and `docker compose ps` — report real readiness
+    # rather than "the container started".
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:4000/api/health || exit 1']
+      interval: 30s
+      timeout: 5s
+      start_period: 40s
+      retries: 3
     depends_on:
       db:
         condition: service_healthy

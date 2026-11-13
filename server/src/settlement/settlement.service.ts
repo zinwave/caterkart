@@ -1,7 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { EventsService } from '../events/events.service';
+import { CelebrationAccessService } from '../celebrations/celebration-access.service';
 import { SettleDto } from '../celebrations/dto';
+
+/**
+ * `name@handle` — the UPI address format NPCI mandates.
+ *
+ * Checked before it reaches a deeplink the guest's bank app will open: a
+ * malformed VPA fails silently inside the payment app, after the guest has
+ * already tapped pay, which looks like our bug and costs the host the money.
+ */
+const VPA_PATTERN = /^[a-zA-Z0-9.\-_]{2,64}@[a-zA-Z]{2,32}$/;
 
 interface Contribution {
   subOrderId: string;
@@ -21,9 +31,16 @@ export class SettlementService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly events: EventsService,
+    private readonly access: CelebrationAccessService,
   ) {}
 
-  async settle(celebrationId: string, dto: SettleDto) {
+  /**
+   * Compute (or recompute) who owes what. Host-only: this decides how much each
+   * guest is asked to pay and mints the UPI links they are asked to pay through.
+   */
+  async settle(celebrationId: string, userId: string, dto: SettleDto) {
+    await this.access.assertHost(celebrationId, userId);
+
     const c = await this.prisma.celebration.findUnique({
       where: { id: celebrationId },
       include: { members: true, subOrders: true },
@@ -31,6 +48,16 @@ export class SettlementService {
     if (!c) throw new NotFoundException('celebration not found');
 
     const memberIds = c.members.map((m) => m.id);
+
+    // The collector is paid by everyone else, so they must actually be at this
+    // party — an id from another celebration would point every UPI link at a
+    // stranger.
+    if (dto.cashCollectedBy && !memberIds.includes(dto.cashCollectedBy)) {
+      throw new BadRequestException('The person who paid must be a member of this celebration.');
+    }
+    if (dto.collectorVpa && !VPA_PATTERN.test(dto.collectorVpa)) {
+      throw new BadRequestException('That does not look like a UPI ID (e.g. name@bank).');
+    }
     const total = c.subOrders.reduce((s, so) => s + so.subtotal, 0);
 
     const perMember: Record<string, Contribution[]> = {};
@@ -75,7 +102,7 @@ export class SettlementService {
             return {
               memberId: m.id,
               amount,
-              contributions: contributions as any,
+              contributions: contributions as unknown as object,
               upiLink: owesCollector ? this.upiLink(dto.collectorVpa, c.occasion, amount, c.members.find((x) => x.id === dto.cashCollectedBy)?.name) : null,
             };
           }),
@@ -88,13 +115,29 @@ export class SettlementService {
     return settlement;
   }
 
-  async markPaid(shareId: string) {
+  /**
+   * Mark one guest's share settled.
+   *
+   * Host-only, and the share is walked back to the celebration that owns it
+   * before anything is written: a share id names no celebration of its own, so
+   * trusting the one in the path would let any host clear anyone's debts.
+   */
+  async markPaid(celebrationId: string, shareId: string, userId: string) {
+    const owner = await this.access.assertHostOfShare(shareId, userId);
+    if (owner.celebrationId !== celebrationId) {
+      throw new NotFoundException('share not found on this celebration');
+    }
+
     const share = await this.prisma.settlementShare.update({
       where: { id: shareId },
       data: { paid: true, paidAt: new Date() },
       include: { settlement: true },
     });
-    this.events.emit({ celebrationId: share.settlement.celebrationId, type: 'settlement.updated', payload: { shareId, paid: true } });
+    this.events.emit({
+      celebrationId: share.settlement.celebrationId,
+      type: 'settlement.updated',
+      payload: { shareId, paid: true },
+    });
     return share;
   }
 

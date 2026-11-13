@@ -1,13 +1,15 @@
 import { useSwiggy } from '../state/SwiggyContext';
 import { Select } from './common';
+import AddAddressForm from './AddAddressForm';
 import { IconMapPin, IconCheck } from './icons/Icons';
 
 /**
  * Delivery address selector — sourced from the user's REAL saved Swiggy addresses.
  *
- * This is load-bearing, not cosmetic: Swiggy requires `addressId` on nearly every
- * tool call (search, menu, cart, place, orders) because it derives the delivery
- * coordinates from it. Nothing in the app can fetch food until one is picked.
+ * This is load-bearing, not cosmetic: Swiggy derives the delivery coordinates
+ * from `addressId`, and the cart/placement/order tools all require it. Nothing
+ * in the app can order food until one is picked — and a newly created Swiggy
+ * account starts with none, so this also has to be able to collect the first.
  */
 export default function AddressPicker({ compact = false }: { compact?: boolean }) {
   const { addresses, addressId, setAddressId, loadingAddresses, connected } = useSwiggy();
@@ -23,12 +25,14 @@ export default function AddressPicker({ compact = false }: { compact?: boolean }
     );
   }
 
+  // No saved addresses — the normal state of a freshly created Swiggy account.
+  // Compact mode lives in a header strip with no room for a form, so it defers
+  // to the gate; everywhere else we can just collect the address here.
   if (addresses.length === 0) {
-    return (
-      <div className="text-sm text-ink-tertiary">
-        No saved addresses on your Swiggy account. Add one in the Swiggy app, then reload.
-      </div>
-    );
+    if (compact) {
+      return <div className="text-sm text-ink-tertiary">No delivery address yet</div>;
+    }
+    return <AddAddressForm />;
   }
 
   if (compact) {

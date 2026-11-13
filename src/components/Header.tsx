@@ -7,8 +7,9 @@ import { usePersonalAuth, initialsFor } from '../state/PersonalAuthContext';
 import IconButton from './IconButton';
 import { ProfileMenu, type ProfileMenuItem } from './common';
 import {
-  IconBell, IconChevronDown, IconHelp, IconHome, IconMapPin, IconReceipt, IconSearch, IconStore, IconBriefcase, IconCheck, LogoMark,
+  IconChevronDown, IconHelp, IconHome, IconMapPin, IconReceipt, IconStore, IconBriefcase, IconCheck, LogoMark,
 } from './icons/Icons';
+import { SHOW_WORK } from '../config/features';
 
 // Delivery addresses come from the user's real Swiggy account (SwiggyContext),
 // not a hardcoded list — Swiggy owns the address book and requires the addressId.
@@ -23,17 +24,17 @@ export default function Header() {
   const { user, signOut } = usePersonalAuth();
 
   const [locOpen, setLocOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const onHome = loc.pathname === '/';
   const onCreate = loc.pathname === '/create';
+  // CaterBox is our own kitchen: it never uses the Swiggy account, and the
+  // customer identifies by phone + OTP at checkout. A profile menu offering to
+  // sign out of a Swiggy session would be meaningless on those screens.
+  const inCaterBox = ['/caterbox', '/create-menu', '/checkout', '/track-order', '/caterbox-subscription']
+    .some((p) => loc.pathname === p || loc.pathname.startsWith(`${p}/`));
   const activeOrdersCount = activeOrders.length;
 
   // Auto focus the search input when search opens
-  useEffect(() => {
-    if (searchOpen) setTimeout(() => searchInputRef.current?.focus(), 50);
-  }, [searchOpen]);
 
   return (
     <header className="sticky top-0 z-30">
@@ -65,41 +66,39 @@ export default function Header() {
           {/* Right cluster */}
           <div className="ml-auto flex items-center gap-1">
             <IconButton
-              icon={<IconSearch size={20} />}
-              label="Search"
-              onClick={() => setSearchOpen(true)}
-            />
-            <IconButton
-              icon={<IconBell size={20} />}
-              label="Notifications"
-              dot
-            />
-            <IconButton
               icon={<IconHelp size={20} />}
               label="Help"
               className="hidden md:inline-grid"
             />
 
+            {!inCaterBox && (
             <ProfileMenu
               initials={user ? initialsFor(user.name) : host.initials}
               color="bg-gradient-to-br from-swiggy-orange via-cater-coral to-amber-500"
               name={user?.name ?? host.name}
-              subtitle={user ? `+91 ${user.phone}` : 'Guest'}
+              // `phone` is Swiggy's own masked hint ("****0778") and is absent
+              // until we've read it off an address, so it must not be
+              // interpolated blind — that rendered a literal "+91 null".
+              subtitle={user ? (user.phone ? `+91 ${user.phone}` : 'Swiggy connected') : 'Guest'}
               items={[
                 { key: 'orders', label: 'My orders', to: '/orders' } as ProfileMenuItem,
                 { key: 'addr', label: 'Saved addresses' },
                 { key: 'pay', label: 'Payment methods' },
                 { key: 'settings', label: 'Settings' },
-                {
-                  key: 'work',
-                  label: 'CaterKart for Work',
-                  sublabel: 'Team lunches · one invoice',
-                  to: '/work',
-                  leading: <span className="w-6 h-6 rounded-md bg-ink-primary text-white grid place-items-center shrink-0"><IconBriefcase size={13} /></span>,
-                },
+                // Hidden while CaterKart for Work is off; /work still resolves.
+                ...(SHOW_WORK
+                  ? [{
+                      key: 'work',
+                      label: 'CaterKart for Work',
+                      sublabel: 'Team lunches · one invoice',
+                      to: '/work',
+                      leading: <span className="w-6 h-6 rounded-md bg-ink-primary text-white grid place-items-center shrink-0"><IconBriefcase size={13} /></span>,
+                    } as ProfileMenuItem]
+                  : []),
                 { key: 'signout', label: 'Sign out', danger: true, onClick: () => { signOut(); nav('/'); } },
               ]}
             />
+            )}
           </div>
         </div>
 
@@ -184,42 +183,7 @@ export default function Header() {
         </div>
         )}
 
-        {/* Inline expanding search */}
-        {searchOpen && (
-          <div className="border-t border-neutral-200/60 bg-white animate-fade-in-down">
-            <div className="max-w-5xl mx-auto px-5 py-3 flex items-center gap-2">
-              <div className="flex-1 relative">
-                <IconSearch size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400" />
-                <input
-                  ref={searchInputRef}
-                  placeholder="Search restaurants, dishes, or Instamart items…"
-                  className="w-full bg-neutral-50 rounded-xl pl-10 pr-3 py-2.5 text-sm outline-none focus:bg-white focus:ring-2 focus:ring-orange-100 focus:border-swiggy-orange border border-neutral-200 transition"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Escape') setSearchOpen(false);
-                    if (e.key === 'Enter') { setSearchOpen(false); nav('/group'); }
-                  }}
-                />
-              </div>
-              <button
-                onClick={() => setSearchOpen(false)}
-                className="text-sm font-semibold text-neutral-600 px-3 py-2 hover:text-swiggy-orange"
-              >
-                Cancel
-              </button>
-            </div>
-            <div className="max-w-5xl mx-auto px-5 pb-3 flex flex-wrap gap-1.5">
-              <span className="text-[11px] text-neutral-500 uppercase tracking-wide font-semibold mr-1">Trending:</span>
-              {['Biryani', 'Pizza', 'Cake', 'Beer', 'Ice cream'].map((q) => (
-                <button
-                  key={q}
-                  className="text-xs px-2.5 py-1 rounded-full bg-neutral-100 hover:bg-orange-50 hover:text-swiggy-orange font-medium transition"
-                >
-                  {q}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+
       </div>
     </header>
   );

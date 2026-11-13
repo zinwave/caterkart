@@ -3,6 +3,7 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { Queue } from 'bullmq';
 import { PrismaService } from '../prisma/prisma.service';
 import { EventsService } from '../events/events.service';
+import { CelebrationAccessService } from '../celebrations/celebration-access.service';
 import { PlacementPlannerService, PlannableSubOrder } from './placement-planner.service';
 import { PLACEMENT_QUEUE, PlacementJob } from './scheduler.constants';
 
@@ -20,10 +21,21 @@ export class SchedulerService {
     private readonly prisma: PrismaService,
     private readonly planner: PlacementPlannerService,
     private readonly events: EventsService,
+    private readonly access: CelebrationAccessService,
   ) {}
 
-  /** Validate, compute the plan, persist it, and queue every placement. */
+  /**
+   * Validate, compute the plan, persist it, and queue every placement.
+   *
+   * `userId` is both the authorization subject AND the Swiggy grant the orders
+   * are placed on, which is why the host check below is not optional: without
+   * it, any signed-in user could fire somebody else's celebration, and anyone
+   * who had quietly added sub-orders to a celebration could have the host pay
+   * for them.
+   */
   async planAndPlace(celebrationId: string, userId: string) {
+    await this.access.assertHost(celebrationId, userId);
+
     const c = await this.prisma.celebration.findUnique({
       where: { id: celebrationId },
       include: { subOrders: true },
@@ -31,6 +43,16 @@ export class SchedulerService {
     if (!c) throw new BadRequestException('celebration not found');
     if (!c.swiggyAddressId) throw new BadRequestException('Bind a Swiggy address before placing');
     if (!c.subOrders.length) throw new BadRequestException('No sub-orders to place');
+
+    // Placement is NOT idempotent — Swiggy creates a real order per call. A
+    // double-submit (impatient tap, retried request) must not queue the same
+    // sub-orders twice, so anything past PLANNING is refused outright rather
+    // than re-planned.
+    if (c.status !== 'PLANNING') {
+      throw new BadRequestException(
+        `This celebration is already ${c.status.toLowerCase().replace('_', ' ')}.`,
+      );
+    }
 
     const overCap = c.subOrders.find((s) => s.capExceeded);
     if (overCap) {
