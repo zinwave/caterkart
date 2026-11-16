@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { LogoMark, IconBrandX, IconBrandLinkedIn, IconBrandInstagram, IconArrowRight, IconGift, IconBriefcase, SwiggyMark } from './icons/Icons';
 import { SHOW_WORK } from '../config/features';
+import { COMPANY, SOCIAL } from '../lib/company';
 
 /**
  * Minimal, elegant footer — same design language as the landing (white surface,
@@ -13,7 +14,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-line-subtle">
       <div className="max-w-5xl mx-auto px-5 py-12">
-        <div className="grid sm:grid-cols-4 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Brand + offerings */}
           <div className="sm:col-span-2 sm:pr-8">
             <div className="flex items-center gap-2.5">
@@ -50,10 +51,20 @@ export default function Footer() {
           </FooterCol>
 
           <FooterCol title="Company">
-            <FooterLink>About</FooterLink>
-            <FooterLink>Careers</FooterLink>
-            <FooterLink>Partner with us</FooterLink>
-            <FooterLink>Privacy &amp; Terms</FooterLink>
+            <FooterLink to="/about">About</FooterLink>
+            {/* Hiring is run by the parent company, so this leaves the app. */}
+            <FooterLink href={COMPANY.careersUrl}>Careers</FooterLink>
+            <FooterLink to="/our-kitchen">Our kitchen</FooterLink>
+            <FooterLink to="/contact">Contact us</FooterLink>
+          </FooterCol>
+
+          <FooterCol title="Legal">
+            <FooterLink to="/privacy-policy">Privacy</FooterLink>
+            <FooterLink to="/terms">Terms</FooterLink>
+            <FooterLink to="/refund-policy">Refunds</FooterLink>
+            <FooterLink to="/shipping-policy">Delivery</FooterLink>
+            <FooterLink to="/cookie-policy">Cookies</FooterLink>
+            <FooterLink to="/grievance-redressal">Grievances</FooterLink>
           </FooterCol>
         </div>
 
@@ -62,7 +73,14 @@ export default function Footer() {
           <div className="text-[12px] leading-relaxed text-ink-tertiary text-center sm:text-left">
             <div>
               © {year} CaterKart · a product of{' '}
-              <span className="font-semibold text-ink-secondary">Zinwave Innovation Pvt Ltd</span>
+              <a
+                href={COMPANY.parentUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="font-semibold text-ink-secondary hover:text-swiggy-orange transition"
+              >
+                {COMPANY.legalName}
+              </a>
             </div>
             <div className="mt-1 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 sm:justify-start">
               <span>Made in Bengaluru</span>
@@ -73,10 +91,15 @@ export default function Footer() {
               </span>
             </div>
           </div>
+          {/*
+            Rendered only where a handle is configured. A social icon that does
+            nothing when clicked reads as an abandoned product — see SOCIAL in
+            src/lib/company.ts.
+          */}
           <div className="flex items-center gap-1.5">
-            <Social label="X (Twitter)"><IconBrandX size={15} /></Social>
-            <Social label="LinkedIn"><IconBrandLinkedIn size={15} /></Social>
-            <Social label="Instagram"><IconBrandInstagram size={15} /></Social>
+            <Social label="X (Twitter)" href={SOCIAL.x}><IconBrandX size={15} /></Social>
+            <Social label="LinkedIn" href={SOCIAL.linkedin}><IconBrandLinkedIn size={15} /></Social>
+            <Social label="Instagram" href={SOCIAL.instagram}><IconBrandInstagram size={15} /></Social>
           </div>
         </div>
       </div>
@@ -93,19 +116,47 @@ function FooterCol({ title, children }: { title: string; children: ReactNode }) 
   );
 }
 
-function FooterLink({ to, children }: { to?: string; children: ReactNode }) {
-  const cls = 'block text-sm text-ink-secondary hover:text-swiggy-orange transition cursor-pointer';
-  return to ? <Link to={to} className={cls}>{children}</Link> : <a className={cls}>{children}</a>;
+/**
+ * An in-app route (`to`) or an external destination (`href`).
+ *
+ * Previously a bare `<a>` with neither was rendered when both were omitted —
+ * which is how About, Careers, Partner and Privacy ended up looking like links
+ * that did nothing. There is no "no destination" case now: a link either goes
+ * somewhere or is not rendered.
+ */
+function FooterLink({
+  to,
+  href,
+  children,
+}: {
+  to?: string;
+  href?: string;
+  children: ReactNode;
+}) {
+  const cls = 'block text-sm text-ink-secondary hover:text-swiggy-orange transition';
+  if (to) return <Link to={to} className={cls}>{children}</Link>;
+  if (href) {
+    return (
+      <a href={href} target="_blank" rel="noreferrer" className={cls}>
+        {children}
+      </a>
+    );
+  }
+  return null;
 }
 
-function Social({ label, children }: { label: string; children: ReactNode }) {
+function Social({ label, href, children }: { label: string; href?: string; children: ReactNode }) {
+  if (!href) return null;
   return (
-    <button
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
       aria-label={label}
       title={label}
       className="w-9 h-9 rounded-xl bg-surface-secondary border border-line-subtle grid place-items-center text-ink-secondary hover:bg-swiggy-orange hover:border-swiggy-orange hover:text-white transition"
     >
       {children}
-    </button>
+    </a>
   );
 }

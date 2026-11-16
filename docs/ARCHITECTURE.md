@@ -46,7 +46,7 @@ them would make one of the two worse.
   `httpOnly` cookie: a token in `localStorage` would be readable by any injected
   script, and that token can spend money on a real Swiggy account.
 - **CaterBox half** — has nothing to do with Swiggy. Requiring a Swiggy login to
-  buy a meal box cooked in our own kitchen would make no sense. Identity is a
+  buy a meal box from a partner kitchen would make no sense. Identity is a
   phone number proved by OTP, carried as a Bearer JWT.
 - **Guests** — hold a 144-bit token in a URL and nothing else. No account, no
   app, no payment method.

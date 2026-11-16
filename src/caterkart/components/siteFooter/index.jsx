@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { COMPANY, CONTACT } from "../../../lib/company";
 import "./styles.scss";
 
-const WHATSAPP_URL = "https://wa.me/message/NNNDW6NLLPBZK1";
-const PHONE = "+917204242111";
+const WHATSAPP_URL = CONTACT.whatsapp;
+const PHONE = CONTACT.phoneDial;
 
 export default function SiteFooter() {
   const year = new Date().getFullYear();
@@ -21,6 +22,9 @@ export default function SiteFooter() {
             <span className="site-footer__heading">Company</span>
             <Link to="/about">About us</Link>
             <Link to="/our-kitchen">View our kitchen</Link>
+            <Link to="/contact">Contact us</Link>
+            {/* Hiring is run by the parent company, so this leaves the app. */}
+            <a href={COMPANY.careersUrl} target="_blank" rel="noreferrer">Careers</a>
             <Link to="/track-order">Track order</Link>
             <a href={WHATSAPP_URL} target="_blank" rel="noreferrer">WhatsApp us</a>
             <a href={`tel:${PHONE}`}>Call us</a>
@@ -31,6 +35,9 @@ export default function SiteFooter() {
             <Link to="/privacy-policy">Privacy Policy</Link>
             <Link to="/terms">Terms &amp; Conditions</Link>
             <Link to="/refund-policy">Refunds &amp; Cancellation</Link>
+            <Link to="/shipping-policy">Shipping &amp; Delivery</Link>
+            <Link to="/cookie-policy">Cookie Policy</Link>
+            <Link to="/grievance-redressal">Grievance Redressal</Link>
           </nav>
         </div>
       </div>
@@ -43,7 +50,10 @@ export default function SiteFooter() {
         <p className="site-footer__legal">
           <span>© {year} CaterKart. All rights reserved.</span>
           <span className="site-footer__dot" aria-hidden="true">•</span>
-          <span className="site-footer__company">A product of Zinwave Innovations Pvt Ltd</span>
+          <span className="site-footer__company">
+            A product of{" "}
+            <a href={COMPANY.parentUrl} target="_blank" rel="noreferrer">{COMPANY.legalName}</a>
+          </span>
         </p>
       </div>
     </footer>

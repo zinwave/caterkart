@@ -45,6 +45,7 @@ const CreateSub   = page(() => import('./pages/createSubscription/index.jsx'));
 const About       = page(() => import('./pages/about/index.jsx'));
 const Kitchen     = page(() => import('./pages/kitchen/index.jsx'));
 const Legal       = page(() => import('./pages/legal/index.jsx'));
+const Contact     = page(() => import('./pages/contact/index.jsx'));
 const VendorLogin = page(() => import('./pages/vendorLogin/index.jsx'));
 
 // Ops console — its own OTP gate, unrelated to the customer flows
@@ -113,9 +114,15 @@ export const caterkartRoutes = (
     <Route path="/about" element={<Scope><About /></Scope>} />
     <Route path="/our-kitchen" element={<Scope><Kitchen /></Scope>} />
     <Route path="/vendor/login" element={<Scope><VendorLogin /></Scope>} />
+    <Route path="/contact" element={<Scope><Contact /></Scope>} />
     <Route path="/privacy-policy" element={<Scope><Legal doc="privacy" /></Scope>} />
     <Route path="/terms" element={<Scope><Legal doc="terms" /></Scope>} />
     <Route path="/refund-policy" element={<Scope><Legal doc="refund" /></Scope>} />
+    {/* Required for an Indian merchant account (Razorpay) and by the Consumer
+        Protection (E-Commerce) Rules, 2020. */}
+    <Route path="/shipping-policy" element={<Scope><Legal doc="shipping" /></Scope>} />
+    <Route path="/cookie-policy" element={<Scope><Legal doc="cookies" /></Scope>} />
+    <Route path="/grievance-redressal" element={<Scope><Legal doc="grievance" /></Scope>} />
 
     {/* ── Ops console. Nesting mirrors the original: RequireAdmin gates
          everything, FullAdminOnly narrows the inner set so vendor-admins

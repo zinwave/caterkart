@@ -5,7 +5,7 @@ Party catering in Bangalore, three ways — one repository.
 | Service | Who cooks | Who you pay | Code |
 |---|---|---|---|
 | **Swiggy group ordering** | A Swiggy restaurant | Swiggy, on the host's own account | `src/pages/`, `server/src/{swiggy,celebrations,invites}` |
-| **CaterBox meal boxes** | Our own kitchen | CaterKart, via Razorpay | `src/caterkart/`, `server/src/caterbox` |
+| **CaterBox meal boxes** | FSSAI-licensed partner kitchens | CaterKart, via Razorpay | `src/caterkart/`, `server/src/caterbox` |
 | **CaterKart for Work** | — | — | `server/src/corporate` — **prototype, not deployed** |
 
 The distinction matters legally as well as architecturally: in the first we are

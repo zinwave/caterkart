@@ -3,8 +3,10 @@ import Seo from "../../../components/Seo";
 import Wrapper from "../../components/wrapper";
 import "./styles.scss";
 
-const SUPPORT_EMAIL = "support@caterkart.in";
-const SUPPORT_PHONE = "+91 72042 42111";
+import { COMPANY, CONTACT, GRIEVANCE_OFFICER, formattedAddress } from "../../../lib/company";
+
+const SUPPORT_EMAIL = CONTACT.supportEmail;
+const SUPPORT_PHONE = CONTACT.phoneDisplay;
 const UPDATED = "November 2026";
 
 const DOCS = {
@@ -12,7 +14,7 @@ const DOCS = {
     title: "Privacy Policy",
     numbered: true,
     intro:
-      "This Privacy Policy explains how CaterKart (\"we\", \"us\") collects, uses, shares, and protects your information when you use our website and application (the \"Platform\"). It covers both of our services, which handle your data differently: (a) CaterBox and event catering, where we connect you with independent third-party vendors or cook in our own kitchen; and (b) Swiggy group ordering, where — with your explicit authorisation — we place orders on your own Swiggy account on your behalf. Section 2 explains the Swiggy integration in full, including exactly what we can and cannot do with that authorisation. We are the data fiduciary for the personal data described here under the Digital Personal Data Protection Act, 2023.",
+      "This Privacy Policy explains how CaterKart (\"we\", \"us\") collects, uses, shares, and protects your information when you use our website and application (the \"Platform\"). It covers both of our services, which handle your data differently: (a) CaterBox and event catering, where we connect you with independent, FSSAI-licensed partner kitchens; and (b) Swiggy group ordering, where — with your explicit authorisation — we place orders on your own Swiggy account on your behalf. Section 2 explains the Swiggy integration in full, including exactly what we can and cannot do with that authorisation. We are the data fiduciary for the personal data described here under the Digital Personal Data Protection Act, 2023.",
     sections: [
       {
         h: "Information we collect",
@@ -137,7 +139,7 @@ const DOCS = {
         p: "CaterKart is not a single service. Read the one that applies to your order — the answer to \"who prepared my food and who do I claim against\" is different in each.",
         points: [
           "(A) VENDOR CATERING — the aggregator model. For event and bulk catering fulfilled by a partner, CaterKart is a technology platform that connects you with an independent third-party vendor or caterer (\"Vendor\"). The contract for the sale and supply of food is between you and that Vendor. CaterKart is not a party to it and acts only as a facilitator and, where applicable, a limited payment-collection agent on the Vendor's behalf. The Vendor is the sole preparer and seller.",
-          "(B) CATERBOX — cooked by us. CaterBox meal boxes are prepared in CaterKart's own kitchen. For these orders CaterKart is the food business operator and the seller, we contract with you directly, and the responsibility for sourcing, preparation, hygiene, quality, labelling and safety is OURS, not a Vendor's. The aggregator disclaimers in these Terms do not apply to CaterBox orders. CaterKart holds and maintains the FSSAI registration required for this activity.",
+          "(B) CATERBOX MEAL BOXES — aggregator model, with CaterKart collecting payment. CaterBox meal boxes are prepared and supplied by independent, FSSAI-licensed partner kitchens (\"Vendors\") working to a menu CaterKart specifies. CaterKart does not cook, prepare, process, package, or sell the food. We design the box, assign a suitable Vendor, collect payment as a limited collection agent on that Vendor's behalf, and coordinate delivery. The Vendor is the preparer and the seller, and the food-safety responsibilities in the section below apply in full.",
           "(C) SWIGGY GROUP ORDERING — placed on your own account. Here CaterKart neither prepares nor sells the food and is not the seller or the merchant of record. You authorise us to place an order on YOUR Swiggy account; the restaurant is the seller, Swiggy is the platform and payment processor, and the transaction is governed by Swiggy's own terms. CaterKart's role is limited to assembling the order from your guests' choices, timing the placement, and showing you the result. Section 4 covers this service in full.",
         ],
       },
@@ -158,8 +160,8 @@ const DOCS = {
         p: "CaterKart functions as an \"intermediary\" within the meaning of the Information Technology Act, 2000 and the rules made thereunder, and as a \"marketplace e-commerce entity\" under the Consumer Protection (E-Commerce) Rules, 2020. CaterKart merely provides the technology that enables a transaction between a Customer and a Vendor and is not responsible for, and does not warrant or guarantee, the acts, omissions, conduct, representations, or offerings of any Vendor.",
       },
       {
-        h: "Vendor responsibility for food quality, safety & consequences (service A only)",
-        p: "This section applies to vendor-fulfilled catering. It does NOT apply to CaterBox, where CaterKart is the food business operator and carries these responsibilities itself, nor to Swiggy group orders, where the restaurant is the seller.",
+        h: "Vendor responsibility for food quality, safety & consequences (services A and B)",
+        p: "This section applies to all food ordered through CaterKart that is prepared by a partner — both event catering and CaterBox meal boxes. For Swiggy group orders (service C) the restaurant is the seller and Swiggy's own terms govern.",
         points: [
           "The assigned Vendor is solely, fully, and exclusively responsible for the sourcing, preparation, cooking, hygiene, quality, taste, freshness, temperature, quantity, packaging, labelling, and safety of the food supplied against your order.",
           "Each Vendor is independently required to hold and maintain a valid FSSAI licence/registration and to comply with the Food Safety and Standards Act, 2006, the rules and regulations thereunder, and all applicable food-safety, health, hygiene, labour, and licensing laws.",
@@ -170,11 +172,10 @@ const DOCS = {
       },
       {
         h: "Limitation of CaterKart's liability",
-        p: "The limitations below concern food supplied by third parties. They do not limit our responsibility for CaterBox food, which we cook ourselves and stand behind.",
         points: [
           "The Platform and CaterKart's services are provided on an \"as is\" and \"as available\" basis. CaterKart makes no warranty, express or implied, regarding food supplied by a Vendor or by a restaurant on Swiggy, including any warranty of merchantability, fitness for a particular purpose, quality, or safety.",
           "To the maximum extent permitted by applicable law, CaterKart shall not be liable for any direct, indirect, incidental, special, punitive, or consequential damages arising out of or in connection with the food, its quality, safety, preparation, delivery, or consumption, or the acts or omissions of any Vendor.",
-          "For vendor-fulfilled and Swiggy orders, CaterKart's total aggregate liability for any matter genuinely and directly attributable to CaterKart's own platform services (for example, a scheduling or payment-processing error) shall not exceed the platform/convenience fee component actually retained by CaterKart for the relevant order, or INR 1,000, whichever is lower. This cap does not apply to CaterBox orders, where our liability as the seller is governed by applicable consumer and food-safety law.",
+          "CaterKart's total aggregate liability for any matter genuinely and directly attributable to CaterKart's own platform services (for example, a scheduling or payment-processing error) shall not exceed the platform/convenience fee component actually retained by CaterKart for the relevant order, or INR 1,000, whichever is lower.",
           "Nothing in these Terms excludes or limits any liability that cannot be excluded or limited under applicable law, including the Consumer Protection Act, 2019.",
         ],
       },
@@ -248,10 +249,156 @@ const DOCS = {
       { h: "Non-refundable", p: "Custom-prepared bulk orders already dispatched and add-ons consumed are not refundable except in case of a quality issue." },
     ],
   },
+  shipping: {
+    title: "Shipping & Delivery Policy",
+    numbered: true,
+    intro:
+      "This policy explains how, where, and when orders placed through CaterKart are delivered. CaterKart delivers prepared food, not shippable goods, so there is no courier, tracking number, or return shipment — the sections below describe what actually happens instead.",
+    sections: [
+      {
+        h: "Where we deliver",
+        points: [
+          "CaterBox meal boxes and event catering: Bengaluru, Karnataka only. Serviceability is checked by pincode at checkout; if your pincode is not covered, the order cannot be placed.",
+          "Swiggy group orders: anywhere Swiggy delivers, determined entirely by Swiggy and the restaurant, not by CaterKart.",
+          "We do not ship outside India and do not offer international delivery.",
+        ],
+      },
+      {
+        h: "Delivery timelines",
+        points: [
+          "CaterBox meal boxes and event catering are cooked to order and require advance notice — typically at least 7 days for large orders, confirmed in writing at the time of booking. The delivery date and slot agreed at booking is the committed window.",
+          "Swiggy group orders are same-day and typically arrive within 30 to 75 minutes, per the estimate Swiggy provides at the time of ordering.",
+          "Where CaterKart schedules several Swiggy orders to arrive together, the timing is calculated from Swiggy's own delivery estimates. Those estimates change, and we cannot guarantee simultaneous arrival.",
+        ],
+      },
+      {
+        h: "Delivery charges",
+        p: "Any delivery or packaging charge is shown at checkout before you confirm and is included in the total. For Swiggy group orders, delivery fees are set and collected by Swiggy on your own account; CaterKart adds nothing to them.",
+      },
+      {
+        h: "Who delivers",
+        points: [
+          "CaterBox and event orders are delivered by the assigned partner kitchen or by a third-party delivery partner engaged for the order.",
+          "Swiggy group orders are delivered by Swiggy's own delivery network.",
+        ],
+      },
+      {
+        h: "On delivery",
+        points: [
+          "Someone must be available at the delivery address during the agreed window to receive the order, and must provide safe access for the delivery person.",
+          "Please inspect the order on receipt. Risk in the food passes on delivery.",
+          "If nobody is available and the order cannot be handed over, we will attempt to contact you on the number provided. Prepared food cannot be held or redelivered later, and an order that fails for this reason is not refundable.",
+        ],
+      },
+      {
+        h: "Delays",
+        p: "Timelines are commitments we work hard to meet, but traffic, weather, demand surges, and events outside reasonable control can affect them. We will contact you proactively about a material delay. Where a delay is attributable to CaterKart or the assigned Vendor and makes the order unusable for its purpose, the Refund & Cancellation Policy applies.",
+      },
+      {
+        h: "Food safety after delivery",
+        p: "Prepared food should be consumed promptly. Once delivered, correct storage and handling are the customer's responsibility, and neither CaterKart nor the Vendor is responsible for deterioration caused by improper handling after delivery.",
+      },
+      {
+        h: "Questions",
+        p: `For anything about a delivery in progress, contact us at ${SUPPORT_EMAIL} or ${SUPPORT_PHONE} (${CONTACT.hours}).`,
+      },
+    ],
+  },
+
+  cookies: {
+    title: "Cookie & Local Storage Policy",
+    numbered: true,
+    intro:
+      "This policy explains what CaterKart stores in your browser and why. The short version: we store only what the Platform needs to work. We run no advertising cookies, no cross-site tracking, and no third-party analytics that profile you.",
+    sections: [
+      {
+        h: "What we store",
+        points: [
+          "SESSION COOKIE (ck_session) — identifies you after you sign in with Swiggy. Set by our server as HttpOnly and Secure, so no script on the page can read it. Strictly necessary; the Platform cannot keep you signed in without it. Expires after 30 days.",
+          "SIGN-IN TOKEN (ck_token) — issued after you verify your phone by OTP for a CaterBox order, and used to authenticate your order and payment requests. Stored in local storage and valid for 7 days.",
+          "YOUR IN-PROGRESS ORDER — the box you are configuring, the guests you have added, and the dishes selected, so a refresh or a dropped connection does not lose your work. Stored locally on your device only.",
+          "SELECTED DELIVERY ADDRESS — the identifier of the Swiggy address you chose, so you do not re-pick it on every visit.",
+          "GUEST SELECTIONS — if you open an invite link, your own name, dietary preference and dish choices, so you can return to the link without starting over. Cleared automatically about 30 days later.",
+        ],
+      },
+      {
+        h: "What we do NOT use",
+        points: [
+          "No advertising or retargeting cookies.",
+          "No cross-site tracking, and no sale or sharing of browsing data with advertisers.",
+          "No third-party analytics that build a profile of you across sites.",
+        ],
+      },
+      {
+        h: "Third parties that may set their own storage",
+        points: [
+          "Razorpay — when you open the payment window, Razorpay sets what it needs to process and secure the transaction, under its own privacy policy.",
+          "Google Fonts — used to load the typefaces on this site. It receives the request needed to serve a font file.",
+          "Swiggy — if you sign in with Swiggy, that sign-in happens on Swiggy's own domain under Swiggy's own policies.",
+        ],
+      },
+      {
+        h: "Your choices",
+        p: "You can clear this data at any time through your browser settings, and block cookies entirely if you prefer. Note that blocking the strictly necessary items above will sign you out and prevent orders from being placed, because the Platform has no other way to recognise your session.",
+      },
+      {
+        h: "Questions",
+        p: `Write to ${CONTACT.privacyEmail}.`,
+      },
+    ],
+  },
+
+  grievance: {
+    title: "Grievance Redressal",
+    numbered: true,
+    intro:
+      "If something has gone wrong, this page tells you exactly who to contact, what we will do, and by when. These timelines are obligations under the Consumer Protection (E-Commerce) Rules, 2020, the Information Technology Act, 2000, and the Digital Personal Data Protection Act, 2023 — not targets.",
+    sections: [
+      {
+        h: "Grievance Officer",
+        points: [
+          `Name: ${GRIEVANCE_OFFICER.name}`,
+          `Designation: ${GRIEVANCE_OFFICER.designation}`,
+          `Email: ${GRIEVANCE_OFFICER.email}`,
+          `Phone: ${GRIEVANCE_OFFICER.phone} (${CONTACT.hours})`,
+          `Address: ${COMPANY.legalName}, ${formattedAddress()}`,
+        ],
+      },
+      {
+        h: "What we commit to",
+        points: [
+          `We acknowledge every complaint within ${GRIEVANCE_OFFICER.acknowledgeHours} hours of receiving it.`,
+          `We aim to resolve it within ${GRIEVANCE_OFFICER.resolveDays} days.`,
+          "We will tell you the outcome and the reasoning, not just that the ticket is closed.",
+        ],
+      },
+      {
+        h: "Where to raise which complaint",
+        points: [
+          "FOOD QUALITY, SAFETY, OR A MISSING ITEM on a CaterBox or event order: contact us. The assigned Vendor is responsible for resolution, and we will coordinate with them on your behalf. Please write within 2 hours of delivery with photographs where possible.",
+          "ANYTHING ABOUT A SWIGGY GROUP ORDER: raise it with Swiggy or the restaurant through the Swiggy app. That order sits on your own Swiggy account and was paid through Swiggy, so they hold the order and the money — CaterKart cannot cancel or refund it. We will help you work out what happened if you ask.",
+          "PAYMENTS, REFUNDS, OR BILLING on an order paid to CaterKart: contact us directly.",
+          "YOUR PERSONAL DATA — access, correction, erasure, or withdrawing consent: write to the Grievance Officer with \"Data request\" in the subject line.",
+          "A SECURITY VULNERABILITY: please write to " + CONTACT.securityEmail + " rather than filing a public report, so we can fix it before it is exploited.",
+        ],
+      },
+      {
+        h: "If you are not satisfied with our response",
+        points: [
+          "For consumer disputes, you may approach the National Consumer Helpline (1915 or consumerhelpline.gov.in) or the appropriate Consumer Disputes Redressal Commission.",
+          "For personal-data complaints, you may escalate to the Data Protection Board of India once you have given us the opportunity to respond.",
+          "Nothing on this page limits any remedy available to you under applicable law.",
+        ],
+      },
+    ],
+  },
 };
 
 const DOC_PATHS = {
   privacy: "/privacy-policy",
+  shipping: "/shipping-policy",
+  cookies: "/cookie-policy",
+  grievance: "/grievance-redressal",
   terms: "/terms",
   refund: "/refund-policy",
 };

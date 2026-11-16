@@ -17,7 +17,7 @@ export const SITE_NAME = 'CaterKart';
 export const DEFAULT_TITLE = 'CaterKart — Party Catering & Meal Boxes in Bangalore';
 
 export const DEFAULT_DESCRIPTION =
-  'CaterKart plans the whole party: order from any Swiggy restaurant for a group, let every guest pick their own dish from one shared link, and have it all arrive together. Plus CaterBox meal boxes from our own kitchen, for birthdays, house parties and office lunches in Bangalore.';
+  'CaterKart plans the whole party: order from any Swiggy restaurant for a group, let every guest pick their own dish from one shared link, and have it all arrive together. Plus CaterBox meal boxes, cooked to order by our FSSAI-licensed partner kitchens, for birthdays, house parties and office lunches in Bangalore.';
 
 export const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`;
 
@@ -76,9 +76,13 @@ export const PUBLIC_ROUTES: Array<{ path: string; priority: number; changefreq: 
   { path: '/caterbox', priority: 0.9, changefreq: 'weekly' },
   { path: '/our-kitchen', priority: 0.7, changefreq: 'monthly' },
   { path: '/about', priority: 0.6, changefreq: 'monthly' },
+  { path: '/contact', priority: 0.7, changefreq: 'monthly' },
   { path: '/privacy-policy', priority: 0.3, changefreq: 'yearly' },
   { path: '/terms', priority: 0.3, changefreq: 'yearly' },
   { path: '/refund-policy', priority: 0.3, changefreq: 'yearly' },
+  { path: '/shipping-policy', priority: 0.3, changefreq: 'yearly' },
+  { path: '/cookie-policy', priority: 0.3, changefreq: 'yearly' },
+  { path: '/grievance-redressal', priority: 0.3, changefreq: 'yearly' },
 ];
 
 // ── Structured data ─────────────────────────────────────────────────────────
@@ -146,7 +150,7 @@ export const serviceJsonLd = () => ({
         '@type': 'Service',
         name: 'CaterBox meal boxes',
         description:
-          'Individually packed meal boxes cooked in our own kitchen, for office lunches, birthdays and house parties in Bangalore.',
+          'Individually packed meal boxes, cooked to a CaterKart menu by FSSAI-licensed partner kitchens, for office lunches, birthdays and house parties in Bangalore.',
       },
     },
   ],
@@ -183,7 +187,7 @@ export const FAQS: Array<{ q: string; a: string }> = [
   },
   {
     q: 'What is a CaterBox meal box?',
-    a: 'CaterBox is CaterKart’s own kitchen: individually packed meal boxes built from a menu you choose, delivered for office lunches, birthdays and house parties across Bangalore. You configure the box, see live pricing, and pay an advance online.',
+    a: 'CaterBox is CaterKart’s meal-box service: individually packed boxes built from a menu you choose, cooked to our specification by FSSAI-licensed partner kitchens, and delivered for office lunches, birthdays and house parties across Bangalore. You configure the box, see live pricing, and pay an advance online.',
   },
   {
     q: 'Which areas does CaterKart deliver to?',

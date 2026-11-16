@@ -2,8 +2,8 @@
 
 > Party catering in Bangalore, two ways. Order from any Swiggy restaurant for a
 > group — every guest picks their own dish from one shared link and the orders
-> are timed to arrive together — or order CaterBox meal boxes cooked in
-> CaterKart's own kitchen.
+> are timed to arrive together — or order CaterBox meal boxes, cooked to a
+> CaterKart menu by FSSAI-licensed partner kitchens.
 
 CaterKart solves the problem of feeding a group when everyone wants something
 different. The host opens a celebration and shares one link. Each guest picks
@@ -13,9 +13,11 @@ host's Swiggy account, and staggers the placements so the food converges rather
 than trickling in. Afterwards it splits the bill and generates a UPI link per
 guest.
 
-CaterBox is the separate own-kitchen product: individually packed meal boxes,
-configured from a menu, priced live, and delivered to serviceable Bangalore
-pincodes for office lunches, birthdays and house parties.
+CaterBox is the separate meal-box product: individually packed boxes configured
+from a menu, priced live, cooked to CaterKart's specification by independent
+FSSAI-licensed partner kitchens, and delivered to serviceable Bangalore pincodes
+for office lunches, birthdays and house parties. CaterKart designs the menu and
+collects payment; the partner kitchen prepares and supplies the food.
 
 ## Key facts
 
@@ -30,6 +32,7 @@ pincodes for office lunches, birthdays and house parties.
 - [Home](https://caterkart.in/): how group ordering works, and how to start one.
 - [CaterBox meal boxes](https://caterkart.in/caterbox): configure a box, see live pricing.
 - [Our kitchen](https://caterkart.in/our-kitchen): how CaterBox food is prepared.
+- [Contact](https://caterkart.in/contact): support, grievance officer, registered office.
 - [About](https://caterkart.in/about): what CaterKart is and who it is for.
 
 ## Policies
@@ -37,6 +40,9 @@ pincodes for office lunches, birthdays and house parties.
 - [Privacy policy](https://caterkart.in/privacy-policy)
 - [Terms of service](https://caterkart.in/terms)
 - [Refund policy](https://caterkart.in/refund-policy)
+- [Shipping & delivery policy](https://caterkart.in/shipping-policy)
+- [Cookie policy](https://caterkart.in/cookie-policy)
+- [Grievance redressal](https://caterkart.in/grievance-redressal)
 
 ## Not for retrieval
 

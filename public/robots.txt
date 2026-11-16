@@ -11,9 +11,13 @@ Allow: /$
 Allow: /caterbox
 Allow: /our-kitchen
 Allow: /about
+Allow: /contact
 Allow: /privacy-policy
 Allow: /terms
 Allow: /refund-policy
+Allow: /shipping-policy
+Allow: /cookie-policy
+Allow: /grievance-redressal
 
 # Bearer-token URLs. An indexed invite link IS a leaked credential: the token
 # in the path is the only thing authorising a guest to read the party's guest
